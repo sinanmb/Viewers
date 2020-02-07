@@ -1,0 +1,95 @@
+
+$headerRowHeight = 63px
+
+.metadata
+  background-color: var(--primary-background-color)
+  height: 100%;
+  width: 100%;
+
+.metadataHeader
+  background-color: var(--ui-gray-darker)
+  color: var(--text-secondary-color)
+  display: flex
+  height: $headerRowHeight
+  line-height: $headerRowHeight
+  margin-top: 2px
+  overflow: hidden
+  width: 100%
+
+.metadataHeaderTitle
+  color: var(--text-secondary-color)
+  font-size: 22px
+  font-weight: 300
+  // line-height: $headerRowHeight
+  padding: 0 10px
+  text-align: left
+  flex: 1;
+
+.metadataScrollArea
+  height: 100%
+
+  .metadataScroll
+    height: inherit
+    overflow-y: auto
+    display: flex
+    flex-direction: column
+
+  h4
+    color: white
+
+
+/* Variables
+================================== */
+
+/* @bw: 3px; // border width */
+
+/* Tables
+================================== */
+
+.Rtable {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 3em 0;
+  padding: 0;
+  color: white;
+}
+
+.Rtable-cell {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+  /* Default to full width */
+  padding: 0em 0.5em;
+  overflow: hidden;
+  /* Or flex might break */
+  list-style: none;
+  /* border: solid 3px white; */
+  /* @bw*/
+  background: fade(slategrey, 20%);
+  /* >h1, >h2, >h3, >h4, >h5, >h6 {
+    margin: 0;
+  } */
+}
+
+/* Table column sizing
+================================== */
+
+.Rtable--2cols>.Rtable-cell {
+  width: 50%;
+}
+
+.Rtable--3cols>.Rtable-cell {
+  width: 33.33%;
+}
+
+.Rtable--4cols>.Rtable-cell {
+  width: 25%;
+}
+
+.Rtable--5cols>.Rtable-cell {
+  width: 20%;
+}
+
+.Rtable--6cols>.Rtable-cell {
+  width: 16.6%;
+}

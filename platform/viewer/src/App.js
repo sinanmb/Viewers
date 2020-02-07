@@ -39,7 +39,11 @@ import {
 } from './utils/index.js';
 
 /** Extensions */
-import { GenericViewerCommands, MeasurementsPanel } from './appExtensions';
+import {
+  GenericViewerCommands,
+  MeasurementsPanel,
+  MetadataPanel,
+} from './appExtensions';
 
 /** Viewer */
 import OHIFStandaloneViewer from './OHIFStandaloneViewer';
@@ -251,6 +255,7 @@ function _initExtensions(extensions, cornerstoneExtensionConfig, appConfig) {
     [OHIFCornerstoneExtension, cornerstoneExtensionConfig],
     /* WARNING: MUST BE REGISTERED _AFTER_ OHIFCornerstoneExtension */
     MeasurementsPanel,
+    MetadataPanel,
   ];
   const mergedExtensions = requiredExtensions.concat(extensions);
   extensionManager.registerExtensions(mergedExtensions);
