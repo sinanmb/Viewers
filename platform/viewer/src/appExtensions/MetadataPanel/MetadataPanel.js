@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import MetadataCategory from './MetadataCategory';
+import MetadataInfo from './MetadataInfo';
+
 // import './metadatapanel.css';
 // import './MetadataPanel.styl';
 
@@ -34,6 +36,7 @@ export default class MetadataPanel extends Component {
               <h1 className="metadataHeaderTitle">Metadata</h1>
             </div>
           </div>
+          <MetadataInfo metadata={this.state.metadata} isOpen={true} />
           <MetadataCategory
             title="Structured Report"
             metadata={this.state.metadata}
@@ -45,7 +48,7 @@ export default class MetadataPanel extends Component {
             category="qa_findings"
           />
           <MetadataCategory
-            title="Urgent Pick List"
+            title="Urg Pick List"
             metadata={this.state.metadata}
             category="urg_pick_list"
           />
