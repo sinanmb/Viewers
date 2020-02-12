@@ -21,6 +21,7 @@ import filesToStudies from '../lib/filesToStudies.js';
 import UserManagerContext from '../context/UserManagerContext';
 import WhiteLabellingContext from '../context/WhiteLabellingContext';
 import AppContext from '../context/AppContext';
+import WorkingListDropdown from '../workingList/WorkingListDropdown';
 
 const { urlUtil: UrlUtil } = OHIF.utils;
 
@@ -230,6 +231,16 @@ function StudyListRoute(props) {
             {t('StudyList')}
           </h1>
         </div>
+        <div>
+          <WorkingListDropdown
+            onSelectItem={(firstStudyInstanceUID, workingListStudies) => {
+              const viewerPath = RoutesUtil.parseViewerPath(appConfig, server, {
+                studyInstanceUids: firstStudyInstanceUID,
+              });
+              history.push(viewerPath);
+            }}
+          />
+        </div>
         <div className="actions">
           {studyListFunctionsEnabled && healthCareApiButtons}
           {studyListFunctionsEnabled && (
@@ -378,7 +389,7 @@ async function getStudyList(
       // referringPhysicianName: undefined
       studyDate: study.studyDate, // "Jun 28, 2002"
       studyDescription: study.studyDescription, // "BRAIN"
-      // studyId: "No Study ID"
+      studyId: study.studyId,
       studyInstanceUid: study.studyInstanceUid, // "1.3.6.1.4.1.5962.99.1.3814087073.479799962.1489872804257.3.0"
       // studyTime: "160956.0"
     };
