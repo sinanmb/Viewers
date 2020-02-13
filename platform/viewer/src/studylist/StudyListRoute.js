@@ -21,7 +21,7 @@ import filesToStudies from '../lib/filesToStudies.js';
 import UserManagerContext from '../context/UserManagerContext';
 import WhiteLabellingContext from '../context/WhiteLabellingContext';
 import AppContext from '../context/AppContext';
-import WorkingListDropdown from '../workingList/WorkingListDropdown';
+import WorkingListDropdown from '../connectedComponents/WorkingListDropdown';
 
 const { urlUtil: UrlUtil } = OHIF.utils;
 
@@ -233,7 +233,7 @@ function StudyListRoute(props) {
         </div>
         <div>
           <WorkingListDropdown
-            onSelectItem={(firstStudyInstanceUID, workingListStudies) => {
+            onSelectItem={firstStudyInstanceUID => {
               const viewerPath = RoutesUtil.parseViewerPath(appConfig, server, {
                 studyInstanceUids: firstStudyInstanceUID,
               });

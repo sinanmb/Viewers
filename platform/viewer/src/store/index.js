@@ -9,6 +9,7 @@ import {
 import { reducer as oidcReducer } from 'redux-oidc';
 import { redux } from '@ohif/core';
 import thunkMiddleware from 'redux-thunk';
+import workingListReducer from '../reducers/workingListReducer';
 
 // Combine our @ohif/core and oidc reducers
 // Set init data, using values found in localStorage
@@ -17,6 +18,7 @@ const middleware = [thunkMiddleware];
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 reducers.oidc = oidcReducer;
+reducers.workingLists = workingListReducer;
 
 const rootReducer = combineReducers(reducers);
 const preloadedState = {

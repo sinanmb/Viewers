@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ConnectedViewerRetrieveStudyData from '../connectedComponents/ConnectedViewerRetrieveStudyData';
 import useServer from '../customHooks/useServer';
@@ -29,14 +29,20 @@ function ViewerRouting({ match: routeMatch, location: routeLocation }) {
   } = routeMatch.params;
   const server = useServer({ project, location, dataset, dicomStore });
 
-  const studyUids = UrlUtil.paramString.parseParam(studyInstanceUids);
-  const seriesUids = getSeriesInstanceUIDs(seriesInstanceUids, routeLocation);
+  let studyUids = UrlUtil.paramString.parseParam(studyInstanceUids);
+  let seriesUids = getSeriesInstanceUIDs(seriesInstanceUids, routeLocation);
+
+  useEffect(() => {
+    studyUids = UrlUtil.paramString.parseParam(studyInstanceUids);
+    seriesUids = getSeriesInstanceUIDs(seriesInstanceUids, routeLocation);
+  });
 
   if (server && studyUids) {
     return (
       <ConnectedViewerRetrieveStudyData
         studyInstanceUids={studyUids}
         seriesInstanceUids={seriesUids}
+        key={studyUids}
       />
     );
   }
