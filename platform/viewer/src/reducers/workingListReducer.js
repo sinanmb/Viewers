@@ -3,12 +3,14 @@ import {
   SELECT_WORKING_LIST,
   GET_WORKING_LIST_STUDIES,
   SET_STUDY_INDEX,
+  SELECT_STUDY,
 } from '../actions/types';
 
 const initialState = {
   workingLists: [],
-  selectedWorkingList: '',
+  selectedWorkingList: null,
   selectedWorkingListStudies: [],
+  selectedStudy: null,
 };
 
 export default function(state = initialState, action) {
@@ -26,12 +28,17 @@ export default function(state = initialState, action) {
     case GET_WORKING_LIST_STUDIES:
       return {
         ...state,
-        selectedWorkingListStudies: action.payload,
+        selectedWorkingListStudies: action.payload, // List of studies for the selected working list
       };
     case SET_STUDY_INDEX:
       return {
         ...state,
         studyIndex: action.payload,
+      };
+    case SELECT_STUDY:
+      return {
+        ...state,
+        selectedStudy: action.payload,
       };
     default:
       return state;

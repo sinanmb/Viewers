@@ -6,36 +6,30 @@ import {
   selectWorkingList,
   getWorkingListStudies,
   setStudyIndex,
+  selectStudy,
 } from '../actions/workingListActions';
 
 class WorkingListDropdown extends Component {
   componentDidMount() {
-    this._mounted = true;
     this.props.getWorkingLists();
   }
-  // TODO: Verify if I still need to do that
-  componentWillUnmount() {
-    this._mounted = false;
-  }
 
-  componentDidUpdate(prevProps) {
-    // When we select a working list
-    if (
-      this.props.selectedWorkingListStudies !==
-      prevProps.selectedWorkingListStudies
-    ) {
-      // Call callback to display the study view
-      const studyIndex = 1;
+  change = async event => {
+    const selectedWorkingList = event.target.value || null;
+
+    await this.props.selectWorkingList(selectedWorkingList);
+    if (selectedWorkingList) {
+      await this.props.getWorkingListStudies(selectedWorkingList);
+
+      const studyIndex = 0;
       this.props.setStudyIndex(studyIndex);
-      this.props.onSelectItem(this.props.selectedWorkingListStudies[1]);
+      this.props.selectStudy(
+        this.props.selectedWorkingListStudies[studyIndex].studyInstanceUid
+      );
+      this.props.onSelectItem(
+        this.props.selectedWorkingListStudies[studyIndex].studyInstanceUid
+      );
     }
-  }
-
-  change = event => {
-    this.props.selectWorkingList(event.target.value);
-    this.props.getWorkingListStudies(event.target.value);
-
-    // TODO: Find out if we will have StudyInstanceUIDs in postgres, or if we need to find a way to retrieve them based on the studyIDs
   };
 
   render() {
@@ -52,7 +46,7 @@ class WorkingListDropdown extends Component {
         <select
           id="working-list"
           onChange={this.change}
-          value={this.props.selectedWorkingList}
+          value={this.props.selectedWorkingList | ''}
         >
           <option value="">Choose a working list:</option>
           {workingListsOptionElements}
@@ -72,6 +66,7 @@ WorkingListDropdown.propTypes = {
   getWorkingListStudies: PropTypes.func.isRequired,
   selectedWorkingListStudies: PropTypes.array.isRequired,
   setStudyIndex: PropTypes.func.isRequired,
+  selectStudy: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -82,5 +77,11 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getWorkingLists, selectWorkingList, getWorkingListStudies, setStudyIndex }
+  {
+    getWorkingLists,
+    selectWorkingList,
+    getWorkingListStudies,
+    setStudyIndex,
+    selectStudy,
+  }
 )(WorkingListDropdown);

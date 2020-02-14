@@ -16,8 +16,7 @@ import { commandsManager, extensionManager } from './../App.js';
 
 import ConnectedCineDialog from './ConnectedCineDialog';
 import ConnectedLayoutButton from './ConnectedLayoutButton';
-import PreviousStudyButton from './PreviousStudyButton';
-import NextStudyButton from './NextStudyButton';
+import ToolbarWorkingListGroup from './ToolbarWorkingListGroup';
 
 class ToolbarRow extends Component {
   // TODO: Simplify these? isOpen can be computed if we say "any" value for selected,
@@ -126,8 +125,7 @@ class ToolbarRow extends Component {
           {buttonComponents}
           <ConnectedLayoutButton />
 
-          <PreviousStudyButton />
-          <NextStudyButton />
+          <ToolbarWorkingListGroup />
 
           <div
             className="pull-right m-t-1 rm-x-1"

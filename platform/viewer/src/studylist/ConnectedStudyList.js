@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import StudyListRoute from './StudyListRoute.js';
+import { selectWorkingList } from '../actions/workingListActions';
 
 const isActive = a => a.active === true;
 
@@ -15,7 +16,7 @@ const mapStateToProps = state => {
 
 const ConnectedStudyList = connect(
   mapStateToProps,
-  null
+  { selectWorkingList }
 )(StudyListRoute);
 
 export default ConnectedStudyList;

@@ -26,7 +26,13 @@ import WorkingListDropdown from '../connectedComponents/WorkingListDropdown';
 const { urlUtil: UrlUtil } = OHIF.utils;
 
 function StudyListRoute(props) {
-  const { history, server, user, studyListFunctionsEnabled } = props;
+  const {
+    history,
+    server,
+    user,
+    studyListFunctionsEnabled,
+    selectWorkingList,
+  } = props;
   const [t] = useTranslation('Common');
   // ~~ STATE
   const [sort, setSort] = useState({
@@ -128,6 +134,11 @@ function StudyListRoute(props) {
   //     studies: null,
   //   });
   // }
+
+  // Resets the working list dropdown when we come back to this view.
+  useEffect(() => {
+    selectWorkingList(null);
+  });
 
   const onDrop = async acceptedFiles => {
     try {
@@ -295,6 +306,7 @@ StudyListRoute.propTypes = {
   user: PropTypes.object,
   history: PropTypes.object,
   studyListFunctionsEnabled: PropTypes.bool,
+  selectWorkingList: PropTypes.func.isRequired,
 };
 
 StudyListRoute.defaultProps = {

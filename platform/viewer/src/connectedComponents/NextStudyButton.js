@@ -13,14 +13,22 @@ class NextStudyButton extends Component {
       const newIndex = this.props.studyIndex + 1;
       this.props.setStudyIndex(newIndex);
 
-      const path = `/viewer/${this.props.selectedWorkingListStudies[newIndex]}`;
+      const path = `/viewer/${this.props.selectedWorkingListStudies[newIndex].studyInstanceUid}`;
       this.props.history.push(path);
     }
   };
 
   render() {
     return (
-      <button type="button" onClick={this.handleClick}>
+      <button
+        type="button"
+        className="pointer"
+        disabled={
+          this.props.studyIndex ===
+          this.props.selectedWorkingListStudies.length - 1
+        }
+        onClick={this.handleClick}
+      >
         Next
       </button>
     );
