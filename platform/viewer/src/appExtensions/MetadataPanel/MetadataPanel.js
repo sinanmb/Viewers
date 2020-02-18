@@ -15,8 +15,12 @@ export default class MetadataPanel extends Component {
     // const json_metadata_original = 'https://api.myjson.com/bins/vdvw2';
     // const json_metadata_modified = 'https://api.myjson.com/bins/hvuz6';
 
-    const testStudyInstanceUid = '4e093b50-33a8-4114-bf4c-11524413aebf';
-    const api_metadata_url = `http://localhost:5000/api/v1/metadata/${testStudyInstanceUid}`;
+    const testStudyInstanceUidQAFindings =
+      '4e093b50-33a8-4114-bf4c-11524413aebf';
+    const testStudyInstanceUidStructureReport =
+      '000be669-5d3d-4955-8971-32f3cb524b99';
+
+    const api_metadata_url = `http://localhost:5000/api/v1/metadata/${testStudyInstanceUidStructureReport}`;
 
     axios.get(api_metadata_url).then(response => {
       const metadata = response.data;
