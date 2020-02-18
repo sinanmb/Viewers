@@ -1452,11 +1452,6 @@
   resolved "https://registry.yarnpkg.com/@js.properties/properties/-/properties-0.4.0.tgz#3f98b784ab6fe9b31fd3c1637fedbfa2ff320185"
   integrity sha512-c24GP6HAx4hP/h7OVom037hi1LBQXH2SmOwOLpAc9u4C1Ofph1W4npWMZTmEfFM+hMB0ExSkG3MF2DONx9ystA==
 
-"@kunukn/react-collapse@^2.2.7":
-  version "2.2.7"
-  resolved "https://registry.yarnpkg.com/@kunukn/react-collapse/-/react-collapse-2.2.7.tgz#c5d4918527790712b87aadab356dad96a008c59b"
-  integrity sha512-uivLucYMANDbo9Kta1KCb/LLH7o9iybUiUcVt2YLIKLqdFd2slt1FLN267lafeV1QB+W5X0jjRav0rmgPzV1vg==
-
 "@lerna/add@3.18.0":
   version "3.18.0"
   resolved "https://registry.yarnpkg.com/@lerna/add/-/add-3.18.0.tgz#86e38f14d7a0a7c61315dccb402377feb1c9db83"

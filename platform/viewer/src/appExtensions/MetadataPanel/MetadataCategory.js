@@ -17,39 +17,37 @@ class MetadataCategory extends Component {
     const metadata_row = [];
     let key = 0;
 
-    for (let [i, report] of this.props.metadata[
+    for (let [i, pathology] of this.props.metadata[
       this.props.category
     ].entries()) {
-      for (let pathology of report.pathologies) {
-        // Determine color
-        let color = 'white';
-        if (pathology.gt_severity + pathology.pred_severity > 0) {
-          if (pathology.gt_severity == pathology.pred_severity) {
-            color = 'green';
-          } else {
-            color = 'red';
-          }
+      // Determine color
+      let color = 'white';
+      if (pathology.severity + pathology.predict > 0) {
+        if (pathology.severity == pathology.predict) {
+          color = 'green';
+        } else {
+          color = 'red';
         }
-
-        const order = i + 2;
-        metadata_row.push(
-          <React.Fragment key={key}>
-            <div style={{ order: order, color: color }} className="Rtable-cell">
-              <h3>{report.label}</h3>
-            </div>
-            <div style={{ order: order, color: color }} className="Rtable-cell">
-              <h3>{pathology.label}</h3>
-            </div>
-            <div style={{ order: order, color: color }} className="Rtable-cell">
-              <h3>{pathology.gt_severity}</h3>
-            </div>
-            <div style={{ order: order, color: color }} className="Rtable-cell">
-              <h3>{pathology.pred_severity}</h3>
-            </div>
-          </React.Fragment>
-        );
-        key++;
       }
+
+      const order = i + 2;
+      metadata_row.push(
+        <React.Fragment key={key}>
+          <div style={{ order: order, color: color }} className="Rtable-cell">
+            <h3>{pathology.disc_level}</h3>
+          </div>
+          <div style={{ order: order, color: color }} className="Rtable-cell">
+            <h3>{pathology.pathology}</h3>
+          </div>
+          <div style={{ order: order, color: color }} className="Rtable-cell">
+            <h3>{pathology.severity}</h3>
+          </div>
+          <div style={{ order: order, color: color }} className="Rtable-cell">
+            <h3>{pathology.predict}</h3>
+          </div>
+        </React.Fragment>
+      );
+      key++;
     }
 
     const metadataElement = (

@@ -13,15 +13,18 @@ export default class MetadataPanel extends Component {
 
   componentDidMount() {
     // const json_metadata_original = 'https://api.myjson.com/bins/vdvw2';
-    const json_metadata_modified = 'https://api.myjson.com/bins/hvuz6';
+    // const json_metadata_modified = 'https://api.myjson.com/bins/hvuz6';
 
-    axios.get(json_metadata_modified).then(response => {
+    const testStudyInstanceUid = '4e093b50-33a8-4114-bf4c-11524413aebf';
+    const api_metadata_url = `http://localhost:5000/api/v1/metadata/${testStudyInstanceUid}`;
+
+    axios.get(api_metadata_url).then(response => {
       const metadata = response.data;
       this.setState({ metadata });
 
-      for (let key in metadata.structured_report) {
-        if (!metadata.structured_report.hasOwnProperty(key)) continue;
-      }
+      // for (let key in metadata.structured_report) {
+      //   if (!metadata.structured_report.hasOwnProperty(key)) continue;
+      // }
     });
   }
 
