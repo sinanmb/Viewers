@@ -357,12 +357,13 @@ async function getStudyList(
   } = filters;
   const sortFieldName = sort.fieldName || 'patientName';
   const sortDirection = sort.direction || 'desc';
-  const studyDateFrom =
-    filters.studyDateFrom ||
-    moment()
-      .subtract(25000, 'days')
-      .toDate();
-  const studyDateTo = filters.studyDateTo || new Date();
+  // Commented this because the studies provided do not have DICOM StudyDate tags and didn't load in the patient browser
+  // const studyDateFrom =
+  //   filters.studyDateFrom ||
+  //   moment()
+  //     .subtract(25000, 'days')
+  //     .toDate();
+  // const studyDateTo = filters.studyDateTo || new Date();
 
   const mappedFilters = {
     patientId: filters.patientId,
@@ -371,8 +372,8 @@ async function getStudyList(
     studyDescription: filters.studyDescription,
     modalitiesInStudy: filters.modalities,
     // NEVER CHANGE
-    studyDateFrom,
-    studyDateTo,
+    studyDateFrom: filters.studyDateFrom,
+    studyDateTo: filters.studyDateTo,
     limit: rowsPerPage,
     offset: pageNumber * rowsPerPage,
     fuzzymatching: server.supportsFuzzyMatching === true,
