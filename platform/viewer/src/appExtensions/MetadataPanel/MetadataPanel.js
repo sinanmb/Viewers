@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import MetadataCategory from './MetadataCategory';
 import MetadataInfo from './MetadataInfo';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import api from '../../utils/api';
 
 // import './metadatapanel.css';
 // import './MetadataPanel.styl';
@@ -25,10 +25,9 @@ class MetadataPanel extends Component {
     const { pathname } = this.props.location;
     const studyInstanceUid = pathname.substring(pathname.lastIndexOf('/') + 1);
 
-    // TODO: setup a baseurl
-    const api_metadata_url = `http://localhost:5000/api/v1/metadata/${studyInstanceUid}`;
+    const metadata_endpoint = `/metadata/${studyInstanceUid}`;
 
-    axios.get(api_metadata_url).then(response => {
+    api.get(metadata_endpoint).then(response => {
       const metadata = response.data;
       this.setState({ metadata });
 

@@ -5,12 +5,11 @@ import {
   SET_STUDY_INDEX,
   SELECT_STUDY,
 } from './types';
-import axios from 'axios';
+
+import api from '../utils/api';
 
 export const getWorkingLists = () => dispatch => {
-  const workingListsEndpoint = 'https://api.myjson.com/bins/wom5g';
-
-  axios.get(workingListsEndpoint).then(response =>
+  api.get('/workinglists').then(response =>
     dispatch({
       type: GET_WORKING_LISTS,
       payload: response.data,
