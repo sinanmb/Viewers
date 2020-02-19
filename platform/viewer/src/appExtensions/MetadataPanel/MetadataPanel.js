@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import MetadataCategory from './MetadataCategory';
 import MetadataInfo from './MetadataInfo';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 // import './metadatapanel.css';
 // import './MetadataPanel.styl';
 
-export default class MetadataPanel extends Component {
+class MetadataPanel extends Component {
   state = {
     metadata: {},
   };
@@ -15,12 +17,16 @@ export default class MetadataPanel extends Component {
     // const json_metadata_original = 'https://api.myjson.com/bins/vdvw2';
     // const json_metadata_modified = 'https://api.myjson.com/bins/hvuz6';
 
-    const testStudyInstanceUidQAFindings =
-      '4e093b50-33a8-4114-bf4c-11524413aebf';
-    const testStudyInstanceUidStructureReport =
-      '000be669-5d3d-4955-8971-32f3cb524b99';
+    // const testStudyInstanceUidQAFindings =
+    //   '4e093b50-33a8-4114-bf4c-11524413aebf';
+    // const testStudyInstanceUidStructureReport =
+    //   '000be669-5d3d-4955-8971-32f3cb524b99';
 
-    const api_metadata_url = `http://localhost:5000/api/v1/metadata/${testStudyInstanceUidStructureReport}`;
+    const { pathname } = this.props.location;
+    const studyInstanceUid = pathname.substring(pathname.lastIndexOf('/') + 1);
+
+    // TODO: setup a baseurl
+    const api_metadata_url = `http://localhost:5000/api/v1/metadata/${studyInstanceUid}`;
 
     axios.get(api_metadata_url).then(response => {
       const metadata = response.data;
@@ -69,3 +75,9 @@ export default class MetadataPanel extends Component {
     );
   }
 }
+
+MetadataPanel.propTypes = {
+  location: PropTypes.object,
+};
+
+export default withRouter(MetadataPanel);
