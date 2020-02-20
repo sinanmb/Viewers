@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setStudyIndex } from '../actions/workingListActions';
+import { setStudyIndex, selectStudy } from '../actions/workingListActions';
 import { withRouter } from 'react-router-dom';
 
 class NextStudyButton extends Component {
-  handleClick = () => {
+  handleClick = async () => {
     if (
       this.props.studyIndex + 1 <
       this.props.selectedWorkingListStudies.length
     ) {
       const newIndex = this.props.studyIndex + 1;
       this.props.setStudyIndex(newIndex);
-
-      const path = `/viewer/${this.props.selectedWorkingListStudies[newIndex].studyInstanceUid}`;
+      await this.props.selectStudy(
+        this.props.selectedWorkingListStudies[newIndex].study_instance_uid
+      );
+      const path = `/viewer/${this.props.selectedWorkingListStudies[newIndex].study_instance_uid}`;
       this.props.history.push(path);
     }
   };
@@ -40,6 +42,7 @@ NextStudyButton.propTypes = {
   setStudyIndex: PropTypes.func.isRequired,
   selectedWorkingListStudies: PropTypes.array.isRequired,
   history: PropTypes.object.isRequired,
+  selectStudy: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -50,6 +53,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { setStudyIndex }
+    { setStudyIndex, selectStudy }
   )(NextStudyButton)
 );

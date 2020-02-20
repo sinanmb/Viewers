@@ -14,20 +14,10 @@ class MetadataPanel extends Component {
   };
 
   componentDidMount() {
-    // const json_metadata_original = 'https://api.myjson.com/bins/vdvw2';
-    // const json_metadata_modified = 'https://api.myjson.com/bins/hvuz6';
-
-    // const testStudyInstanceUidQAFindings =
-    //   '4e093b50-33a8-4114-bf4c-11524413aebf';
-    // const testStudyInstanceUidStructureReport =
-    //   '000be669-5d3d-4955-8971-32f3cb524b99';
-
     const { pathname } = this.props.location;
     const studyInstanceUid = pathname.substring(pathname.lastIndexOf('/') + 1);
 
-    const metadata_endpoint = `/metadata/${studyInstanceUid}`;
-
-    api.get(metadata_endpoint).then(response => {
+    api.get(`/metadata/${studyInstanceUid}`).then(response => {
       const metadata = response.data;
       this.setState({ metadata });
 

@@ -9,23 +9,42 @@ class WorkingListStudiesDropdown extends Component {
     const selectedStudyInstanceUid = event.target.value;
 
     const studyIndex = this.props.selectedWorkingListStudies.findIndex(
-      study => study.studyInstanceUid === selectedStudyInstanceUid
+      study => study.study_instance_uid === selectedStudyInstanceUid
     );
 
     this.props.setStudyIndex(studyIndex);
     this.props.selectStudy(selectedStudyInstanceUid);
 
     // Update route params to refresh Viewer component
-    const path = `/viewer/${this.props.selectedWorkingListStudies[studyIndex].studyInstanceUid}`;
+    const path = `/viewer/${this.props.selectedWorkingListStudies[studyIndex].study_instance_uid}`;
     this.props.history.push(path);
   };
+
+  // componentDidUpdate(prevProps) {
+  //   if (
+  //     prevProps.selectedStudy !==
+  //     this.props.selectedStudy
+  //   ) {
+  //     const studyIndex = 0;
+  //     this.props.setStudyIndex(studyIndex);
+  //     this.props.selectStudy(
+  //       this.props.selectedWorkingListStudies[studyIndex].study_instance_uid
+  //     );
+  //     this.props.onSelectItem(
+  //       this.props.selectedWorkingListStudies[studyIndex].study_instance_uid
+  //     );
+  //   }
 
   render() {
     const workingListsStudiesOptionElements = this.props
       .selectedWorkingListStudies
       ? this.props.selectedWorkingListStudies.map(study => (
-          <option value={study.studyInstanceUid} key={study.studyInstanceUid}>
-            {study.name}
+          <option
+            value={study.study_instance_uid}
+            key={study.study_instance_uid}
+          >
+            {/* TODO: This should be change to a short name that identifies the study */}
+            {study.report_id}
           </option>
         ))
       : [];
