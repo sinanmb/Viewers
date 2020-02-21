@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PreviousStudyButton from './PreviousStudyButton';
 import NextStudyButton from './NextStudyButton';
 import WorkingListStudiesDropdown from './WorkingListStudiesDropdown';
+import ReviewStatusComponent from './ReviewStatusComponent';
 
 class ToolbarWorkingListGroup extends Component {
   render() {
@@ -12,6 +13,7 @@ class ToolbarWorkingListGroup extends Component {
         <PreviousStudyButton />
         <WorkingListStudiesDropdown />
         <NextStudyButton />
+        <ReviewStatusComponent />
       </React.Fragment>
     ) : null;
 
