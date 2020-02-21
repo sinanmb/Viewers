@@ -13,7 +13,7 @@ class NextStudyButton extends Component {
       const newIndex = this.props.studyIndex + 1;
       this.props.setStudyIndex(newIndex);
       await this.props.selectStudy(
-        this.props.selectedWorkingListStudies[newIndex].study_instance_uid
+        this.props.selectedWorkingListStudies[newIndex]
       );
       const path = `/viewer/${this.props.selectedWorkingListStudies[newIndex].study_instance_uid}`;
       this.props.history.push(path);

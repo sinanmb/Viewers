@@ -28,9 +28,7 @@ class WorkingListDropdown extends Component {
     ) {
       const studyIndex = 0;
       this.props.setStudyIndex(studyIndex);
-      this.props.selectStudy(
-        this.props.selectedWorkingListStudies[studyIndex].study_instance_uid
-      );
+      this.props.selectStudy(this.props.selectedWorkingListStudies[studyIndex]);
       this.props.onSelectItem(
         this.props.selectedWorkingListStudies[studyIndex].study_instance_uid
       );

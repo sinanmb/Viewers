@@ -13,7 +13,7 @@ class WorkingListStudiesDropdown extends Component {
     );
 
     this.props.setStudyIndex(studyIndex);
-    this.props.selectStudy(selectedStudyInstanceUid);
+    this.props.selectStudy(this.props.selectedWorkingListStudies[studyIndex]);
 
     // Update route params to refresh Viewer component
     const path = `/viewer/${this.props.selectedWorkingListStudies[studyIndex].study_instance_uid}`;
@@ -54,7 +54,7 @@ class WorkingListStudiesDropdown extends Component {
         <select
           id="working-list-studies"
           onChange={this.change}
-          value={this.props.selectedStudy}
+          value={this.props.selectedStudy.study_instance_uid}
         >
           {workingListsStudiesOptionElements}
         </select>
@@ -69,7 +69,7 @@ WorkingListStudiesDropdown.propTypes = {
   setStudyIndex: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   selectStudy: PropTypes.func.isRequired,
-  selectedStudy: PropTypes.string.isRequired,
+  selectedStudy: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({

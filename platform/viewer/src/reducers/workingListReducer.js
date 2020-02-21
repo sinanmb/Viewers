@@ -4,6 +4,7 @@ import {
   GET_WORKING_LIST_STUDIES,
   SET_STUDY_INDEX,
   SELECT_STUDY,
+  SET_REVIEW_STATUS,
 } from '../actions/types';
 
 const initialState = {
@@ -36,6 +37,11 @@ export default function(state = initialState, action) {
         studyIndex: action.payload,
       };
     case SELECT_STUDY:
+      return {
+        ...state,
+        selectedStudy: action.payload,
+      };
+    case SET_REVIEW_STATUS:
       return {
         ...state,
         selectedStudy: action.payload,

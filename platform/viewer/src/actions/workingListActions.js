@@ -4,6 +4,7 @@ import {
   GET_WORKING_LIST_STUDIES,
   SET_STUDY_INDEX,
   SELECT_STUDY,
+  SET_REVIEW_STATUS,
 } from './types';
 
 import api from '../utils/api';
@@ -40,3 +41,17 @@ export const setStudyIndex = newIndex => dispatch =>
 
 export const selectStudy = study => dispatch =>
   dispatch({ type: SELECT_STUDY, payload: study });
+
+export const setReviewStatus = (
+  workingListId,
+  studyInstanceUid,
+  status
+) => dispatch => {
+  api
+    .put(`/working-lists/${workingListId}/studies/${studyInstanceUid}`, {
+      status,
+    })
+    .then(response =>
+      dispatch({ type: SET_REVIEW_STATUS, payload: response.data })
+    );
+};
