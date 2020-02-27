@@ -7,11 +7,18 @@ import getImageIdForImagePath from '../lib/getImageIdForImagePath';
 import guid from '../../utils/guid';
 import studyMetadataManager from '../../utils/studyMetadataManager';
 import { measurementApiDefaultConfig } from './../configuration.js';
-
+import axios from 'axios';
+import store from '../../../../viewer/src/store';
 
 const configuration = {
-  ...measurementApiDefaultConfig
+  ...measurementApiDefaultConfig,
 };
+
+// TODO: Move this somewhere else, in utils for example
+const api = axios.create({
+  baseURL: 'http://localhost:5000/api/v1',
+  responseType: 'json',
+});
 
 export default class MeasurementApi {
   static Instance;
@@ -221,7 +228,7 @@ export default class MeasurementApi {
     this.options.onMeasurementsUpdated(Object.assign({}, this.tools));
   }
 
-  retrieveMeasurements(patientId, timepointIds) {
+  async retrieveMeasurements(patientId, timepointIds) {
     const retrievalFn = configuration.dataExchange.retrieve;
     const { server } = configuration;
     if (typeof retrievalFn !== 'function') {
@@ -229,11 +236,26 @@ export default class MeasurementApi {
       return;
     }
 
+    const state = store.getState();
+    const {
+      studyInstanceUid,
+      seriesInstanceUid,
+    } = state.viewports.viewportSpecificData[0];
+
+    let probesMeasurementsData = await api.get(
+      `/annotations/${studyInstanceUid}/${seriesInstanceUid}`
+    );
+
     return new Promise((resolve, reject) => {
       retrievalFn(server).then(measurementData => {
         if (measurementData) {
           log.info('Measurement data retrieval');
           log.info(measurementData);
+
+          // API call to retrieve landmarks from Postgres
+          measurementData['Probe'] = probesMeasurementsData.data.map(
+            probeMeasurement => probeMeasurement.details
+          );
 
           Object.keys(measurementData).forEach(measurementTypeId => {
             const measurements = measurementData[measurementTypeId];
@@ -303,11 +325,20 @@ export default class MeasurementApi {
       timepointIds,
     };
 
+    this.storeProbes(measurementData);
+
     log.info('Saving Measurements for timepoints:', timepoints);
     return storeFn(measurementData, filter, server).then(result => {
       log.info('Measurement storage completed');
       return result;
     });
+  }
+
+  storeProbes(measurements) {
+    const probeMeasurements = measurements.allTools.filter(
+      measurement => measurement.toolType === 'Probe'
+    );
+    api.post('/annotations', probeMeasurements);
   }
 
   calculateLesionNamingNumber(measurements) {

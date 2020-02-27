@@ -107,6 +107,15 @@ const definitions = [
     commandName: 'resetViewport',
   },
   {
+    id: 'Probe',
+    label: 'Landmark',
+    icon: 'dot-circle',
+    //
+    type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
+    commandName: 'setToolActive',
+    commandOptions: { toolName: 'Probe' },
+  },
+  {
     id: 'Cine',
     label: 'CINE',
     icon: 'youtube',
@@ -245,7 +254,7 @@ const definitions = [
     type: TOOLBAR_BUTTON_TYPES.COMMAND,
     commandName: 'setCornerstoneLayout',
     context: 'ACTIVE_VIEWPORT::VTK',
-  }
+  },
 ];
 
 export default {
