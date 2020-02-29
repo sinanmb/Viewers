@@ -100,8 +100,11 @@ class OHIFCornerstoneViewport extends Component {
       throw new Error('Display Set not found.');
     }
 
+    // displaySet contains seriesDescription
     // Get stack from Stack Manager
     const storedStack = StackManager.findOrCreateStack(study, displaySet);
+
+    // storedStack does not metadata info
 
     // Clone the stack here so we don't mutate it
     const stack = Object.assign({}, storedStack);
@@ -128,6 +131,8 @@ class OHIFCornerstoneViewport extends Component {
         );
       }
     }
+
+    // No metadata info here
 
     return stack;
   }
@@ -172,6 +177,8 @@ class OHIFCornerstoneViewport extends Component {
 
         break;
     }
+
+    // No metadata info in viewportData
 
     return viewportData;
   };

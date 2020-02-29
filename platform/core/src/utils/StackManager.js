@@ -41,6 +41,9 @@ function createAndAddStack(
       imageIndex: imageIndex + 1,
     };
 
+    // metaData contains the series description
+    // metaData.series.seriesDescription
+
     const numberOfFrames = image.numberOfFrames;
     if (numberOfFrames > 1) {
       for (let i = 0; i < numberOfFrames; i++) {
@@ -66,6 +69,8 @@ function createAndAddStack(
   };
 
   stackMap[displaySet.displaySetInstanceUid] = stack;
+
+  // Stack contains imageIds (that should have been linked with the metadata)
 
   return stack;
 }

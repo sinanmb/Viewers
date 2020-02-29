@@ -6,6 +6,8 @@ import throttle from 'lodash.throttle';
 import LabellingFlow from '../../components/Labelling/LabellingFlow';
 import ToolContextMenu from '../../connectedComponents/ToolContextMenu';
 
+import store from '../../../../viewer/src/store';
+
 const {
   onAdded,
   onRemoved,
@@ -36,6 +38,16 @@ export default function init({
 
   // TODO: MEASUREMENT_COMPLETED (not present in initial implementation)
   const onMeasurementsChanged = (action, event) => {
+    if (action === 'added' && event.detail.toolType === 'Probe') {
+      event.detail.measurementData.location = store.getState().landmark.selectedLocation;
+
+      showLabellingDialog(
+        { centralize: true, isDraggable: false },
+        { skipAddLabelButton: false, editLocation: true },
+        event.detail.measurementData
+      );
+    }
+
     return MEASUREMENT_ACTION_MAP[action](event);
   };
   const onMeasurementAdded = onMeasurementsChanged.bind(this, 'added');

@@ -3,6 +3,7 @@ import ConnectedMeasurementTable from './ConnectedMeasurementTable.js';
 import init from './init.js';
 
 import LabellingFlow from '../../components/Labelling/LabellingFlow';
+import LankmarkLocationSelector from '../../connectedComponents/LankmarkLocationSelector.js';
 
 export default {
   /**
@@ -50,22 +51,25 @@ export default {
     };
 
     const ExtendedConnectedMeasurementTable = () => (
-      <ConnectedMeasurementTable
-        onRelabel={tool =>
-          showLabellingDialog(
-            { editLocation: true, skipAddLabelButton: true },
-            tool
-          )
-        }
-        onEditDescription={tool =>
-          showLabellingDialog({ editDescriptionOnDialog: true }, tool)
-        }
-        onSaveComplete={message => {
-          if (UINotificationService) {
-            UINotificationService.show(message);
+      <>
+        <LankmarkLocationSelector />
+        <ConnectedMeasurementTable
+          onRelabel={tool =>
+            showLabellingDialog(
+              { editLocation: true, skipAddLabelButton: true },
+              tool
+            )
           }
-        }}
-      />
+          onEditDescription={tool =>
+            showLabellingDialog({ editDescriptionOnDialog: true }, tool)
+          }
+          onSaveComplete={message => {
+            if (UINotificationService) {
+              UINotificationService.show(message);
+            }
+          }}
+        />
+      </>
     );
     return {
       menuOptions: [

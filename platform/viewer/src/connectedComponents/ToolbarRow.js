@@ -28,6 +28,7 @@ class ToolbarRow extends Component {
     selectedRightSidePanel: PropTypes.string.isRequired,
     handleSidePanelChange: PropTypes.func,
     activeContexts: PropTypes.arrayOf(PropTypes.string).isRequired,
+    setLandmarkToolSelectionStatus: PropTypes.func.isRequired,
     studies: PropTypes.array,
   };
 
@@ -239,6 +240,13 @@ function _handleToolbarButtonClick(button, evt, props) {
   if (button.commandName) {
     const options = Object.assign({ evt }, button.commandOptions);
     commandsManager.runCommand(button.commandName, options);
+  }
+
+  // Set landmark tool status to know if we display the Nerve / Stenosis button choice in the Measurements panel
+  if (button.id === 'Probe') {
+    this.props.setLandmarkToolSelectionStatus(true);
+  } else {
+    this.props.setLandmarkToolSelectionStatus(false);
   }
 
   // TODO: Use Types ENUM

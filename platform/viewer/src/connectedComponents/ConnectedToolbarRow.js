@@ -3,6 +3,7 @@
 import ToolbarRow from './ToolbarRow';
 import { connect } from 'react-redux';
 import { getActiveContexts } from './../store/layout/selectors.js';
+import { setLandmarkToolSelectionStatus } from '../actions/landmarkActions';
 
 const mapStateToProps = state => {
   return {
@@ -10,6 +11,9 @@ const mapStateToProps = state => {
   };
 };
 
-const ConnectedToolbarRow = connect(mapStateToProps)(ToolbarRow);
+const ConnectedToolbarRow = connect(
+  mapStateToProps,
+  { setLandmarkToolSelectionStatus }
+)(ToolbarRow);
 
 export default ConnectedToolbarRow;

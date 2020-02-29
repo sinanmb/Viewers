@@ -5,7 +5,11 @@ import cloneDeep from 'lodash.clonedeep';
 
 import LabellingTransition from './LabellingTransition.js';
 import OHIFLabellingData from './OHIFLabellingData.js';
+import CoveraLabellingData from './CoveraLabellingData.js';
+
 import EditDescriptionDialog from './../EditDescriptionDialog/EditDescriptionDialog.js';
+import EditDescriptionDropdownDialog from './../EditDescriptionDropdownDialog/EditDescriptionDropdownDialog.js';
+
 import './LabellingFlow.css';
 
 const LabellingFlow = ({
@@ -136,6 +140,11 @@ const LabellingFlow = ({
     const { skipAddLabelButton, editLocation, measurementData } = state;
     const { description, locationLabel, location } = measurementData;
 
+    const selectTreeLabellingData =
+      measurementData.toolType === 'Probe'
+        ? CoveraLabellingData
+        : OHIFLabellingData;
+
     if (!skipAddLabelButton) {
       return (
         <button
@@ -149,14 +158,15 @@ const LabellingFlow = ({
     } else {
       if (editLocation) {
         return (
+          // TODO: Find a way to skip the description after entering the label for ProbeTool.
           <SelectTree
-            items={OHIFLabellingData}
+            items={selectTreeLabellingData}
             columns={1}
             onSelected={selectTreeSelectCallback}
             selectTreeFirstTitle="Assign Label"
           />
         );
-      } else {
+      } else if (measurementData.toolType !== 'Probe') {
         return (
           <>
             <div className="checkIconWrapper" onClick={fadeOutAndLeaveFast}>
@@ -209,12 +219,26 @@ const LabellingFlow = ({
             </div>
           </>
         );
+      } else {
+        return (
+          <EditDescriptionDropdownDialog
+            onCancel={labellingDoneCallback}
+            onUpdate={descriptionDialogUpdate}
+            measurementData={state.measurementData}
+          />
+        );
       }
     }
   };
 
   if (editDescriptionOnDialog) {
-    return (
+    return state.measurementData.toolType === 'Probe' ? (
+      <EditDescriptionDropdownDialog
+        onCancel={labellingDoneCallback}
+        onUpdate={descriptionDialogUpdate}
+        measurementData={state.measurementData}
+      />
+    ) : (
       <EditDescriptionDialog
         onCancel={labellingDoneCallback}
         onUpdate={descriptionDialogUpdate}
