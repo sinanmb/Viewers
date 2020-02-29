@@ -17,8 +17,12 @@ class LandmarkLocationSelector extends Component {
     else if (e.key === 's') this.selectStenosis();
   };
 
-  componentDidMount() {
-    window.addEventListener('keypress', this.handleSelection);
+  componentDidUpdate() {
+    if (this.props.isToolSelected) {
+      window.addEventListener('keypress', this.handleSelection);
+    } else {
+      window.removeEventListener('keypress', this.handleSelection);
+    }
   }
 
   componentWillUnmount() {
