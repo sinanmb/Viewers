@@ -43,8 +43,21 @@ class LayoutChooser extends PureComponent {
       selectedCell: this.props.selectedCell,
     };
   }
+
+  // Hacky way to show two columns
+  showOneRowAndTwoColumnsLayout() {
+    const firstRowSecondColumn = {
+      row: 0,
+      col: 1,
+    };
+
+    if (this.props.onChange) {
+      this.props.onChange(firstRowSecondColumn);
+    }
+  }
   componentDidMount() {
     this.highlightCells(this.emptyCell);
+    this.showOneRowAndTwoColumnsLayout();
   }
   onClick(currentCell) {
     this.setState({
