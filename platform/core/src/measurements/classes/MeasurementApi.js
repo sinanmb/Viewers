@@ -335,10 +335,23 @@ export default class MeasurementApi {
   }
 
   storeProbes(measurements) {
+    const state = store.getState();
+    const {
+      studyInstanceUid,
+      seriesInstanceUid,
+    } = state.viewports.viewportSpecificData[0];
+
     const probeMeasurements = measurements.allTools.filter(
       measurement => measurement.toolType === 'Probe'
     );
-    api.post('/annotations', probeMeasurements);
+
+    const data = {
+      studyInstanceUid,
+      seriesInstanceUid,
+      probeMeasurements,
+    };
+
+    api.post('/annotations', data);
   }
 
   calculateLesionNamingNumber(measurements) {
