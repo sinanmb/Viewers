@@ -1,8 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { commandsManager } from './../App.js';
-
 import { ContextMenu } from '@ohif/ui';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { commandsManager } from './../App.js';
 
 const toolTypes = [
   'Angle',
@@ -95,7 +94,7 @@ const ToolContextMenu = ({
 
   return (
     <div className="ToolContextMenu">
-      <ContextMenu items={dropdownItems} onClick={onClickHandler} />;
+      <ContextMenu items={dropdownItems} onClick={onClickHandler} />
     </div>
   );
 };
