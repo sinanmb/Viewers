@@ -24,7 +24,7 @@ const parseMeasurementsData = measurementsData => {
     annotations.forEach(annotation => {
       const { toolType, imagePath } = annotation;
 
-      if (isToolSupported(toolType)) {
+      if (isToolSupported(toolType) || toolType === 'Probe') {
         const imageId = getImageIdForImagePath(imagePath);
         toolState[imageId] = toolState[imageId] || {};
         toolState[imageId][toolType] = toolState[imageId][toolType] || {
