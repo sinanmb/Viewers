@@ -20,21 +20,6 @@ class WorkingListStudiesDropdown extends Component {
     this.props.history.push(path);
   };
 
-  // componentDidUpdate(prevProps) {
-  //   if (
-  //     prevProps.selectedStudy !==
-  //     this.props.selectedStudy
-  //   ) {
-  //     const studyIndex = 0;
-  //     this.props.setStudyIndex(studyIndex);
-  //     this.props.selectStudy(
-  //       this.props.selectedWorkingListStudies[studyIndex].study_instance_uid
-  //     );
-  //     this.props.onSelectItem(
-  //       this.props.selectedWorkingListStudies[studyIndex].study_instance_uid
-  //     );
-  //   }
-
   render() {
     const workingListsStudiesOptionElements = this.props
       .selectedWorkingListStudies
@@ -43,8 +28,7 @@ class WorkingListStudiesDropdown extends Component {
             value={study.study_instance_uid}
             key={study.study_instance_uid}
           >
-            {/* TODO: This should be change to a short name that identifies the study */}
-            {study.report_id}
+            {study.study_id}
           </option>
         ))
       : [];
