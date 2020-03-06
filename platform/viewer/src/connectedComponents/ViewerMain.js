@@ -74,6 +74,20 @@ class ViewerMain extends Component {
       const displaySets = this.getDisplaySets(this.props.studies);
       this.setState({ displaySets }, this.fillEmptyViewportPanes);
     }
+
+    // Update series description
+    if (Object.entries(this.props.viewportSpecificData).length > 0) {
+      const {
+        studyInstanceUid,
+        displaySetInstanceUid,
+      } = this.props.viewportSpecificData[this.props.activeViewportIndex];
+
+      this.addDescriptionOverlay(
+        this.props.activeViewportIndex,
+        studyInstanceUid,
+        displaySetInstanceUid
+      );
+    }
   }
 
   fillEmptyViewportPanes = () => {
@@ -119,8 +133,37 @@ class ViewerMain extends Component {
           studyInstanceUid: vp.studyInstanceUid,
           displaySetInstanceUid: vp.displaySetInstanceUid,
         });
+        this.addDescriptionOverlay(
+          i,
+          vp.studyInstanceUid,
+          vp.displaySetInstanceUid
+        );
       }
     });
+  };
+
+  addDescriptionOverlay = (
+    viewportIndex,
+    studyInstanceUid,
+    displaySetInstanceUid
+  ) => {
+    const displaySet = this.findDisplaySet(
+      this.props.studies,
+      studyInstanceUid,
+      displaySetInstanceUid
+    );
+
+    const bottom_left_overlay = window.document.getElementsByClassName(
+      'bottom-left overlay-element'
+    );
+
+    if (bottom_left_overlay.length > 0) {
+      const bottomDiv = bottom_left_overlay[viewportIndex].querySelector(
+        'div:last-child'
+      );
+      const seriesDescription = bottomDiv.querySelector('div:last-child');
+      seriesDescription.innerHTML = displaySet.seriesDescription;
+    }
   };
 
   setViewportData = ({
@@ -150,6 +193,7 @@ class ViewerMain extends Component {
             studies={this.props.studies}
             viewportData={viewportData}
             setViewportData={this.setViewportData}
+            addDescriptionOverlay={this.addDescriptionOverlay}
           >
             {/* Children to add to each viewport that support children */}
           </ConnectedViewportGrid>

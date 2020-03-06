@@ -20,6 +20,7 @@ const ViewportGrid = function(props) {
     studies,
     viewportData,
     children,
+    addDescriptionOverlay,
   } = props;
 
   const rowSize = 100 / numRows;
@@ -77,6 +78,11 @@ const ViewportGrid = function(props) {
             studyInstanceUid,
             displaySetInstanceUid,
           });
+          addDescriptionOverlay(
+            viewportIndex,
+            studyInstanceUid,
+            displaySetInstanceUid
+          );
         }}
         viewportIndex={viewportIndex} // Needed by `setViewportData`
         className={classNames('viewport-container', {
@@ -117,6 +123,7 @@ ViewportGrid.propTypes = {
   defaultPlugin: PropTypes.string,
   numRows: PropTypes.number.isRequired,
   numColumns: PropTypes.number.isRequired,
+  addDescriptionOverlay: PropTypes.func.isRequired,
 };
 
 ViewportGrid.defaultProps = {
