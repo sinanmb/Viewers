@@ -45,18 +45,9 @@ class ToolbarRow extends Component {
     // Just how high do we need to hoist this state?
     // Why ToolbarRow instead of just Toolbar? Do we have any others?
 
-    // Set Landmark tool active by default
-    const landmarkButton = {
-      commandName: 'setToolActive',
-      icon: 'dot-circle',
-      id: 'Probe',
-      label: 'Landmark',
-      type: 'setToolActive',
-    };
-
     this.state = {
       toolbarButtons: toolbarButtonDefinitions,
-      activeButtons: [landmarkButton],
+      activeButtons: [],
     };
 
     this._handleBuiltIn = _handleBuiltIn.bind(this);
