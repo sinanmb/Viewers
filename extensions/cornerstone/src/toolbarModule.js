@@ -63,15 +63,6 @@ const definitions = [
     commandOptions: { toolName: 'Wwwc' },
   },
   {
-    id: 'Pan',
-    label: 'Pan',
-    icon: 'arrows',
-    //
-    type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
-    commandName: 'setToolActive',
-    commandOptions: { toolName: 'Pan' },
-  },
-  {
     id: 'Length',
     label: 'Length',
     icon: 'measure-temp',
@@ -79,32 +70,6 @@ const definitions = [
     type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
     commandName: 'setToolActive',
     commandOptions: { toolName: 'Length' },
-  },
-  {
-    id: 'ArrowAnnotate',
-    label: 'Annotate',
-    icon: 'measure-non-target',
-    //
-    type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
-    commandName: 'setToolActive',
-    commandOptions: { toolName: 'ArrowAnnotate' },
-  },
-  {
-    id: 'Angle',
-    label: 'Angle',
-    icon: 'angle-left',
-    //
-    type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
-    commandName: 'setToolActive',
-    commandOptions: { toolName: 'Angle' },
-  },
-  {
-    id: 'Reset',
-    label: 'Reset',
-    icon: 'reset',
-    //
-    type: TOOLBAR_BUTTON_TYPES.COMMAND,
-    commandName: 'resetViewport',
   },
   {
     id: 'Probe',
@@ -116,14 +81,13 @@ const definitions = [
     commandOptions: { toolName: 'Probe' },
   },
   {
-    id: 'Cine',
-    label: 'CINE',
-    icon: 'youtube',
+    id: 'EllipticalRoi',
+    label: 'Ellipse',
+    icon: 'circle-o',
     //
-    type: TOOLBAR_BUTTON_TYPES.BUILT_IN,
-    options: {
-      behavior: TOOLBAR_BUTTON_BEHAVIORS.CINE,
-    },
+    type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
+    commandName: 'setToolActive',
+    commandOptions: { toolName: 'EllipticalRoi' },
   },
   {
     id: 'More',
@@ -156,15 +120,6 @@ const definitions = [
         type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
         commandName: 'setToolActive',
         commandOptions: { toolName: 'DragProbe' },
-      },
-      {
-        id: 'EllipticalRoi',
-        label: 'Ellipse',
-        icon: 'circle-o',
-        //
-        type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
-        commandName: 'setToolActive',
-        commandOptions: { toolName: 'EllipticalRoi' },
       },
       {
         id: 'RectangleRoi',
@@ -243,6 +198,51 @@ const definitions = [
           behavior: TOOLBAR_BUTTON_BEHAVIORS.DOWNLOAD_SCREEN_SHOT,
           togglable: true,
         },
+      },
+      {
+        id: 'Pan',
+        label: 'Pan',
+        icon: 'arrows',
+        //
+        type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
+        commandName: 'setToolActive',
+        commandOptions: { toolName: 'Pan' },
+      },
+      {
+        id: 'Cine',
+        label: 'CINE',
+        icon: 'youtube',
+        //
+        type: TOOLBAR_BUTTON_TYPES.BUILT_IN,
+        options: {
+          behavior: TOOLBAR_BUTTON_BEHAVIORS.CINE,
+        },
+      },
+      {
+        id: 'ArrowAnnotate',
+        label: 'Annotate',
+        icon: 'measure-non-target',
+        //
+        type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
+        commandName: 'setToolActive',
+        commandOptions: { toolName: 'ArrowAnnotate' },
+      },
+      {
+        id: 'Angle',
+        label: 'Angle',
+        icon: 'angle-left',
+        //
+        type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
+        commandName: 'setToolActive',
+        commandOptions: { toolName: 'Angle' },
+      },
+      {
+        id: 'Reset',
+        label: 'Reset',
+        icon: 'reset',
+        //
+        type: TOOLBAR_BUTTON_TYPES.COMMAND,
+        commandName: 'resetViewport',
       },
     ],
   },
