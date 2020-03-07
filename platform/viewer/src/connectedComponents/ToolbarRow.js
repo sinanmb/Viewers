@@ -17,6 +17,7 @@ import { commandsManager, extensionManager } from './../App.js';
 import ConnectedCineDialog from './ConnectedCineDialog';
 import ConnectedLayoutButton from './ConnectedLayoutButton';
 import ToolbarWorkingListGroup from './ToolbarWorkingListGroup';
+import LandmarkLocationShortcuts from './LandmarkLocationShortcuts';
 
 class ToolbarRow extends Component {
   // TODO: Simplify these? isOpen can be computed if we say "any" value for selected,
@@ -99,7 +100,18 @@ class ToolbarRow extends Component {
         toolbarButtons: _getVisibleToolbarButtons.call(this),
       });
     }
+
+    if (this.props.isLankmarkToolSelected) {
+      window.addEventListener('keypress', this.handleSelection);
+    } else {
+      window.removeEventListener('keypress', this.handleSelection);
+    }
   }
+
+  handleSelection = e => {
+    if (e.key === 'n' || e.key === '1') this.selectNerve();
+    else if (e.key === 's' || e.key === '2') this.selectStenosis();
+  };
 
   render() {
     const buttonComponents = _getButtonComponents.call(
@@ -128,6 +140,7 @@ class ToolbarRow extends Component {
           <ConnectedLayoutButton />
 
           <ToolbarWorkingListGroup />
+          <LandmarkLocationShortcuts />
 
           <div
             className="pull-right m-t-1 rm-x-1"

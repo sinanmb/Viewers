@@ -5,7 +5,7 @@ import {
 
 const initialState = {
   selectedLocation: 'Nerve',
-  isToolSelected: false,
+  isToolSelected: true,
 };
 
 export default function(state = initialState, action) {

@@ -13,21 +13,9 @@ class LandmarkLocationSelector extends Component {
   };
 
   handleSelection = e => {
-    if (e.key === 'n') this.selectNerve();
-    else if (e.key === 's') this.selectStenosis();
+    if (e.key === 'n' || e.key === '1') this.selectNerve();
+    else if (e.key === 's' || e.key === '2') this.selectStenosis();
   };
-
-  componentDidUpdate() {
-    if (this.props.isToolSelected) {
-      window.addEventListener('keypress', this.handleSelection);
-    } else {
-      window.removeEventListener('keypress', this.handleSelection);
-    }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keypress', this.handleSelection);
-  }
 
   render() {
     const divStyle = {
