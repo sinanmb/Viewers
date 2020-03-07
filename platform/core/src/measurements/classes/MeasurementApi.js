@@ -242,7 +242,7 @@ export default class MeasurementApi {
       seriesInstanceUid,
     } = state.viewports.viewportSpecificData[0];
 
-    let probesMeasurementsData = await api.get(
+    let databaseMeasurementsData = await api.get(
       `/annotations/${studyInstanceUid}/${seriesInstanceUid}`
     );
 
@@ -253,9 +253,19 @@ export default class MeasurementApi {
           log.info(measurementData);
 
           // API call to retrieve landmarks from Postgres
-          measurementData['Probe'] = probesMeasurementsData.data.map(
-            probeMeasurement => probeMeasurement.details
-          );
+          measurementData['Probe'] = databaseMeasurementsData.data
+            .filter(measurement => measurement.details.toolType === 'Probe')
+            .map(measurement => measurement.details);
+
+          measurementData[
+            'EllipticalRoi'
+          ] = databaseMeasurementsData.data
+            .filter(
+              measurement => measurement.details.toolType === 'EllipticalRoi'
+            )
+            .map(measurement => measurement.details);
+
+          // No need to retrieve Length because it's picked up from DICOM
 
           Object.keys(measurementData).forEach(measurementTypeId => {
             const measurements = measurementData[measurementTypeId];
@@ -263,6 +273,9 @@ export default class MeasurementApi {
             measurements.forEach(measurement => {
               const { toolType } = measurement;
 
+              console.log(`measurement`);
+              console.log(measurement);
+              console.log(`toolType: ${toolType}`);
               this.addMeasurement(toolType, measurement);
             });
           });
@@ -325,7 +338,7 @@ export default class MeasurementApi {
       timepointIds,
     };
 
-    this.storeProbes(measurementData);
+    this.storeInDatabase(measurementData);
 
     log.info('Saving Measurements for timepoints:', timepoints);
     return storeFn(measurementData, filter, server).then(result => {
@@ -334,21 +347,23 @@ export default class MeasurementApi {
     });
   }
 
-  storeProbes(measurements) {
+  storeInDatabase(measurements) {
     const state = store.getState();
     const {
       studyInstanceUid,
       seriesInstanceUid,
     } = state.viewports.viewportSpecificData[0];
 
-    const probeMeasurements = measurements.allTools.filter(
-      measurement => measurement.toolType === 'Probe'
+    const toolTypesToSave = ['Probe', 'EllipticalRoi', 'Length'];
+
+    const measurementsToSave = measurements.allTools.filter(measurement =>
+      toolTypesToSave.includes(measurement.toolType)
     );
 
     const data = {
       studyInstanceUid,
       seriesInstanceUid,
-      probeMeasurements,
+      measurementsToSave,
     };
 
     api.post('/annotations', data);
