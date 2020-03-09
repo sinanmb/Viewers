@@ -25,7 +25,7 @@ class MetadataInfo extends Component {
         </h4>
         <h4>Study ID: {this.props.metadata.study_id}</h4>
         <h4>
-          Radiologist Assessment: {this.props.metadata.radiologist_assessment}
+          Radiologist Assessment: <pre>{this.props.metadata.info.text}</pre>
         </h4>
       </div>
     );
