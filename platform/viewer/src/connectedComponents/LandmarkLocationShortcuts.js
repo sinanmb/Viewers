@@ -13,8 +13,8 @@ class LandmarkLocationShortcuts extends Component {
   };
 
   handleSelection = e => {
-    if (e.key === 'n' || e.key === '1') this.selectNerve();
-    else if (e.key === 's' || e.key === '2') this.selectStenosis();
+    if (e.key === '1') this.selectNerve();
+    else if (e.key === '2') this.selectStenosis();
   };
 
   componentDidMount() {

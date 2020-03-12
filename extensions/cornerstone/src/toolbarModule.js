@@ -72,13 +72,13 @@ const definitions = [
     commandOptions: { toolName: 'Length' },
   },
   {
-    id: 'Probe',
+    id: 'Landmark',
     label: 'Landmark',
     icon: 'dot-circle',
     //
     type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
     commandName: 'setToolActive',
-    commandOptions: { toolName: 'Probe' },
+    commandOptions: { toolName: 'Landmark' },
   },
   {
     id: 'EllipticalRoi',
@@ -243,6 +243,15 @@ const definitions = [
         //
         type: TOOLBAR_BUTTON_TYPES.COMMAND,
         commandName: 'resetViewport',
+      },
+      {
+        id: 'Probe',
+        label: 'Probe',
+        icon: 'dot-circle',
+        //
+        type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
+        commandName: 'setToolActive',
+        commandOptions: { toolName: 'Probe' },
       },
     ],
   },

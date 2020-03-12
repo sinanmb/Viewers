@@ -5,13 +5,12 @@ import PropTypes from 'prop-types';
 import SimpleDialog from '../SimpleDialog/SimpleDialog.js';
 import './../EditDescriptionDialog/EditDescriptionDialog.css';
 
-export default class EditDescriptionDropdownDialog extends Component {
+export class EditDescriptionDropdownDialog extends Component {
   static propTypes = {
     description: PropTypes.string,
     measurementData: PropTypes.object.isRequired,
     onCancel: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,
-    label: PropTypes.string, // To know which list to show depending on Nerve / Stenosis label selection
   };
 
   constructor(props) {

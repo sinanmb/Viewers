@@ -101,6 +101,7 @@ class ToolbarRow extends Component {
       });
     }
 
+    // TODO Sinan check this warning
     if (this.props.isLankmarkToolSelected) {
       window.addEventListener('keypress', this.handleSelection);
     } else {
@@ -257,7 +258,7 @@ function _handleToolbarButtonClick(button, evt, props) {
   }
 
   // Set landmark tool status to know if we display the Nerve / Stenosis button choice in the Measurements panel
-  if (button.id === 'Probe') {
+  if (button.id === 'Landmark') {
     this.props.setLandmarkToolSelectionStatus(true);
   } else {
     this.props.setLandmarkToolSelectionStatus(false);

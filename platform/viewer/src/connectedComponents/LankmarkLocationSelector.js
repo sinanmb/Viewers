@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectLocation } from '../actions/landmarkActions';
 
+// TODO Sinan reame this to button
 class LandmarkLocationSelector extends Component {
   selectNerve = _ => {
     this.props.selectLocation('Nerve');
@@ -10,11 +11,6 @@ class LandmarkLocationSelector extends Component {
 
   selectStenosis = _ => {
     this.props.selectLocation('Stenosis');
-  };
-
-  handleSelection = e => {
-    if (e.key === 'n' || e.key === '1') this.selectNerve();
-    else if (e.key === 's' || e.key === '2') this.selectStenosis();
   };
 
   render() {

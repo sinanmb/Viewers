@@ -50,6 +50,10 @@ export default {
       });
     };
 
+    // TODO Sinan: add showLandmarkDialog here when we implement edit landmark details
+    // Add a method to decide whether to call showLabellingDialog or showLandmarkDialog,
+    // Based on the tooltype
+
     const ExtendedConnectedMeasurementTable = () => (
       <>
         <LankmarkLocationSelector />

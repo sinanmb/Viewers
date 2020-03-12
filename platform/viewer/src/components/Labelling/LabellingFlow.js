@@ -141,7 +141,7 @@ const LabellingFlow = ({
     const { description, locationLabel, location } = measurementData;
 
     const selectTreeLabellingData =
-      measurementData.toolType === 'Probe'
+      measurementData.toolType === 'Landmark'
         ? CoveraLabellingData
         : OHIFLabellingData;
 
@@ -158,7 +158,7 @@ const LabellingFlow = ({
     } else {
       if (editLocation) {
         return (
-          // TODO: Find a way to skip the description after entering the label for ProbeTool.
+          // This is the dialog modal that shows up on click on edit label
           <SelectTree
             items={selectTreeLabellingData}
             columns={1}
@@ -166,7 +166,7 @@ const LabellingFlow = ({
             selectTreeFirstTitle="Assign Label"
           />
         );
-      } else if (measurementData.toolType !== 'Probe') {
+      } else if (measurementData.toolType !== 'Landmark') {
         return (
           <>
             <div className="checkIconWrapper" onClick={fadeOutAndLeaveFast}>
@@ -232,7 +232,7 @@ const LabellingFlow = ({
   };
 
   if (editDescriptionOnDialog) {
-    return state.measurementData.toolType === 'Probe' ? (
+    return state.measurementData.toolType === 'Landmark' ? (
       <EditDescriptionDropdownDialog
         onCancel={labellingDoneCallback}
         onUpdate={descriptionDialogUpdate}

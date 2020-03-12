@@ -89,9 +89,9 @@ function getDataForEachMeasurementNumber(
  * @returns {string}
  */
 function getWarningsForMeasurement(toolName) {
-  // We are saving Probe measurements in the Postgres database, therefore we don't want to show a warning anymore
+  // We are saving these measurements in the Postgres database, therefore we don't want to show a warning anymore
   const isToolSupported =
-    toolName === 'Probe' || toolName === 'EllipticalRoi'
+    toolName === 'Landmark' || toolName === 'EllipticalRoi'
       ? true
       : DICOMSR.isToolSupported(toolName);
 

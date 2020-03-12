@@ -15,6 +15,7 @@ import { QuickSwitch } from './quickSwitch';
 import { RoundedButtonGroup } from './roundedButtonGroup';
 import { SelectTree } from './selectTree';
 import { SimpleDialog } from './simpleDialog';
+import { LandmarkDialog } from './landmarkDialog';
 import { OHIFModal } from './ohifModal';
 import { ContextMenu } from './contextMenu';
 import {
@@ -42,6 +43,7 @@ export {
   PageToolbar,
   SelectTree,
   SimpleDialog,
+  LandmarkDialog,
   StudyBrowser,
   StudyList,
   TableList,

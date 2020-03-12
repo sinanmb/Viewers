@@ -1,8 +1,6 @@
 import React from 'react';
 import MetadataPanel from './MetadataPanel.js';
 
-// import LabellingFlow from '../../components/Labelling/LabellingFlow';
-
 export default {
   /**
    * Only required property. Should be a unique value across all extensions.

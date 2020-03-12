@@ -1,5 +1,5 @@
 import OHIF from '@ohif/core';
-import { SimpleDialog } from '@ohif/ui';
+import { SimpleDialog, LandmarkDialog } from '@ohif/ui';
 import cornerstone from 'cornerstone-core';
 import csTools from 'cornerstone-tools';
 import merge from 'lodash.merge';
@@ -7,6 +7,7 @@ import queryString from 'query-string';
 import initCornerstoneTools from './initCornerstoneTools.js';
 import { getEnabledElement } from './state';
 import measurementServiceMappingsFactory from './utils/measurementServiceMappings/measurementServiceMappingsFactory';
+import LandmarkTool from './landmarkTool';
 
 const draw = csTools.importInternal('drawing/draw');
 const drawLine = csTools.importInternal('drawing/drawLine');
@@ -67,6 +68,27 @@ export default function init({ servicesManager, configuration }) {
     }
   };
 
+  const callInputDialogLandmark = (data, event, callback) => {
+    if (UIDialogService) {
+      let dialogId = UIDialogService.create({
+        centralize: true,
+        isDraggable: false,
+        content: LandmarkDialog,
+        useLastPosition: false,
+        showOverlay: true,
+        contentProps: {
+          title: 'Enter your annotations',
+          measurementData: data ? data : {},
+          onClose: () => UIDialogService.dismiss({ id: dialogId }),
+          onSubmit: modifiedMeasurements => {
+            callback(modifiedMeasurements);
+            UIDialogService.dismiss({ id: dialogId });
+          },
+        },
+      });
+    }
+  };
+
   const { csToolsConfig } = configuration;
   const { StackManager } = OHIF.utils;
   const metadataProvider = new OHIF.cornerstone.MetadataProvider();
@@ -100,6 +122,7 @@ export default function init({ servicesManager, configuration }) {
       csTools.DragProbeTool,
       csTools.RectangleRoiTool,
       csTools.ProbeTool,
+      LandmarkTool,
     ],
     segmentation: [csTools.BrushTool],
     other: [
@@ -132,6 +155,14 @@ export default function init({ servicesManager, configuration }) {
           callInputDialog(null, eventDetails, callback),
         changeTextCallback: (data, eventDetails, callback) =>
           callInputDialog(data, eventDetails, callback),
+      },
+    },
+    Landmark: {
+      configuration: {
+        getTextCallback: (callback, eventDetails) =>
+          callInputDialogLandmark(null, eventDetails, callback),
+        changeTextCallback: (data, eventDetails, callback) =>
+          callInputDialogLandmark(data, eventDetails, callback),
       },
     },
   };
@@ -193,7 +224,7 @@ export default function init({ servicesManager, configuration }) {
 
   csTools.setToolActive('Pan', { mouseButtonMask: 4 });
   csTools.setToolActive('Zoom', { mouseButtonMask: 2 });
-  csTools.setToolActive('Probe', { mouseButtonMask: 1 });
+  csTools.setToolActive('Landmark', { mouseButtonMask: 1 });
   csTools.setToolActive('StackScrollMouseWheel', {}); // TODO: Empty options should not be required
   csTools.setToolActive('PanMultiTouch', { pointers: 2 }); // TODO: Better error if no options
   csTools.setToolActive('ZoomTouchPinch', {});

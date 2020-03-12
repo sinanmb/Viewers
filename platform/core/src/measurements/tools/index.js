@@ -11,6 +11,7 @@ import { targetCR } from './targetCR';
 import { targetNE } from './targetNE';
 import { targetUN } from './targetUN';
 import { probe } from './probe';
+import { landmark } from './landmark';
 
 export {
   arrowAnnotate,
@@ -26,4 +27,5 @@ export {
   targetNE,
   targetUN,
   probe,
+  landmark,
 };

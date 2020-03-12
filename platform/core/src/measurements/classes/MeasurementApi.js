@@ -253,8 +253,8 @@ export default class MeasurementApi {
           log.info(measurementData);
 
           // API call to retrieve landmarks from Postgres
-          measurementData['Probe'] = databaseMeasurementsData.data
-            .filter(measurement => measurement.details.toolType === 'Probe')
+          measurementData['Landmark'] = databaseMeasurementsData.data
+            .filter(measurement => measurement.details.toolType === 'Landmark')
             .map(measurement => measurement.details);
 
           measurementData[
@@ -272,10 +272,6 @@ export default class MeasurementApi {
 
             measurements.forEach(measurement => {
               const { toolType } = measurement;
-
-              console.log(`measurement`);
-              console.log(measurement);
-              console.log(`toolType: ${toolType}`);
               this.addMeasurement(toolType, measurement);
             });
           });
@@ -354,7 +350,7 @@ export default class MeasurementApi {
       seriesInstanceUid,
     } = state.viewports.viewportSpecificData[0];
 
-    const toolTypesToSave = ['Probe', 'EllipticalRoi', 'Length'];
+    const toolTypesToSave = ['Landmark', 'EllipticalRoi', 'Length'];
 
     const measurementsToSave = measurements.allTools.filter(measurement =>
       toolTypesToSave.includes(measurement.toolType)
