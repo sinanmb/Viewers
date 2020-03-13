@@ -42,7 +42,6 @@ class WorkingListStudiesDropdown extends Component {
         >
           {workingListsStudiesOptionElements}
         </select>
-        <p></p>
       </div>
     );
   }

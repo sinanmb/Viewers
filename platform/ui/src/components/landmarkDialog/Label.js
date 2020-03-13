@@ -12,7 +12,8 @@ export default class LabelComponent extends Component {
     console.log(this.props.label);
     return (
       <>
-        <div className="radio">
+        <div className="group">
+          <h4>Label</h4>
           <label>
             <input
               type="radio"
@@ -23,8 +24,6 @@ export default class LabelComponent extends Component {
             />
             Nerve
           </label>
-        </div>
-        <div className="radio">
           <label>
             <input
               type="radio"
@@ -41,7 +40,6 @@ export default class LabelComponent extends Component {
   }
 
   onChange = e => {
-    // Need to convert to boolean first
     const value = e.target.value;
     this.props.onChange(value);
   };

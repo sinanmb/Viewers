@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, SimpleDialog } from '@ohif/ui';
+import { SimpleDialog } from '@ohif/ui';
 import StenosisComponent from './Stenosis';
 import NerveComponent from './Nerve';
 import LabelComponent from './Label';
+import './LandmarkDialog.styl';
 
 class LandmarkDialog extends Component {
   static propTypes = {
@@ -18,22 +19,37 @@ class LandmarkDialog extends Component {
     super(props);
 
     this.state = {
-      // TODO Sinan: category and types options should not be hardcoded.
       labelOptions: ['Nerve', 'Stenosis'],
       label: props.measurementData.location,
 
+      nerve: {
+        position: null,
+        location: {
+          location: null,
+          side: null,
+        },
+        type: {
+          displace: false,
+          compress: false,
+        },
+        cause: null,
+      },
+
       stenosis: {
-        severalCentralCanalStenosis: false,
+        severalCentralCanalStenosis: null,
       },
     };
   }
 
   render() {
+    console.log('landmkark dialog state');
+    console.log(this.state);
     return (
       <SimpleDialog
         headerTitle={this.props.title}
         onClose={this.props.onClose}
         onConfirm={this.onSubmit}
+        className
         // rootClass="editcategoryDialog"
       >
         <LabelComponent
@@ -43,17 +59,21 @@ class LandmarkDialog extends Component {
 
         {this.state.label === 'Stenosis' && (
           <StenosisComponent
-            data={this.state.stenosis.severalCentralCanalStenosis}
+            data={this.state.stenosis}
             onChange={this.handleStenosisChange}
           />
         )}
 
-        {/* {this.state.label === 'Nerve' && (
+        {this.state.label === 'Nerve' && (
           <NerveComponent
-            measurementData={this.measurementData}
-            onChange={this.handleStenosisChange}
+            data={this.state.nerve}
+            onPositionChange={this.handlePositionChange}
+            onLocationSideChange={this.handleLocationSideChange}
+            onLocationLocationChange={this.handleLocationLocationChange}
+            onTypeChange={this.handleTypeChange}
+            onCauseChange={this.handleCauseChange}
           />
-        )} */}
+        )}
       </SimpleDialog>
     );
   }
@@ -71,24 +91,47 @@ class LandmarkDialog extends Component {
     this.setState({ label });
   };
 
-  handleCategoryChange = event => {
-    this.setState({ category: event.target.value });
-    this.setState({
-      type: this.state.typeOptions[event.target.value.toLowerCase()][0],
-    });
-  };
-
-  handleTypeChange = event => {
-    this.setState({ type: event.target.value });
-  };
-
-  handleStenosisChange = newValue => {
+  handleStenosisChange = severalCentralCanalStenosis => {
     const stenosis = {
       ...this.state.stenosis,
-      severalCentralCanalStenosis: newValue,
+      severalCentralCanalStenosis,
     };
 
     this.setState({ stenosis });
+  };
+
+  handlePositionChange = position => {
+    const nerve = {
+      ...this.state.nerve,
+      position,
+    };
+    this.setState({ nerve });
+  };
+
+  handleLocationSideChange = side => {
+    const nerve = { ...this.state.nerve };
+    nerve.location.side = side;
+    this.setState({ nerve });
+  };
+
+  handleLocationLocationChange = location => {
+    const nerve = { ...this.state.nerve };
+    nerve.location.location = location;
+    this.setState({ nerve });
+  };
+
+  handleTypeChange = (name, value) => {
+    const nerve = this.state.nerve;
+    nerve.type[name] = value;
+    this.setState({ nerve });
+  };
+
+  handleCauseChange = cause => {
+    const nerve = {
+      ...this.state.stenosis,
+      cause,
+    };
+    this.setState({ nerve });
   };
 }
 
