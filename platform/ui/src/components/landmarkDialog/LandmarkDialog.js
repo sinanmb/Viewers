@@ -42,8 +42,6 @@ class LandmarkDialog extends Component {
   }
 
   render() {
-    console.log('landmkark dialog state');
-    console.log(this.state);
     return (
       <SimpleDialog
         headerTitle={this.props.title}
