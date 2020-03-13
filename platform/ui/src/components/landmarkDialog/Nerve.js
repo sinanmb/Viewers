@@ -13,9 +13,11 @@ export default class NerveComponent extends Component {
 
   render() {
     const intrathecalDisplayOnlyClasses =
-      'group' + ' ' + this.props.data.position === 'Intrathecal'
-        ? 'show'
-        : 'hidden';
+      this.props.data.position === 'Intrathecal' ? 'group' : 'hidden';
+
+    console.log('render nerve');
+    console.log(this.props.data);
+    console.log(intrathecalDisplayOnlyClasses);
 
     return (
       <>
@@ -69,7 +71,7 @@ export default class NerveComponent extends Component {
         </div>
         {/* Location dropdown */}
         {/* Type of Nerve invovlment checkboxes*/}
-        <div className="group">
+        <div className={intrathecalDisplayOnlyClasses}>
           <h4>Type</h4>
           <div>
             <label>
