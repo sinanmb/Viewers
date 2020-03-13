@@ -3,37 +3,34 @@ import PropTypes from 'prop-types';
 
 export default class StenosisComponent extends Component {
   static propTypes = {
-    data: PropTypes.bool.isRequired,
+    data: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
   };
 
   render() {
     return (
       <>
-        <div className="radio">
-          <label>
-            <input
-              type="radio"
-              name="data"
-              value={false}
-              checked={this.props.data === false}
-              onChange={this.onChange}
-            />
-            No
-          </label>
-        </div>
-        <div className="radio">
-          <label>
-            <input
-              type="radio"
-              name="data"
-              value={true}
-              checked={this.props.data === true}
-              onChange={this.onChange}
-            />
-            Yes
-          </label>
-        </div>
+        <h4>Severe central canal stenosis </h4>
+        <label>
+          <input
+            type="radio"
+            name="severalCentralCanalStenosis"
+            value={false}
+            checked={this.props.data.severalCentralCanalStenosis === false}
+            onChange={this.onChange}
+          />
+          No
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="severalCentralCanalStenosis"
+            value={true}
+            checked={this.props.data.severalCentralCanalStenosis === true}
+            onChange={this.onChange}
+          />
+          Yes
+        </label>
       </>
     );
   }
