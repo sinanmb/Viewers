@@ -13,11 +13,7 @@ export default class NerveComponent extends Component {
 
   render() {
     const intrathecalDisplayOnlyClasses =
-      this.props.data.position === 'Intrathecal' ? 'group' : 'hidden';
-
-    console.log('render nerve');
-    console.log(this.props.data);
-    console.log(intrathecalDisplayOnlyClasses);
+      this.props.data.position === 'Extrathecal' ? 'group' : 'hidden';
 
     return (
       <>
@@ -68,10 +64,23 @@ export default class NerveComponent extends Component {
             />
             Right
           </label>
+          {/* Location dropdown */}
+          <div>
+            <select
+              onChange={this.onLocationLocationChange}
+              value={this.props.data.study_instance_uid}
+            >
+              <option value="">Choose a location:</option>
+              <option value="Central/paracentral">Central/paracentral</option>
+              <option value="Lateral recess">Lateral recess</option>
+              <option value="Neural foramen">Neural foramen</option>
+              <option value="Extraforaminal">Extraforaminal</option>
+            </select>
+          </div>
         </div>
-        {/* Location dropdown */}
+
         {/* Type of Nerve invovlment checkboxes*/}
-        <div className={intrathecalDisplayOnlyClasses}>
+        <div className="group">
           <h4>Type</h4>
           <div>
             <label>
@@ -93,19 +102,6 @@ export default class NerveComponent extends Component {
               />
               Compress
             </label>
-          </div>
-
-          <div>
-            <select
-              onChange={this.onLocationLocationChange}
-              value={this.props.data.study_instance_uid}
-            >
-              <option value="">Choose a location:</option>
-              <option value="Central/paracentral">Central/paracentral</option>
-              <option value="Lateral recess">Lateral recess</option>
-              <option value="Neural foramen">Neural foramen</option>
-              <option value="Extraforaminal">Extraforaminal</option>
-            </select>
           </div>
         </div>
         {/* Cause Radiobuttons */}

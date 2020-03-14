@@ -14,7 +14,7 @@ const configuration = {
   ...measurementApiDefaultConfig,
 };
 
-// TODO: Move this somewhere else, in utils for example
+// TODO Sinan: Move this somewhere else, in utils for example
 const api = axios.create({
   baseURL: 'http://localhost:5000/api/v1',
   responseType: 'json',
@@ -741,6 +741,20 @@ export default class MeasurementApi {
     if (relatedMeasurement && relatedMeasurement.description) {
       measurement.description = relatedMeasurement.description;
     }
+
+    console.log('addMeasurement');
+    console.log(toolType);
+    console.log(measurement);
+    console.log(relatedMeasurement);
+
+    // // Format data for landmark
+    // if (
+    //   toolType == 'Landmark' &&
+    //   relatedMeasurement &&
+    //   relatedMeasurement.label
+    // ) {
+    //   measurement.location = relatedMeasurement.label;
+    // }
 
     measurement._id = guid();
 

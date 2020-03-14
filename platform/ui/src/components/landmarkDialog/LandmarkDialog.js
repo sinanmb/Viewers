@@ -77,12 +77,11 @@ class LandmarkDialog extends Component {
   }
 
   onSubmit = e => {
-    const measurements = {
-      displayText: this.state.label,
-      location: this.state.category,
-      description: this.state.type,
+    const updatedData = {
+      ...this.state[this.state.label.toLowerCase()],
+      label: this.state.label,
     };
-    this.props.onSubmit(measurements);
+    this.props.onSubmit(updatedData);
   };
 
   handleLabelChange = label => {
@@ -126,7 +125,7 @@ class LandmarkDialog extends Component {
 
   handleCauseChange = cause => {
     const nerve = {
-      ...this.state.stenosis,
+      ...this.state.nerve,
       cause,
     };
     this.setState({ nerve });
