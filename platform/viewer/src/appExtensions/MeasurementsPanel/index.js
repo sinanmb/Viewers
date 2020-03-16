@@ -56,7 +56,6 @@ export default {
 
     const ExtendedConnectedMeasurementTable = () => (
       <>
-        <LandmarkLocationButtonGroup />
         <ConnectedMeasurementTable
           onRelabel={tool =>
             showLabellingDialog(

@@ -44,8 +44,8 @@ class MeasurementTableItem extends Component {
             <div>{this.getTableListItem()}</div>
           </OverlayTrigger>
         ) : (
-            <React.Fragment>{this.getTableListItem()}</React.Fragment>
-          )}
+          <React.Fragment>{this.getTableListItem()}</React.Fragment>
+        )}
       </React.Fragment>
     );
   }
@@ -68,20 +68,24 @@ class MeasurementTableItem extends Component {
 
     const actionButtons = [];
 
-    if (typeof this.props.onRelabel === 'function') {
-      const relabelButton = this.getActionButton(
-        'Relabel',
-        this.onRelabelClick
-      );
-      actionButtons.push(relabelButton);
+    // TODO Sinan: Remove the condition after we implement landmark editing
+    if (this.props.measurementData.toolType !== 'Landmark') {
+      if (typeof this.props.onRelabel === 'function') {
+        const relabelButton = this.getActionButton(
+          'Relabel',
+          this.onRelabelClick
+        );
+        actionButtons.push(relabelButton);
+      }
+      if (typeof this.props.onEditDescription === 'function') {
+        const descriptionButton = this.getActionButton(
+          'Description',
+          this.onEditDescriptionClick
+        );
+        actionButtons.push(descriptionButton);
+      }
     }
-    if (typeof this.props.onEditDescription === 'function') {
-      const descriptionButton = this.getActionButton(
-        'Description',
-        this.onEditDescriptionClick
-      );
-      actionButtons.push(descriptionButton);
-    }
+
     if (typeof this.props.onDelete === 'function') {
       const deleteButton = this.getActionButton('Delete', this.onDeleteClick);
       actionButtons.push(deleteButton);

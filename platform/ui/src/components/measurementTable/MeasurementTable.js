@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import { ScrollableArea } from './../../ScrollableArea/ScrollableArea.js';
 import { TableList } from './../tableList';
 import { Tooltip } from './../tooltip';
+import LandmarkLocationButtonGroup from '../../../../viewer/src/connectedComponents/LandmarkLocationButtonGroup';
 
 class MeasurementTable extends Component {
   static propTypes = {
@@ -73,6 +74,8 @@ class MeasurementTable extends Component {
             </OverlayTrigger>
           )}
           {this.getTimepointsHeader()}
+
+          <LandmarkLocationButtonGroup />
         </div>
         <ScrollableArea>
           <div>{this.getMeasurementsGroups()}</div>

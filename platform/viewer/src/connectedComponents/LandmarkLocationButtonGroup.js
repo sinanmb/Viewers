@@ -11,7 +11,7 @@ class LandmarkLocationButtonGroup extends Component {
       marginLeft: 'auto',
       marginRight: 'auto',
       width: '150px',
-      paddingTop: '12px',
+      marginTop: '-40px',
     };
 
     const options = [

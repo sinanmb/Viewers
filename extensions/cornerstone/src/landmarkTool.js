@@ -12,6 +12,7 @@ export default class LandmarkTool extends csTools.ProbeTool {
   constructor(configuration = {}) {
     const defaultConfig = {
       name: 'Landmark',
+      svgCursor: null,
       getTextCallback,
       changeTextCallback,
     };
@@ -28,136 +29,6 @@ export default class LandmarkTool extends csTools.ProbeTool {
     // Allow relabelling via a callback
     this._updateTextForNearbyAnnotation(eventData);
   }
-
-  // TODO Sinan: Import / Copy the required methods from Cornerstone tools
-  // Hide current text data. Just show a dot to mark the location.
-  // Show different color for Nerve vs Stenosis
-  // Show index in the measurement table list if that data is available
-
-  // renderToolData(evt) {
-  //   console.log('renderToolData');
-  //   console.log(evt);
-
-  //   const eventData = evt.detail;
-  //   const { handleRadius } = this.configuration;
-  //   const toolData = csTools.getToolState(evt.currentTarget, this.name);
-
-  //   if (!toolData) {
-  //     return;
-  //   }
-
-  //   // We have tool data for this element - iterate over each one and draw it
-  //   const context = getNewContext(eventData.canvasContext.canvas);
-  //   const { image, element } = eventData;
-  //   const fontHeight = csTools.textStyle.getFontSize();
-
-  //   for (let i = 0; i < toolData.data.length; i++) {
-  //     const data = toolData.data[i];
-
-  //     if (data.visible === false) {
-  //       continue;
-  //     }
-
-  //     draw(context, context => {
-  //       const color = csTools.toolColors.getColorIfActive(data);
-  //       console.log('draw color');
-  //       console.log(color);
-
-  //       if (this.configuration.drawHandles) {
-  //         // Draw the handles
-  //         csTools.drawHandles(context, eventData, data.handles, {
-  //           handleRadius,
-  //           color,
-  //         });
-  //       }
-
-  // // Update textbox stats
-  // if (data.invalidated === true) {
-  //   if (data.cachedStats) {
-  //     this.throttledUpdateCachedStats(image, element, data);
-  //   } else {
-  //     this.updateCachedStats(image, element, data);
-  //   }
-  // }
-
-  // let text, str;
-
-  // const { x, y, storedPixels, sp, mo, suv } = data.cachedStats;
-
-  // if (x >= 0 && y >= 0 && x < image.columns && y < image.rows) {
-  //   text = `${x}, ${y}`;
-
-  //   if (image.color) {
-  //     str = `R: ${storedPixels[0]} G: ${storedPixels[1]} B: ${
-  //       storedPixels[2]
-  //     }`;
-  //   } else {
-  //     // Draw text
-  //     str = `SP: ${sp} MO: ${parseFloat(mo.toFixed(3))}`;
-  //     if (suv) {
-  //       str += ` SUV: ${parseFloat(suv.toFixed(3))}`;
-  //     }
-  //   }
-
-  //   // Coords for text
-  //   const coords = {
-  //     // Translate the x/y away from the cursor
-  //     x: data.handles.end.x + 3,
-  //     y: data.handles.end.y - 3,
-  //   };
-  //   const textCoords = external.cornerstone.pixelToCanvas(
-  //     eventData.element,
-  //     coords
-  //   );
-
-  //   drawTextBox(
-  //     context,
-  //     "",
-  //     textCoords.x,
-  //     textCoords.y + fontHeight + 5,
-  //     color
-  //   );
-  //   drawTextBox(context, text, textCoords.x, textCoords.y, color);
-  // }
-
-  //     });
-  //   }
-  // }
-
-  // /**
-  //  *
-  //  *
-  //  * @param {*} element
-  //  * @param {*} data
-  //  * @param {*} coords
-  //  * @returns {Boolean}
-  //  */
-  // pointNearTool(element, data, coords) {
-  //   const hasEndHandle = data && data.handles && data.handles.end;
-  //   const validParameters = hasEndHandle;
-
-  //   if (!validParameters) {
-  //     logger.warn(
-  //       `invalid parameters supplied to tool ${this.name}'s pointNearTool`
-  //     );
-  //   }
-
-  //   if (!validParameters || data.visible === false) {
-  //     return false;
-  //   }
-
-  //   console.log('point near tool data');
-  //   console.log(data);
-
-  //   const probeCoords = csTools.external.cornerstone.pixelToCanvas(
-  //     element,
-  //     data.handles.end
-  //   );
-
-  //   return (
-  //     csTools.external.cornerstoneMath.point.distance(probeCoords, coords) < 5
-  //   );
-  // }
 
   _updateTextForNearbyAnnotation(evt) {
     const element = evt.element;
@@ -195,10 +66,6 @@ export default class LandmarkTool extends csTools.ProbeTool {
     if (deleteTool === true) {
       csTools.removeToolState(element, this.name, measurementData);
     } else {
-      // console.log('_doneChangingTextCallback');
-      // console.log(measurementData);
-      // console.log(updatedData);
-      // console.log(element);
       measurementData.displayText = updatedData.type;
       measurementData.location = updatedData.label;
       measurementData.description = updatedData.position;
