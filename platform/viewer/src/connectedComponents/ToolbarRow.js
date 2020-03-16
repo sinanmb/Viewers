@@ -29,7 +29,6 @@ class ToolbarRow extends Component {
     selectedRightSidePanel: PropTypes.string.isRequired,
     handleSidePanelChange: PropTypes.func,
     activeContexts: PropTypes.arrayOf(PropTypes.string).isRequired,
-    setLandmarkToolSelectionStatus: PropTypes.func.isRequired,
     studies: PropTypes.array,
   };
 
@@ -100,19 +99,7 @@ class ToolbarRow extends Component {
         toolbarButtons: _getVisibleToolbarButtons.call(this),
       });
     }
-
-    // TODO Sinan check this warning
-    if (this.props.isLankmarkToolSelected) {
-      window.addEventListener('keypress', this.handleSelection);
-    } else {
-      window.removeEventListener('keypress', this.handleSelection);
-    }
   }
-
-  handleSelection = e => {
-    if (e.key === 'n' || e.key === '1') this.selectNerve();
-    else if (e.key === 's' || e.key === '2') this.selectStenosis();
-  };
 
   render() {
     const buttonComponents = _getButtonComponents.call(

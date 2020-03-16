@@ -3,7 +3,7 @@ import ConnectedMeasurementTable from './ConnectedMeasurementTable.js';
 import init from './init.js';
 
 import LabellingFlow from '../../components/Labelling/LabellingFlow';
-import LankmarkLocationSelector from '../../connectedComponents/LankmarkLocationSelector.js';
+import LandmarkLocationButtonGroup from '../../connectedComponents/LandmarkLocationButtonGroup.js';
 
 export default {
   /**
@@ -56,7 +56,7 @@ export default {
 
     const ExtendedConnectedMeasurementTable = () => (
       <>
-        <LankmarkLocationSelector />
+        <LandmarkLocationButtonGroup />
         <ConnectedMeasurementTable
           onRelabel={tool =>
             showLabellingDialog(

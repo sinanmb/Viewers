@@ -3,51 +3,44 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectLocation } from '../actions/landmarkActions';
 
-// TODO Sinan reame this to button
-class LandmarkLocationSelector extends Component {
-  selectNerve = _ => {
-    this.props.selectLocation('Nerve');
-  };
+import { RoundedButtonGroup } from '@ohif/ui';
 
-  selectStenosis = _ => {
-    this.props.selectLocation('Stenosis');
-  };
-
+class LandmarkLocationButtonGroup extends Component {
   render() {
     const divStyle = {
       marginLeft: 'auto',
       marginRight: 'auto',
       width: '150px',
-      marginBottom: '-37px',
-      position: 'relative',
       paddingTop: '12px',
     };
+
+    const options = [
+      {
+        value: 'Nerve',
+        icon: 'sun',
+        bottomLabel: 'Nerve',
+      },
+      {
+        value: 'Stenosis',
+        icon: 'ellipse-v',
+        bottomLabel: 'Stenosis',
+      },
+    ];
 
     return this.props.isToolSelected ? (
       // Show only if landmark is selected
       <div style={divStyle}>
-        <button
-          type="button"
-          className="pointer"
-          disabled={this.props.selectedLocation === 'Nerve'}
-          onClick={this.selectNerve}
-        >
-          Nerve
-        </button>
-        <button
-          type="button"
-          className="pointer"
-          disabled={this.props.selectedLocation === 'Stenosis'}
-          onClick={this.selectStenosis}
-        >
-          Stenosis
-        </button>
+        <RoundedButtonGroup
+          options={options}
+          value={this.props.selectedLocation}
+          onValueChanged={this.props.selectLocation}
+        />
       </div>
     ) : null;
   }
 }
 
-LandmarkLocationSelector.propTypes = {
+LandmarkLocationButtonGroup.propTypes = {
   selectedLocation: PropTypes.string.isRequired,
   selectLocation: PropTypes.func.isRequired,
   isToolSelected: PropTypes.bool.isRequired,
@@ -61,4 +54,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { selectLocation }
-)(LandmarkLocationSelector);
+)(LandmarkLocationButtonGroup);
