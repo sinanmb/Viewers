@@ -12,7 +12,6 @@ export default class LandmarkTool extends csTools.ProbeTool {
   constructor(configuration = {}) {
     const defaultConfig = {
       name: 'Landmark',
-      svgCursor: null,
       getTextCallback,
       changeTextCallback,
     };
