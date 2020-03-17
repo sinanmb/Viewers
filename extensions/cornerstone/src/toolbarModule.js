@@ -90,6 +90,14 @@ const definitions = [
     commandOptions: { toolName: 'EllipticalRoi' },
   },
   {
+    id: 'Reset',
+    label: 'Reset',
+    icon: 'reset',
+    //
+    type: TOOLBAR_BUTTON_TYPES.COMMAND,
+    commandName: 'resetViewport',
+  },
+  {
     id: 'More',
     label: 'More',
     icon: 'ellipse-circle',
@@ -235,23 +243,6 @@ const definitions = [
         type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
         commandName: 'setToolActive',
         commandOptions: { toolName: 'Angle' },
-      },
-      {
-        id: 'Reset',
-        label: 'Reset',
-        icon: 'reset',
-        //
-        type: TOOLBAR_BUTTON_TYPES.COMMAND,
-        commandName: 'resetViewport',
-      },
-      {
-        id: 'Probe',
-        label: 'Probe',
-        icon: 'dot-circle',
-        //
-        type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
-        commandName: 'setToolActive',
-        commandOptions: { toolName: 'Probe' },
       },
     ],
   },
