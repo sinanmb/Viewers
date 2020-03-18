@@ -68,6 +68,8 @@ export default class LandmarkTool extends csTools.ProbeTool {
       measurementData.displayText = updatedData.type;
       measurementData.location = updatedData.label;
       measurementData.description = updatedData.position;
+      // Hide data on the viewport
+      measurementData.cachedStats = {};
     }
 
     measurementData.active = false;
