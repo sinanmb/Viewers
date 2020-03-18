@@ -1,5 +1,6 @@
 import { redux } from '@ohif/core';
 import store from './../../store';
+import utils from '../../../../core/src/utils';
 
 const commandsModule = ({ commandsManager }) => {
   const { setViewportActive, setActiveViewportSpecificData } = redux.actions;

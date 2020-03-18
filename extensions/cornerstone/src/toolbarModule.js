@@ -36,6 +36,22 @@ const enums = {
 
 const definitions = [
   {
+    id: 'Previous',
+    label: 'Previous',
+    icon: 'caret-up',
+    //
+    type: TOOLBAR_BUTTON_TYPES.COMMAND,
+    commandName: 'previousViewportDisplaySet',
+  },
+  {
+    id: 'Next',
+    label: 'Next',
+    icon: 'caret-down',
+    //
+    type: TOOLBAR_BUTTON_TYPES.COMMAND,
+    commandName: 'nextViewportDisplaySet',
+  },
+  {
     id: 'StackScroll',
     label: 'Stack Scroll',
     icon: 'bars',
