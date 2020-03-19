@@ -23,8 +23,8 @@ export default class LandmarkTool extends csTools.ProbeTool {
   createNewMeasurement(eventData) {
     const measurementData = super.createNewMeasurement(eventData);
     // Associate this data with this imageId so we can render it and manipulate it
-    csTools.addToolState(eventData.element, this.name, measurementData);
 
+    csTools.addToolState(eventData.element, this.name, measurementData);
     // Allow relabelling via a callback
     this._updateTextForNearbyAnnotation(eventData);
   }
@@ -65,11 +65,10 @@ export default class LandmarkTool extends csTools.ProbeTool {
     if (deleteTool === true) {
       csTools.removeToolState(element, this.name, measurementData);
     } else {
-      measurementData.displayText = updatedData.type;
       measurementData.location = updatedData.label;
       measurementData.description = updatedData.position;
-      // Hide data on the viewport
-      measurementData.cachedStats = {};
+
+      measurementData.annotation = updatedData;
     }
 
     measurementData.active = false;
@@ -80,6 +79,12 @@ export default class LandmarkTool extends csTools.ProbeTool {
       element,
       measurementData,
     });
+  }
+
+  updateCachedStats(image, element, data) {
+    // Hide data on the viewport
+    data.cachedStats = {};
+    data.invalidated = false;
   }
 }
 
@@ -116,41 +121,4 @@ function triggerEvent(el, type, detail = null) {
   }
 
   return el.dispatchEvent(event);
-}
-
-/**
- * Create a new {@link CanvasRenderingContext2D|context} object for the given {@link HTMLCanvasElement|canvas}
- * and set the transform to the {@link https://www.w3.org/TR/2dcontext/#transformations|identity transform}.
- *
- * @public
- * @function getNewContext
- * @memberof Drawing
- *
- * @param {HTMLCanvasElement} canvas - Canvas you would like the context for
- * @returns {CanvasRenderingContext2D} - The provided canvas's 2d context
- */
-function getNewContext(canvas) {
-  const context = canvas.getContext('2d');
-
-  context.setTransform(1, 0, 0, 1, 0, 0);
-
-  return context;
-}
-
-/**
- * This function manages the {@link https://www.w3.org/TR/2dcontext/#the-canvas-state|save/restore}
- * pattern for working in a new context state stack. The parameter `fn` is passed the `context` and can
- * execute any API calls in a clean stack.
- * @public
- * @method draw
- * @memberof Drawing
- *
- * @param {CanvasRenderingContext2D} context - Target Canvas
- * @param {ContextFn} fn - A function which performs drawing operations within the given context.
- * @returns {undefined}
- */
-function draw(context, fn) {
-  context.save();
-  fn(context);
-  context.restore();
 }
