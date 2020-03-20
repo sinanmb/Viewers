@@ -8,8 +8,6 @@ export default class LabelComponent extends Component {
   };
 
   render() {
-    console.log('render');
-    console.log(this.props.label);
     return (
       <>
         <div className="group">

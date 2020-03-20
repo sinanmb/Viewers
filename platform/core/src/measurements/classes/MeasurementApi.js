@@ -742,20 +742,6 @@ export default class MeasurementApi {
       measurement.description = relatedMeasurement.description;
     }
 
-    console.log('addMeasurement');
-    console.log(toolType);
-    console.log(measurement);
-    console.log(relatedMeasurement);
-
-    // // Format data for landmark
-    // if (
-    //   toolType == 'Landmark' &&
-    //   relatedMeasurement &&
-    //   relatedMeasurement.label
-    // ) {
-    //   measurement.location = relatedMeasurement.label;
-    // }
-
     measurement._id = guid();
 
     // Get the timepoint
