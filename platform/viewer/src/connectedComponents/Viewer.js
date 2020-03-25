@@ -228,10 +228,13 @@ class Viewer extends Component {
     let VisiblePanelLeft, VisiblePanelRight;
     const panelExtensions = extensionManager.modules[MODULE_TYPES.PANEL];
 
+    let rightPanelWidth;
+
     panelExtensions.forEach(panelExt => {
       panelExt.module.components.forEach(comp => {
         if (comp.id === this.state.selectedRightSidePanel) {
           VisiblePanelRight = comp.component;
+          rightPanelWidth = comp.id === 'metadata-panel' ? '646px' : null;
         } else if (comp.id === this.state.selectedLeftSidePanel) {
           VisiblePanelLeft = comp.component;
         }
@@ -317,7 +320,11 @@ class Viewer extends Component {
           </div>
 
           {/* RIGHT */}
-          <SidePanel from="right" isOpen={this.state.isRightSidePanelOpen}>
+          <SidePanel
+            from="right"
+            isOpen={this.state.isRightSidePanelOpen}
+            width={rightPanelWidth}
+          >
             {VisiblePanelRight && (
               <VisiblePanelRight
                 viewports={this.props.viewports}

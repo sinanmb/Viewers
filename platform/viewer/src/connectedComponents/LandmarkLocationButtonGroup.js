@@ -8,9 +8,8 @@ import { RoundedButtonGroup } from '@ohif/ui';
 class LandmarkLocationButtonGroup extends Component {
   render() {
     const divStyle = {
-      marginLeft: 'auto',
-      marginRight: 'auto',
-      width: '150px',
+      marginLeft: '100px',
+      width: '125px',
       marginTop: '-40px',
     };
 
