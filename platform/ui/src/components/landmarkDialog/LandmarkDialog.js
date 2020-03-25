@@ -45,7 +45,7 @@ class LandmarkDialog extends Component {
     return (
       <SimpleDialog
         headerTitle={this.props.title}
-        onClose={this.props.onClose}
+        onClose={this.onClose}
         onConfirm={this.onSubmit}
         className
         // rootClass="editcategoryDialog"
@@ -76,6 +76,10 @@ class LandmarkDialog extends Component {
     );
   }
 
+  onClose = e => {
+    this.props.onSubmit(null, true);
+  };
+
   onSubmit = e => {
     const updatedData = {
       ...this.state[this.state.label.toLowerCase()],
@@ -88,10 +92,10 @@ class LandmarkDialog extends Component {
     this.setState({ label });
   };
 
-  handleStenosisChange = severalCentralCanalStenosis => {
+  handleStenosisChange = severeCentralCanalStenosis => {
     const stenosis = {
       ...this.state.stenosis,
-      severalCentralCanalStenosis,
+      severeCentralCanalStenosis,
     };
 
     this.setState({ stenosis });

@@ -80,8 +80,8 @@ export default function init({ servicesManager, configuration }) {
           title: 'Enter your annotations',
           measurementData: data ? data : {},
           onClose: () => UIDialogService.dismiss({ id: dialogId }),
-          onSubmit: modifiedMeasurements => {
-            callback(modifiedMeasurements);
+          onSubmit: (modifiedMeasurements, deleteTool = false) => {
+            callback(modifiedMeasurements, deleteTool);
             UIDialogService.dismiss({ id: dialogId });
           },
         },
