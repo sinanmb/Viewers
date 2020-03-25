@@ -106,6 +106,15 @@ const definitions = [
     commandOptions: { toolName: 'EllipticalRoi' },
   },
   {
+    id: 'Pan',
+    label: 'Pan',
+    icon: 'arrows',
+    //
+    type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
+    commandName: 'setToolActive',
+    commandOptions: { toolName: 'Pan' },
+  },
+  {
     id: 'Reset',
     label: 'Reset',
     icon: 'reset',
@@ -222,15 +231,6 @@ const definitions = [
           behavior: TOOLBAR_BUTTON_BEHAVIORS.DOWNLOAD_SCREEN_SHOT,
           togglable: true,
         },
-      },
-      {
-        id: 'Pan',
-        label: 'Pan',
-        icon: 'arrows',
-        //
-        type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
-        commandName: 'setToolActive',
-        commandOptions: { toolName: 'Pan' },
       },
       {
         id: 'Cine',
