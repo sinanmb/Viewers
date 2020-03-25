@@ -30,8 +30,16 @@ const mapStateToProps = (state, ownProps) => {
     });
   });
 
+  // Filter the SR from the studies
+  const studiesWithoutSR = studiesWithLoadingData.map(study => {
+    study.thumbnails = study.thumbnails.filter(
+      data => data.altImageText != 'SR'
+    );
+    return study;
+  });
+
   return {
-    studies: studiesWithLoadingData,
+    studies: studiesWithoutSR,
   };
 };
 
