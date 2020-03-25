@@ -66,7 +66,10 @@ export default class LandmarkTool extends csTools.ProbeTool {
       csTools.removeToolState(element, this.name, measurementData);
     } else {
       measurementData.location = updatedData.label;
-      measurementData.description = updatedData.position;
+      measurementData.description =
+        updatedData.position || updatedData.severeCentralCanalStenosis
+          ? 'Severe'
+          : null;
 
       measurementData.annotation = updatedData;
     }
