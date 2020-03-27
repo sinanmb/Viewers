@@ -157,11 +157,7 @@ class ViewerMain extends Component {
       'bottom-left overlay-element'
     );
 
-    // TODO Sinan: Fix issue here
-    if (bottom_left_overlay.length > 0) {
-      // console.log('addDescriptionOverlay');
-      // console.log(bottom_left_overlay);
-      // console.log(viewportIndex);
+    if (viewportIndex < bottom_left_overlay.length) {
       const bottomDiv = bottom_left_overlay[viewportIndex].querySelector(
         'div:last-child'
       );
