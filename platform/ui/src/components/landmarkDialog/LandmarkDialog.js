@@ -18,9 +18,11 @@ class LandmarkDialog extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    const label = props.measurementData.location;
+
+    let initialState = {
       labelOptions: ['Nerve', 'Stenosis'],
-      label: props.measurementData.location,
+      label,
 
       nerve: {
         position: null,
@@ -39,6 +41,15 @@ class LandmarkDialog extends Component {
         severalCentralCanalStenosis: null,
       },
     };
+
+    if (props.measurementData.annotation !== undefined) {
+      for (let data in props.measurementData.annotation) {
+        initialState[label.toLowerCase()][data] =
+          props.measurementData.annotation[data];
+      }
+    }
+
+    this.state = initialState;
   }
 
   render() {
@@ -77,7 +88,12 @@ class LandmarkDialog extends Component {
   }
 
   onClose = e => {
-    this.props.onSubmit(null, true);
+    // Delete the landmark if just created, or just close the popup if clicked on edit description
+    if (this.props.measurementData.annotation) {
+      this.props.onClose();
+    } else {
+      this.props.onSubmit(null, true);
+    }
   };
 
   onSubmit = e => {
@@ -85,6 +101,15 @@ class LandmarkDialog extends Component {
       ...this.state[this.state.label.toLowerCase()],
       label: this.state.label,
     };
+
+    // Position Intrathecal does not have a location nor a cause
+    if (
+      updatedData.label === 'Nerve' &&
+      updatedData.position === 'Intrathecal'
+    ) {
+      delete updatedData.location;
+      delete updatedData.cause;
+    }
     this.props.onSubmit(updatedData);
   };
 

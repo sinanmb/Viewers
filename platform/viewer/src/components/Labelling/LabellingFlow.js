@@ -5,10 +5,8 @@ import cloneDeep from 'lodash.clonedeep';
 
 import LabellingTransition from './LabellingTransition.js';
 import OHIFLabellingData from './OHIFLabellingData.js';
-import CoveraLabellingData from './CoveraLabellingData.js';
 
 import EditDescriptionDialog from './../EditDescriptionDialog/EditDescriptionDialog.js';
-import EditDescriptionDropdownDialog from './../EditDescriptionDropdownDialog/EditDescriptionDropdownDialog.js';
 
 import './LabellingFlow.css';
 
@@ -140,11 +138,6 @@ const LabellingFlow = ({
     const { skipAddLabelButton, editLocation, measurementData } = state;
     const { description, locationLabel, location } = measurementData;
 
-    const selectTreeLabellingData =
-      measurementData.toolType === 'Landmark'
-        ? CoveraLabellingData
-        : OHIFLabellingData;
-
     if (!skipAddLabelButton) {
       return (
         <button
@@ -160,13 +153,13 @@ const LabellingFlow = ({
         return (
           // This is the dialog modal that shows up on click on edit label
           <SelectTree
-            items={selectTreeLabellingData}
+            items={OHIFLabellingData}
             columns={1}
             onSelected={selectTreeSelectCallback}
             selectTreeFirstTitle="Assign Label"
           />
         );
-      } else if (measurementData.toolType !== 'Landmark') {
+      } else {
         return (
           <>
             <div className="checkIconWrapper" onClick={fadeOutAndLeaveFast}>
@@ -219,26 +212,12 @@ const LabellingFlow = ({
             </div>
           </>
         );
-      } else {
-        return (
-          <EditDescriptionDropdownDialog
-            onCancel={labellingDoneCallback}
-            onUpdate={descriptionDialogUpdate}
-            measurementData={state.measurementData}
-          />
-        );
       }
     }
   };
 
   if (editDescriptionOnDialog) {
-    return state.measurementData.toolType === 'Landmark' ? (
-      <EditDescriptionDropdownDialog
-        onCancel={labellingDoneCallback}
-        onUpdate={descriptionDialogUpdate}
-        measurementData={state.measurementData}
-      />
-    ) : (
+    return (
       <EditDescriptionDialog
         onCancel={labellingDoneCallback}
         onUpdate={descriptionDialogUpdate}

@@ -158,7 +158,6 @@ export default class NerveComponent extends Component {
   };
 
   onTypeChange = e => {
-    // TODO Sinan check if I need to convert to boolean for the value
     const name = e.target.name;
     const value = e.target.checked;
     this.props.onTypeChange(name, value);

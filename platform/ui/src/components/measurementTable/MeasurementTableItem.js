@@ -68,7 +68,7 @@ class MeasurementTableItem extends Component {
 
     const actionButtons = [];
 
-    // TODO Sinan: Remove the condition after we implement landmark editing
+    // Landmarks have a separate editing dialog popup
     if (this.props.measurementData.toolType !== 'Landmark') {
       if (typeof this.props.onRelabel === 'function') {
         const relabelButton = this.getActionButton(
@@ -77,13 +77,14 @@ class MeasurementTableItem extends Component {
         );
         actionButtons.push(relabelButton);
       }
-      if (typeof this.props.onEditDescription === 'function') {
-        const descriptionButton = this.getActionButton(
-          'Description',
-          this.onEditDescriptionClick
-        );
-        actionButtons.push(descriptionButton);
-      }
+    }
+
+    if (typeof this.props.onEditDescription === 'function') {
+      const descriptionButton = this.getActionButton(
+        'Description',
+        this.onEditDescriptionClick
+      );
+      actionButtons.push(descriptionButton);
     }
 
     if (typeof this.props.onDelete === 'function') {

@@ -3,6 +3,7 @@ import ConnectedMeasurementTable from './ConnectedMeasurementTable.js';
 import init from './init.js';
 
 import LabellingFlow from '../../components/Labelling/LabellingFlow';
+import { LandmarkDialog } from '@ohif/ui';
 import LandmarkLocationButtonGroup from '../../connectedComponents/LandmarkLocationButtonGroup.js';
 
 export default {
@@ -50,9 +51,40 @@ export default {
       });
     };
 
-    // TODO Sinan: add showLandmarkDialog here when we implement edit landmark details
-    // Add a method to decide whether to call showLabellingDialog or showLandmarkDialog,
-    // Based on the tooltype
+    const showLandmarkDialog = measurementData => {
+      if (!UIDialogService) {
+        console.warn('Unable to show dialog; no UI Dialog Service available.');
+        return;
+      }
+
+      UIDialogService.dismiss({ id: 'landmark' });
+      UIDialogService.create({
+        id: 'landmark',
+        centralize: true,
+        isDraggable: false,
+        showOverlay: true,
+        content: LandmarkDialog,
+        contentProps: {
+          title: 'Update your annotations',
+          measurementData,
+          onClose: () => UIDialogService.dismiss({ id: 'landmark' }),
+          onSubmit: updatedData => {
+            measurementData.location = updatedData.label;
+            measurementData.description =
+              updatedData.position ||
+              (updatedData.severeCentralCanalStenosis ? 'Severe' : null);
+
+            measurementData.annotation = updatedData;
+
+            commandsManager.runCommand(
+              'updateTableWithNewMeasurementData',
+              measurementData
+            );
+            UIDialogService.dismiss({ id: 'landmark' });
+          },
+        },
+      });
+    };
 
     const ExtendedConnectedMeasurementTable = () => (
       <>
@@ -63,9 +95,13 @@ export default {
               tool
             )
           }
-          onEditDescription={tool =>
-            showLabellingDialog({ editDescriptionOnDialog: true }, tool)
-          }
+          onEditDescription={tool => {
+            if (tool.toolType === 'Landmark') {
+              showLandmarkDialog(tool);
+            } else {
+              showLabellingDialog({ editDescriptionOnDialog: true }, tool);
+            }
+          }}
           onSaveComplete={message => {
             if (UINotificationService) {
               UINotificationService.show(message);
