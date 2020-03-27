@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { setReviewStatus } from '../actions/workingListActions';
+import { Icon } from '@ohif/ui';
 
 class ReviewStatusComponent extends Component {
   handleRejectlick = () => this.setReviewStatus(false);
@@ -21,7 +22,21 @@ class ReviewStatusComponent extends Component {
       color: 'white',
     };
 
-    let status = 'Waiting for review';
+    const buttonStyle = {
+      background: 'transparent',
+      border: 'none',
+      cursor: 'pointer',
+      margin: '0.25rem',
+      marginTop: '-0.75rem',
+    };
+
+    const iconStyle = {
+      width: '1rem',
+      height: '1rem',
+      color: 'white',
+    };
+
+    let status = 'Status';
 
     if (this.props.selectedStudy.status === true) {
       status = 'Reviewed';
@@ -31,19 +46,28 @@ class ReviewStatusComponent extends Component {
       pStyle.color = 'red';
     }
 
-    const rejectButton =
-      this.props.selectedStudy.status !== false ? (
-        <button id="" type="button" onClick={this.handleRejectlick}>
-          Reject
-        </button>
-      ) : null;
+    const rejectButton = (
+      <button
+        id=""
+        type="button"
+        className="btn btn-default"
+        style={buttonStyle}
+        onClick={this.handleRejectlick}
+      >
+        <Icon name="times" style={iconStyle} />
+      </button>
+    );
 
-    const reviewButton =
-      this.props.selectedStudy.status !== true ? (
-        <button type="button" onClick={this.handleReviewClick}>
-          Review
-        </button>
-      ) : null;
+    const reviewButton = (
+      <button
+        type="button"
+        className="btn btn-default"
+        style={buttonStyle}
+        onClick={this.handleReviewClick}
+      >
+        <Icon name="check" style={iconStyle} />
+      </button>
+    );
 
     return (
       <div>

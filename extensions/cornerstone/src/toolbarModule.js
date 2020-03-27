@@ -260,16 +260,16 @@ const definitions = [
         commandName: 'setToolActive',
         commandOptions: { toolName: 'Angle' },
       },
+      {
+        id: 'Exit2DMPR',
+        label: 'Exit 2D MPR',
+        icon: 'times',
+        //
+        type: TOOLBAR_BUTTON_TYPES.COMMAND,
+        commandName: 'setCornerstoneLayout',
+        context: 'ACTIVE_VIEWPORT::VTK',
+      },
     ],
-  },
-  {
-    id: 'Exit2DMPR',
-    label: 'Exit 2D MPR',
-    icon: 'times',
-    //
-    type: TOOLBAR_BUTTON_TYPES.COMMAND,
-    commandName: 'setCornerstoneLayout',
-    context: 'ACTIVE_VIEWPORT::VTK',
   },
 ];
 

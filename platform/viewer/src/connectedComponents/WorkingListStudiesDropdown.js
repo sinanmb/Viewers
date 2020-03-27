@@ -33,12 +33,17 @@ class WorkingListStudiesDropdown extends Component {
         ))
       : [];
 
+    const style = {
+      marginLeft: 0,
+    };
+
     return (
       <div>
         <select
           id="working-list-studies"
           onChange={this.change}
           value={this.props.selectedStudy.study_instance_uid}
+          style={style}
         >
           {workingListsStudiesOptionElements}
         </select>

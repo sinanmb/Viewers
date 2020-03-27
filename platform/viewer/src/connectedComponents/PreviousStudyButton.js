@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setStudyIndex, selectStudy } from '../actions/workingListActions';
 import { withRouter } from 'react-router-dom';
+import { Icon } from '@ohif/ui';
 
 class PreviousStudyButton extends Component {
   handleClick = async () => {
@@ -18,14 +19,27 @@ class PreviousStudyButton extends Component {
   };
 
   render() {
+    const iconStyle = {
+      width: '1rem',
+      height: '1rem',
+      color: this.props.studyIndex === 0 ? 'gray' : 'white',
+    };
+    const buttonStyle = {
+      background: 'transparent',
+      border: 'none',
+      cursor: this.props.studyIndex === 0 ? 'default' : 'pointer',
+      margin: '0.25rem',
+      marginTop: '1rem',
+    };
+
     return (
       <button
         type="button"
-        className="pointer"
+        style={buttonStyle}
         disabled={this.props.studyIndex === 0}
         onClick={this.handleClick}
       >
-        Previous
+        <Icon name="step-backward" style={iconStyle} />
       </button>
     );
   }
