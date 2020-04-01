@@ -1,4 +1,12 @@
 import csTools from 'cornerstone-tools';
+const getNewContext = csTools.importInternal('drawing/getNewContext');
+const draw = csTools.importInternal('drawing/draw');
+const drawHandles = csTools.importInternal('drawing/drawHandles');
+const drawTextBox = csTools.importInternal('drawing/drawTextBox');
+const throttle = csTools.importInternal('util/throttle');
+const cursors = csTools.importInternal('tools/cursors');
+const BaseAnnotationTool = csTools.importInternal('base/BaseAnnotationTool');
+const triggerEvent = csTools.importInternal('util/triggerEvent');
 
 /**
  * @public
@@ -6,27 +14,151 @@ import csTools from 'cornerstone-tools';
  * @memberof Tools.Annotation
  * @classdesc Tool which provides a probe of the image data at the
  * desired position and has a callback to display a popup
- * @extends csTools.ProbeTool
+ * @extends csTools.BaseAnnotationTool
  */
-export default class LandmarkTool extends csTools.ProbeTool {
-  constructor(configuration = {}) {
-    const defaultConfig = {
+export default class LandmarkTool extends BaseAnnotationTool {
+  constructor(props = {}) {
+    const defaultProps = {
       name: 'Landmark',
       getTextCallback,
       changeTextCallback,
+      supportedInteractionTypes: ['Mouse', 'Touch'],
+      svgCursor: cursors.probeCursor,
+      configuration: {
+        drawHandles: true,
+        handleRadius: 1,
+      },
     };
-    const initialConfiguration = Object.assign(defaultConfig, configuration);
+    super(defaultProps, props);
 
-    super(initialConfiguration);
+    this.throttledUpdateCachedStats = throttle(this.updateCachedStats, 110);
   }
 
   createNewMeasurement(eventData) {
-    const measurementData = super.createNewMeasurement(eventData);
-    // Associate this data with this imageId so we can render it and manipulate it
+    const goodEventData =
+      eventData && eventData.currentPoints && eventData.currentPoints.image;
 
+    if (!goodEventData) {
+      logger.error(
+        `required eventData not supplied to tool ${this.name}'s createNewMeasurement`
+      );
+
+      return;
+    }
+
+    const measurementData = {
+      visible: true,
+      active: true,
+      color: undefined,
+      invalidated: true,
+      handles: {
+        end: {
+          x: eventData.currentPoints.image.x,
+          y: eventData.currentPoints.image.y,
+          highlight: true,
+          active: true,
+        },
+      },
+    };
     csTools.addToolState(eventData.element, this.name, measurementData);
     // Allow relabelling via a callback
     this._updateTextForNearbyAnnotation(eventData);
+  }
+
+  /**
+   *
+   *
+   * @param {*} element
+   * @param {*} data
+   * @param {*} coords
+   * @returns {Boolean}
+   */
+  pointNearTool(element, data, coords) {
+    const hasEndHandle = data && data.handles && data.handles.end;
+    const validParameters = hasEndHandle;
+
+    if (!validParameters) {
+      logger.warn(
+        `invalid parameters supplied to tool ${this.name}'s pointNearTool`
+      );
+    }
+
+    if (!validParameters || data.visible === false) {
+      return false;
+    }
+
+    const probeCoords = csTools.external.cornerstone.pixelToCanvas(
+      element,
+      data.handles.end
+    );
+
+    return (
+      csTools.external.cornerstoneMath.point.distance(probeCoords, coords) < 5
+    );
+  }
+
+  updateCachedStats(image, element, data) {
+    data.cachedStats = {};
+    data.invalidated = false;
+  }
+
+  renderToolData(evt) {
+    const eventData = evt.detail;
+    const { handleRadius } = this.configuration;
+    const toolData = csTools.getToolState(evt.currentTarget, this.name);
+
+    if (!toolData) {
+      return;
+    }
+
+    // We have tool data for this element - iterate over each one and draw it
+    const context = getNewContext(eventData.canvasContext.canvas);
+    const { image, element } = eventData;
+
+    for (let i = 0; i < toolData.data.length; i++) {
+      const data = toolData.data[i];
+
+      if (data.visible === false) {
+        continue;
+      }
+
+      draw(context, context => {
+        const color = csTools.toolColors.getColorIfActive(data);
+
+        if (this.configuration.drawHandles) {
+          // Draw the handles
+          drawHandles(context, eventData, data.handles, {
+            handleRadius,
+            color,
+          });
+        }
+
+        // Update textbox stats
+        if (data.invalidated === true) {
+          if (data.cachedStats) {
+            this.throttledUpdateCachedStats(image, element, data);
+          } else {
+            this.updateCachedStats(image, element, data);
+          }
+        }
+
+        // Coords for text
+        const coords = {
+          // Translate the x/y away from the cursor
+          x: data.handles.end.x + 3,
+          y: data.handles.end.y - 3,
+        };
+        const textCoords = csTools.external.cornerstone.pixelToCanvas(
+          eventData.element,
+          coords
+        );
+
+        const text =
+          data.measurementNumber + '-' + data.annotation.label.charAt(0);
+
+        drawTextBox(context, text, textCoords.x, textCoords.y, color);
+      });
+    }
   }
 
   _updateTextForNearbyAnnotation(evt) {
@@ -41,7 +173,7 @@ export default class LandmarkTool extends csTools.ProbeTool {
     for (let i = 0; i < toolState.data.length; i++) {
       const data = toolState.data[i];
 
-      if (super.pointNearTool(element, data, coords)) {
+      if (this.pointNearTool(element, data, coords)) {
         data.active = true;
         csTools.external.cornerstone.updateImage(element);
 
@@ -82,12 +214,6 @@ export default class LandmarkTool extends csTools.ProbeTool {
       measurementData,
     });
   }
-
-  updateCachedStats(image, element, data) {
-    // Hide data on the viewport
-    data.cachedStats = {};
-    data.invalidated = false;
-  }
 }
 
 function getTextCallback(doneChangingTextCallback) {
@@ -96,31 +222,4 @@ function getTextCallback(doneChangingTextCallback) {
 
 function changeTextCallback(data, eventData, doneChangingTextCallback) {
   doneChangingTextCallback(prompt('Change your annotation:'));
-}
-
-/**
- * Triggers a CustomEvent. Copied from Cornerstone-tools
- * @public
- * @method triggerEvent
- *
- * @param {EventTarget} el The element or EventTarget to trigger the event upon.
- * @param {String} type    The event type name.
- * @param {Object|null} [detail=null] The event data to be sent.
- * @returns {Boolean} The return value is false if at least one event listener called preventDefault(). Otherwise it returns true.
- */
-function triggerEvent(el, type, detail = null) {
-  let event;
-
-  // This check is needed to polyfill CustomEvent on IE11-
-  if (typeof window.CustomEvent === 'function') {
-    event = new CustomEvent(type, {
-      detail,
-      cancelable: true,
-    });
-  } else {
-    event = document.createEvent('CustomEvent');
-    event.initCustomEvent(type, true, true, detail);
-  }
-
-  return el.dispatchEvent(event);
 }
