@@ -34,7 +34,7 @@ class NextStudyButton extends Component {
     const buttonStyle = {
       background: 'transparent',
       border: 'none',
-      cursor: isLastIndex === 0 ? 'default' : 'pointer',
+      cursor: isLastIndex ? 'default' : 'pointer',
       margin: '0.25rem',
       marginTop: '1rem',
     };
