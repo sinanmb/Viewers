@@ -154,7 +154,9 @@ export default class LandmarkTool extends BaseAnnotationTool {
         );
 
         const text =
-          data.measurementNumber + '-' + data.annotation.label.charAt(0);
+          data.annotation !== undefined
+            ? data.measurementNumber + '-' + data.annotation.label.charAt(0)
+            : '';
 
         drawTextBox(context, text, textCoords.x, textCoords.y, color);
       });
