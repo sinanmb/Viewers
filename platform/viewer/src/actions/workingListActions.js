@@ -9,14 +9,13 @@ import {
 
 import api from '../utils/api';
 
-export const getWorkingLists = () => dispatch => {
+export const getWorkingLists = () => dispatch =>
   api.get('/working-lists').then(response =>
     dispatch({
       type: GET_WORKING_LISTS,
       payload: response.data,
     })
   );
-};
 
 export const selectWorkingList = workingList => dispatch =>
   dispatch({
@@ -24,14 +23,13 @@ export const selectWorkingList = workingList => dispatch =>
     payload: workingList,
   });
 
-export const getWorkingListStudies = workingList => dispatch => {
+export const getWorkingListStudies = workingList => dispatch =>
   api.get(`/working-lists/${workingList}/studies`).then(response =>
     dispatch({
       type: GET_WORKING_LIST_STUDIES,
       payload: response.data,
     })
   );
-};
 
 export const setStudyIndex = newIndex => dispatch =>
   dispatch({

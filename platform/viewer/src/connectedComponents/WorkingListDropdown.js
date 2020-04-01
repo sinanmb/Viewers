@@ -14,26 +14,28 @@ class WorkingListDropdown extends Component {
     this.props.getWorkingLists();
   }
 
-  change = event => {
+  change = async event => {
     const selectedWorkingList = event.target.value || null;
 
     this.props.selectWorkingList(selectedWorkingList);
-    this.props.getWorkingListStudies(selectedWorkingList);
-  };
+    await this.props.getWorkingListStudies(selectedWorkingList);
 
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.selectedWorkingListStudies !==
-      this.props.selectedWorkingListStudies
-    ) {
+    try {
       const studyIndex = 0;
       this.props.setStudyIndex(studyIndex);
       this.props.selectStudy(this.props.selectedWorkingListStudies[studyIndex]);
       this.props.onSelectItem(
         this.props.selectedWorkingListStudies[studyIndex].study_instance_uid
       );
+    } catch (err) {
+      console.log(err);
+      alert('There is a problem with the working list studies');
+
+      this.props.selectWorkingList(null);
+      this.props.setStudyIndex(null);
+      this.props.selectStudy(null);
     }
-  }
+  };
 
   render() {
     const workingListsOptionElements = this.props.workingLists
