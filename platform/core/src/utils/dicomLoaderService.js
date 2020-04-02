@@ -1,7 +1,7 @@
 import cornerstone from 'cornerstone-core';
-import cornerstoneWADOImageLoader from 'cornerstone-wado-image-loader';
 import { api } from 'dicomweb-client';
 import DICOMWeb from '../DICOMWeb';
+import { getCornerstoneWADOImageLoader } from './cornerstoneWADOImageLoader';
 
 const getImageId = imageObj => {
   if (!imageObj) {
@@ -13,15 +13,15 @@ const getImageId = imageObj => {
     : imageObj.url;
 };
 
-const findImageIdOnStudies = (studies, displaySetInstanceUid) => {
+const findImageIdOnStudies = (studies, displaySetInstanceUID) => {
   const study = studies.find(study => {
     const displaySet = study.displaySets.some(
-      displaySet => displaySet.displaySetInstanceUid === displaySetInstanceUid
+      displaySet => displaySet.displaySetInstanceUID === displaySetInstanceUID
     );
     return displaySet;
   });
-  const { seriesList = [] } = study;
-  const { instances = [] } = seriesList[0] || {};
+  const { series = [] } = study;
+  const { instances = [] } = series[0] || {};
   const instance = instances[0];
 
   return getImageId(instance);
@@ -85,8 +85,8 @@ const getImageLoaderType = imageId => {
   );
 };
 
-const DicomLoaderService = new (class {
-  getLocalData(dataset, studies) {
+class DicomLoaderService {
+  async getLocalData(dataset, studies) {
     if (dataset && dataset.localFile) {
       // Use referenced imageInstance
       const imageInstance = getImageInstance(dataset);
@@ -94,10 +94,11 @@ const DicomLoaderService = new (class {
 
       // or Try to get it from studies
       if (someInvalidStrings(imageId)) {
-        imageId = findImageIdOnStudies(studies, dataset.displaySetInstanceUid);
+        imageId = findImageIdOnStudies(studies, dataset.displaySetInstanceUID);
       }
 
       if (!someInvalidStrings(imageId)) {
+        const cornerstoneWADOImageLoader = await getCornerstoneWADOImageLoader();
         return cornerstoneWADOImageLoader.wadouri.loadFileRequest(imageId);
       }
     }
@@ -155,9 +156,9 @@ const DicomLoaderService = new (class {
 
   getDataByDatasetType(dataset) {
     const {
-      studyInstanceUid,
-      seriesInstanceUid,
-      sopInstanceUid,
+      StudyInstanceUID,
+      SeriesInstanceUID,
+      SOPInstanceUID,
       authorizationHeaders,
       wadoRoot,
       wadoUri,
@@ -166,9 +167,9 @@ const DicomLoaderService = new (class {
     if (!someInvalidStrings(wadoRoot)) {
       return wadorsRetriever(
         wadoRoot,
-        studyInstanceUid,
-        seriesInstanceUid,
-        sopInstanceUid,
+        StudyInstanceUID,
+        SeriesInstanceUID,
+        SOPInstanceUID,
         authorizationHeaders
       );
     } else if (!someInvalidStrings(wadoUri)) {
@@ -176,16 +177,16 @@ const DicomLoaderService = new (class {
     }
   }
 
-  *getLoaderIterator(dataset, studies) {
-    yield this.getLocalData(dataset, studies);
+  async *getLoaderIterator(dataset, studies) {
+    yield await this.getLocalData(dataset, studies);
     yield this.getDataByImageType(dataset);
     yield this.getDataByDatasetType(dataset);
   }
 
-  findDicomDataPromise(dataset, studies) {
+  async findDicomDataPromise(dataset, studies) {
     const loaderIterator = this.getLoaderIterator(dataset, studies);
     // it returns first valid retriever method.
-    for (const loader of loaderIterator) {
+    for await (const loader of loaderIterator) {
       if (loader) {
         return loader;
       }
@@ -194,6 +195,8 @@ const DicomLoaderService = new (class {
     // in case of no valid loader
     throw new Error('Invalid dicom data loader');
   }
-})();
+}
 
-export default DicomLoaderService;
+const dicomLoaderService = new DicomLoaderService();
+
+export default dicomLoaderService;

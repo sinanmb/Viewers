@@ -1,7 +1,7 @@
-import cornerstoneWADOImageLoader from 'cornerstone-wado-image-loader';
 import FileLoader from './fileLoader';
 import PDFFileLoader from './pdfFileLoader';
 import DICOMFileLoader from './dicomFileLoader';
+import { getCornerstoneWADOImageLoader } from '../../utils/cornerstoneWADOImageLoader';
 
 class FileLoaderService extends FileLoader {
   fileType;
@@ -36,16 +36,16 @@ class FileLoaderService extends FileLoader {
     };
 
     const studiesGrouped = Object.values(
-      groupBy(studies, 'studyInstanceUid', 'seriesList')
+      groupBy(studies, 'StudyInstanceUID', 'series')
     );
 
     const result = studiesGrouped.map(studyGroup => {
       const seriesGrouped = groupBy(
-        studyGroup.seriesList,
-        'seriesInstanceUid',
+        studyGroup.series,
+        'SeriesInstanceUID',
         'instances'
       );
-      studyGroup.seriesList = Object.values(seriesGrouped);
+      studyGroup.series = Object.values(seriesGrouped);
 
       return studyGroup;
     });
@@ -53,7 +53,8 @@ class FileLoaderService extends FileLoader {
     return result;
   }
 
-  addFile(file) {
+  async addFile(file) {
+    const cornerstoneWADOImageLoader = await getCornerstoneWADOImageLoader();
     return cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
   }
 
