@@ -40,22 +40,22 @@ class MetadataPanel extends Component {
           </div>
           <MetadataInfo metadata={this.state.metadata} isOpen={true} />
           <MetadataCategory
-            title="Structured Report"
+            title="Automated Report Assessment"
             metadata={this.state.metadata}
             category="structured_report"
           />
           <MetadataCategory
-            title="QA Findings"
+            title="Automated Imaging Assessment"
             metadata={this.state.metadata}
             category="qa_findings"
           />
           <MetadataCategory
-            title="Urg Pick List"
+            title="Urg QA"
             metadata={this.state.metadata}
             category="urg_pick_list"
           />
           <MetadataCategory
-            title="Automated Pick List"
+            title="Automated QA"
             metadata={this.state.metadata}
             category="automated_pick_list"
           />
