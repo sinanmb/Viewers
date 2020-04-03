@@ -106,8 +106,8 @@ export default class MeasurementApi {
     const toolState = cornerstoneTools.globalImageIdSpecificToolStateManager.saveToolState();
 
     // Stop here if the metadata for the measurement's study is not loaded yet
-    const { studyInstanceUid } = measurement;
-    const metadata = studyMetadataManager.get(studyInstanceUid);
+    const { StudyInstanceUID } = measurement;
+    const metadata = studyMetadataManager.get(StudyInstanceUID);
     if (!metadata) return;
 
     // Iterate each child tool if the current tool has children
@@ -228,7 +228,7 @@ export default class MeasurementApi {
     this.options.onMeasurementsUpdated(Object.assign({}, this.tools));
   }
 
-  async retrieveMeasurements(patientId, timepointIds) {
+  async retrieveMeasurements(PatientId, timepointIds) {
     const retrievalFn = configuration.dataExchange.retrieve;
     const { server } = configuration;
     if (typeof retrievalFn !== 'function') {
@@ -328,9 +328,9 @@ export default class MeasurementApi {
       : null;
     const timepoints = this.timepointApi.all(timepointFilter);
     const timepointIds = timepoints.map(t => t.timepointId);
-    const patientId = timepoints[0].patientId;
+    const PatientID = timepoints[0].PatientID;
     const filter = {
-      patientId,
+      PatientID,
       timepointIds,
     };
 
@@ -631,17 +631,17 @@ export default class MeasurementApi {
 
     const toolGroupId = this.toolsGroupsMap[measurementData.toolType];
 
-    // TODO: Remove TrialPatientLocationUid from here and override it somehow
+    // TODO: Remove TrialPatientLocationUID from here and override it somehow
     // by dependant applications. Here we should use the location attribute instead of the uid
     let filter;
     const uid =
       measurementData.additionalData &&
-      measurementData.additionalData.TrialPatientLocationUid;
+      measurementData.additionalData.TrialPatientLocationUID;
     if (uid) {
       filter = tool =>
         tool._id !== measurementData._id &&
         tool.additionalData &&
-        tool.additionalData.TrialPatientLocationUid === uid;
+        tool.additionalData.TrialPatientLocationUID === uid;
     } else {
       filter = tool =>
         tool._id !== measurementData._id &&
@@ -746,8 +746,8 @@ export default class MeasurementApi {
 
     // Get the timepoint
     let timepoint;
-    if (measurement.studyInstanceUid) {
-      timepoint = this.timepointApi.study(measurement.studyInstanceUid)[0];
+    if (measurement.StudyInstanceUID) {
+      timepoint = this.timepointApi.study(measurement.StudyInstanceUID)[0];
     } else {
       const { timepointId } = measurement;
       timepoint = this.timepointApi.timepoints.find(
@@ -815,7 +815,7 @@ export default class MeasurementApi {
       measurement.lesionNamingNumber = found.lesionNamingNumber;
       measurement.measurementNumber = found.measurementNumber;
 
-      // TODO: Remove TrialPatientLocationUid from here and override it somehow
+      // TODO: Remove TrialPatientLocationUID from here and override it somehow
       // by dependant applications
 
       // Change the update object to set the same number, additionalData,
@@ -823,8 +823,8 @@ export default class MeasurementApi {
       updateObject.lesionNamingNumber = found.lesionNamingNumber;
       updateObject.measurementNumber = found.measurementNumber;
       updateObject.additionalData = measurement.additionalData || {};
-      updateObject.additionalData.TrialPatientLocationUid =
-        found.additionalData && found.additionalData.TrialPatientLocationUid;
+      updateObject.additionalData.TrialPatientLocationUID =
+        found.additionalData && found.additionalData.TrialPatientLocationUID;
       updateObject.location = found.location;
       updateObject.label = found.label;
       updateObject.description = found.description;
@@ -862,7 +862,7 @@ export default class MeasurementApi {
         toolId: toolType,
         toolItemId: addedMeasurement._id,
         timepointId: timepoint.timepointId,
-        studyInstanceUid: addedMeasurement.studyInstanceUid,
+        StudyInstanceUID: addedMeasurement.StudyInstanceUID,
         createdAt: addedMeasurement.createdAt,
         lesionNamingNumber: addedMeasurement.lesionNamingNumber,
         measurementNumber: addedMeasurement.measurementNumber,

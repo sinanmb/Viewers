@@ -1,4 +1,5 @@
 import asyncComponent from '../components/AsyncComponent.js';
+import { withCornerstone } from '../utils/cornerstoneWADOImageLoader';
 
 import OHIF from '@ohif/core';
 const { urlUtil: UrlUtil } = OHIF.utils;
@@ -9,8 +10,10 @@ const IHEInvokeImageDisplay = asyncComponent(() =>
     /* webpackChunkName: "IHEInvokeImageDisplay" */ './IHEInvokeImageDisplay.js'
   )
 );
-const ViewerRouting = asyncComponent(() =>
-  import(/* webpackChunkName: "ViewerRouting" */ './ViewerRouting.js')
+const ViewerRouting = withCornerstone(
+  asyncComponent(() =>
+    import(/* webpackChunkName: "ViewerRouting" */ './ViewerRouting.js')
+  )
 );
 
 const StudyListRouting = asyncComponent(() =>
@@ -18,12 +21,18 @@ const StudyListRouting = asyncComponent(() =>
     /* webpackChunkName: "StudyListRouting" */ '../studylist/StudyListRouting.js'
   )
 );
-const StandaloneRouting = asyncComponent(() =>
-  import(/* webpackChunkName: "ConnectedStandaloneRouting" */ '../connectedComponents/ConnectedStandaloneRouting.js')
+const StandaloneRouting = withCornerstone(
+  asyncComponent(() =>
+    import(
+      /* webpackChunkName: "ConnectedStandaloneRouting" */ '../connectedComponents/ConnectedStandaloneRouting.js'
+    )
+  )
 );
-const ViewerLocalFileData = asyncComponent(() =>
-  import(
-    /* webpackChunkName: "ViewerLocalFileData" */ '../connectedComponents/ViewerLocalFileData.js'
+const ViewerLocalFileData = withCornerstone(
+  asyncComponent(() =>
+    import(
+      /* webpackChunkName: "ViewerLocalFileData" */ '../connectedComponents/ViewerLocalFileData.js'
+    )
   )
 );
 
@@ -32,7 +41,7 @@ const reload = () => window.location.reload();
 const ROUTES_DEF = {
   default: {
     viewer: {
-      path: '/viewer/:studyInstanceUids',
+      path: '/viewer/:studyInstanceUIDs',
       component: ViewerRouting,
     },
     standaloneViewer: {
@@ -59,7 +68,7 @@ const ROUTES_DEF = {
   gcloud: {
     viewer: {
       path:
-        '/projects/:project/locations/:location/datasets/:dataset/dicomStores/:dicomStore/study/:studyInstanceUids',
+        '/projects/:project/locations/:location/datasets/:dataset/dicomStores/:dicomStore/study/:studyInstanceUIDs',
       component: ViewerRouting,
       condition: appConfig => {
         return !!appConfig.enableGoogleCloudAdapter;

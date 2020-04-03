@@ -35,7 +35,7 @@ const commandsModule = ({ commandsManager }) => {
       const activeViewport =
         viewportSpecificData[viewports.activeViewportIndex];
       const studyMetadata = utils.studyMetadataManager.get(
-        activeViewport.studyInstanceUid
+        activeViewport.StudyInstanceUID
       );
 
       if (!studyMetadata) {
@@ -45,8 +45,8 @@ const commandsModule = ({ commandsManager }) => {
       const allDisplaySets = studyMetadata.getDisplaySets();
       const currentDisplaySetIndex = allDisplaySets.findIndex(
         displaySet =>
-          displaySet.displaySetInstanceUid ===
-          activeViewport.displaySetInstanceUid
+          displaySet.displaySetInstanceUID ===
+          activeViewport.displaySetInstanceUID
       );
       if (currentDisplaySetIndex < 0) {
         return;
