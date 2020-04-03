@@ -246,7 +246,7 @@ function StudyListRoute(props) {
           <WorkingListDropdown
             onSelectItem={firstStudyInstanceUID => {
               const viewerPath = RoutesUtil.parseViewerPath(appConfig, server, {
-                studyInstanceUids: firstStudyInstanceUID,
+                studyInstanceUIDs: firstStudyInstanceUID,
               });
               history.push(viewerPath);
             }}

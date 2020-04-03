@@ -80,13 +80,10 @@ const mapStateToProps = state => ({
   selectedWorkingListStudies: state.workingLists.selectedWorkingListStudies,
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    getWorkingLists,
-    selectWorkingList,
-    getWorkingListStudies,
-    setStudyIndex,
-    selectStudy,
-  }
-)(WorkingListDropdown);
+export default connect(mapStateToProps, {
+  getWorkingLists,
+  selectWorkingList,
+  getWorkingListStudies,
+  setStudyIndex,
+  selectStudy,
+})(WorkingListDropdown);

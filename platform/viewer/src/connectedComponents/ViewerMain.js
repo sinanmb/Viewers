@@ -82,14 +82,14 @@ class ViewerMain extends Component {
     // Update series description
     if (Object.entries(this.props.viewportSpecificData).length > 0) {
       const {
-        studyInstanceUid,
-        displaySetInstanceUid,
+        StudyInstanceUID,
+        displaySetInstanceUID,
       } = this.props.viewportSpecificData[this.props.activeViewportIndex];
 
       this.addDescriptionOverlay(
         this.props.activeViewportIndex,
-        studyInstanceUid,
-        displaySetInstanceUid
+        StudyInstanceUID,
+        displaySetInstanceUID
       );
     }
   }
@@ -140,8 +140,8 @@ class ViewerMain extends Component {
         });
         this.addDescriptionOverlay(
           i,
-          vp.studyInstanceUid,
-          vp.displaySetInstanceUid
+          vp.StudyInstanceUID,
+          vp.displaySetInstanceUID
         );
       }
     });
@@ -149,13 +149,13 @@ class ViewerMain extends Component {
 
   addDescriptionOverlay = (
     viewportIndex,
-    studyInstanceUid,
-    displaySetInstanceUid
+    StudyInstanceUID,
+    displaySetInstanceUID
   ) => {
     const displaySet = this.findDisplaySet(
       this.props.studies,
-      studyInstanceUid,
-      displaySetInstanceUid
+      StudyInstanceUID,
+      displaySetInstanceUID
     );
 
     const bottom_left_overlay = window.document.getElementsByClassName(
@@ -167,7 +167,7 @@ class ViewerMain extends Component {
         'div:last-child'
       );
       const seriesDescription = bottomDiv.querySelector('div:last-child');
-      seriesDescription.innerHTML = displaySet.seriesDescription;
+      seriesDescription.innerHTML = displaySet.SeriesDescription;
     }
   };
 

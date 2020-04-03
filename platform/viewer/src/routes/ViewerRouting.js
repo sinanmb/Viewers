@@ -40,8 +40,8 @@ function ViewerRouting({ match: routeMatch, location: routeLocation }) {
   if (server && studyUIDs) {
     return (
       <ConnectedViewerRetrieveStudyData
-        studyInstanceUids={studyUIDs}
-        seriesInstanceUids={seriesUIDs}
+        studyInstanceUIDs={studyUIDs}
+        seriesInstanceUIDs={seriesUIDs}
         key={studyUIDs}
       />
     );

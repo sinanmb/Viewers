@@ -123,6 +123,15 @@ const definitions = [
     commandName: 'resetViewport',
   },
   {
+    id: 'Exit2DMPR',
+    label: 'Exit 2D MPR',
+    icon: 'times',
+    //
+    type: TOOLBAR_BUTTON_TYPES.COMMAND,
+    commandName: 'setCornerstoneLayout',
+    context: 'ACTIVE_VIEWPORT::VTK',
+  },
+  {
     id: 'More',
     label: 'More',
     icon: 'ellipse-circle',
@@ -250,15 +259,6 @@ const definitions = [
         type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
         commandName: 'setToolActive',
         commandOptions: { toolName: 'Angle' },
-      },
-      {
-        id: 'Exit2DMPR',
-        label: 'Exit 2D MPR',
-        icon: 'times',
-        //
-        type: TOOLBAR_BUTTON_TYPES.COMMAND,
-        commandName: 'setCornerstoneLayout',
-        context: 'ACTIVE_VIEWPORT::VTK',
       },
     ],
   },

@@ -6,10 +6,10 @@ import { withRouter } from 'react-router-dom';
 
 class WorkingListStudiesDropdown extends Component {
   change = event => {
-    const selectedStudyInstanceUid = event.target.value;
+    const selectedStudyInstanceUID = event.target.value;
 
     const studyIndex = this.props.selectedWorkingListStudies.findIndex(
-      study => study.study_instance_uid === selectedStudyInstanceUid
+      study => study.study_instance_uid === selectedStudyInstanceUID
     );
 
     this.props.setStudyIndex(studyIndex);
@@ -35,6 +35,7 @@ class WorkingListStudiesDropdown extends Component {
 
     const style = {
       marginLeft: 0,
+      width: '17rem',
     };
 
     return (
@@ -67,8 +68,7 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { setStudyIndex, selectStudy }
-  )(WorkingListStudiesDropdown)
+  connect(mapStateToProps, { setStudyIndex, selectStudy })(
+    WorkingListStudiesDropdown
+  )
 );

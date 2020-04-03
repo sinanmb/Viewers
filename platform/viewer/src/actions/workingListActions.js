@@ -42,11 +42,11 @@ export const selectStudy = study => dispatch =>
 
 export const setReviewStatus = (
   workingListId,
-  studyInstanceUid,
+  studyInstanceUID,
   status
 ) => dispatch => {
   api
-    .put(`/working-lists/${workingListId}/studies/${studyInstanceUid}`, {
+    .put(`/working-lists/${workingListId}/studies/${studyInstanceUID}`, {
       status,
     })
     .then(response =>

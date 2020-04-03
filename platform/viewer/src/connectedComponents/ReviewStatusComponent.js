@@ -20,6 +20,7 @@ class ReviewStatusComponent extends Component {
   render() {
     const pStyle = {
       color: 'white',
+      textAlign: 'center',
     };
 
     const buttonStyle = {
@@ -91,8 +92,5 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { setReviewStatus }
-  )(ReviewStatusComponent)
+  connect(mapStateToProps, { setReviewStatus })(ReviewStatusComponent)
 );
