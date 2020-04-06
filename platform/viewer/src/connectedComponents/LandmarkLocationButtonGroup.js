@@ -9,7 +9,6 @@ class LandmarkLocationButtonGroup extends Component {
   render() {
     const divStyle = {
       marginLeft: '100px',
-      width: '125px',
       marginTop: '-40px',
     };
 
@@ -50,7 +49,6 @@ const mapStateToProps = state => ({
   isToolSelected: state.landmark.isToolSelected,
 });
 
-export default connect(
-  mapStateToProps,
-  { selectLocation }
-)(LandmarkLocationButtonGroup);
+export default connect(mapStateToProps, { selectLocation })(
+  LandmarkLocationButtonGroup
+);

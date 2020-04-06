@@ -238,12 +238,12 @@ export default class MeasurementApi {
 
     const state = store.getState();
     const {
-      studyInstanceUID,
-      seriesInstanceUID,
+      StudyInstanceUID,
+      SeriesInstanceUID,
     } = state.viewports.viewportSpecificData[0];
 
     let databaseMeasurementsData = await api.get(
-      `/annotations/${studyInstanceUID}/${seriesInstanceUID}`
+      `/annotations/${StudyInstanceUID}/${SeriesInstanceUID}`
     );
 
     return new Promise((resolve, reject) => {

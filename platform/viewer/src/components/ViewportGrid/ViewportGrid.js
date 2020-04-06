@@ -82,17 +82,17 @@ const ViewportGrid = function(props) {
         <ViewportPane
           onDrop={({
             viewportIndex,
-            studyInstanceUID,
+            StudyInstanceUID,
             displaySetInstanceUID,
           }) => {
             setViewportData({
               viewportIndex,
-              studyInstanceUID,
+              StudyInstanceUID,
               displaySetInstanceUID,
             });
             addDescriptionOverlay(
               viewportIndex,
-              studyInstanceUID,
+              StudyInstanceUID,
               displaySetInstanceUID
             );
           }}
