@@ -237,13 +237,10 @@ export default class MeasurementApi {
     }
 
     const state = store.getState();
-    const {
-      StudyInstanceUID,
-      SeriesInstanceUID,
-    } = state.viewports.viewportSpecificData[0];
+    const { StudyInstanceUID } = state.viewports.viewportSpecificData[0];
 
     let databaseMeasurementsData = await api.get(
-      `/annotations/${StudyInstanceUID}/${SeriesInstanceUID}`
+      `/annotations/${StudyInstanceUID}`
     );
 
     return new Promise((resolve, reject) => {
@@ -345,10 +342,7 @@ export default class MeasurementApi {
 
   storeInDatabase(measurements) {
     const state = store.getState();
-    const {
-      studyInstanceUID,
-      seriesInstanceUID,
-    } = state.viewports.viewportSpecificData[0];
+    const { StudyInstanceUID } = state.viewports.viewportSpecificData[0];
 
     const toolTypesToSave = ['Landmark', 'EllipticalRoi', 'Length'];
 
@@ -357,8 +351,7 @@ export default class MeasurementApi {
     );
 
     const data = {
-      studyInstanceUID,
-      seriesInstanceUID,
+      StudyInstanceUID,
       measurementsToSave,
     };
 
