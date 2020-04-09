@@ -59,7 +59,6 @@ class LandmarkDialog extends Component {
         onClose={this.onClose}
         onConfirm={this.onSubmit}
         className
-        // rootClass="editcategoryDialog"
       >
         <LabelComponent
           label={this.state.label}
