@@ -27,9 +27,9 @@ Open platform/viewer/public/config/aws.js and add the host for these lines. The
 host will be the IP address of the Viewers EC2 instance
 
 ```
-wadoUriRoot: '<host>:<port>/wado',
-qidoRoot: '<host>:<port>/dicom-web',
-wadoRoot: '<host>:<port>/dicom-web',
+wadoUriRoot: '<host>/wado',
+qidoRoot: '<host>/dicom-web',
+wadoRoot: '<host>/dicom-web',
 ```
 
 ## Install the viewers
