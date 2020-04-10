@@ -18,7 +18,7 @@ git pull origin master
 
 ```
 APP_CONFIG=config/aws.js
-VIEWER_SERVICE_BASE_URL=<host>/api/v1 // host will be Viewers EC2 Instance IP address
+VIEWERS_SERVICE_BASE_URL=<host>/api/v1 // host will be Viewers EC2 Instance IP address
 ```
 
 ## Setup Orthanc config
