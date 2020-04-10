@@ -5,9 +5,6 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import api from '../../utils/api';
 
-// import './metadatapanel.css';
-// import './MetadataPanel.styl';
-
 class MetadataPanel extends Component {
   state = {
     metadata: {},
@@ -20,15 +17,23 @@ class MetadataPanel extends Component {
     api.get(`/metadata/${studyInstanceUID}`).then(response => {
       const metadata = response.data;
       this.setState({ metadata });
-
-      // for (let key in metadata.structured_report) {
-      //   if (!metadata.structured_report.hasOwnProperty(key)) continue;
-      // }
     });
   }
 
   render() {
-    if (Object.keys(this.state.metadata).length === 0) return null;
+    if (Object.keys(this.state.metadata).length === 0)
+      return (
+        <>
+          <div className="metadata">
+            <div className="metadataHeader">
+              <h1 className="metadataHeaderTitle">Metadata</h1>
+            </div>
+          </div>
+          <div className="metadata-info-content">
+            An issue occured while fecthing the metadata
+          </div>
+        </>
+      );
 
     return (
       <div className="metadataScrollArea">
