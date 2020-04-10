@@ -1,20 +1,30 @@
 # Deploying Viewer
 
-## Clone the viewers repository
+## Fetch the latest code
+
+Clone the repository if it hasn't been cloned already
 
 ```
 git clone https://github.com/spreemohealth/Viewers.git
 ```
 
-## Setup the environment variable
+Otherwise pull the latest changes from master branch
 
 ```
-APP_CONFIG=aws
+git pull origin master
+```
+
+## Setup the environment variables
+
+```
+APP_CONFIG=config/aws.js
+VIEWER_SERVICE_BASE_URL=<host>/api/v1 // host will be Viewers EC2 Instance IP address
 ```
 
 ## Setup Orthanc config
 
-Open platform/viewer/public/config/aws.js Add the host for
+Open platform/viewer/public/config/aws.js and add the host for these lines. The
+host will be the IP address of the Viewers EC2 instance
 
 ```
 wadoUriRoot: '<host>:<port>/wado',
@@ -48,13 +58,16 @@ nginx.conf file
 
 ## Update nginx.conf file
 
-Line 33, inside upstream orthanc-server: `server <host>:<port>`
+Line 33, inside upstream orthanc-server: `server <host>:<port>` -- IP Address of
+dicom-web EC2 instance
 
-Line 39, inside server, `server_name <host>` (probably localhost)
+Line 39, inside server, `server_name <host>` -- IP Address of Viewers EC2
+instance
 
 Line 46, under location /, `root <absolute/location/of/dist/folder>`
 
-Line 72, under location /dicom-web, `proxy_pass <host>/<port>`
+Line 72, under location /dicom-web, `proxy_pass <host>/<port>` -- IP Address of
+dicom-web EC2 instance
 
 ## Start nginx
 

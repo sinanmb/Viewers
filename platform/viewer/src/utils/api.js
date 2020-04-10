@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export default axios.create({
-  // TODO Sinan: This should come from a config file
-  baseURL: 'http://localhost:5000/api/v1',
+  baseURL: process.env.VIEWER_SERVICE_BASE_URL,
   responseType: 'json',
 });
