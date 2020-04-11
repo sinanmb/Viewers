@@ -36,12 +36,14 @@ wadoRoot: '<host>/dicom-web',
 
 ```
 
-// If you haven't already, enable yarn workspaces yarn config set
-workspaces-experimental true
+// If you haven't already, enable yarn workspaces
+yarn config set workspaces-experimental true
 
-// Restore dependencies yarn install
+// Restore dependencies
+yarn install
 
-// Build source code for production yarn run build
+// Build source code for production
+yarn run build
 
 ```
 
