@@ -7,18 +7,12 @@ import getImageIdForImagePath from '../lib/getImageIdForImagePath';
 import guid from '../../utils/guid';
 import studyMetadataManager from '../../utils/studyMetadataManager';
 import { measurementApiDefaultConfig } from './../configuration.js';
-import axios from 'axios';
+import api from '../../utils/api';
 import store from '../../../../viewer/src/store';
 
 const configuration = {
   ...measurementApiDefaultConfig,
 };
-
-// TODO Sinan: Move this somewhere else, in utils for example
-const api = axios.create({
-  baseURL: 'http://localhost:5000/api/v1',
-  responseType: 'json',
-});
 
 export default class MeasurementApi {
   static Instance;
