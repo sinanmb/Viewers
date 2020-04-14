@@ -70,6 +70,23 @@ const definitions = [
     commandOptions: { toolName: 'Zoom' },
   },
   {
+    id: 'Pan',
+    label: 'Pan',
+    icon: 'arrows',
+    //
+    type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
+    commandName: 'setToolActive',
+    commandOptions: { toolName: 'Pan' },
+  },
+  {
+    id: 'Reset',
+    label: 'Reset',
+    icon: 'reset',
+    //
+    type: TOOLBAR_BUTTON_TYPES.COMMAND,
+    commandName: 'resetViewport',
+  },
+  {
     id: 'Wwwc',
     label: 'Levels',
     icon: 'level',
@@ -104,23 +121,6 @@ const definitions = [
     type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
     commandName: 'setToolActive',
     commandOptions: { toolName: 'EllipticalRoi' },
-  },
-  {
-    id: 'Pan',
-    label: 'Pan',
-    icon: 'arrows',
-    //
-    type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
-    commandName: 'setToolActive',
-    commandOptions: { toolName: 'Pan' },
-  },
-  {
-    id: 'Reset',
-    label: 'Reset',
-    icon: 'reset',
-    //
-    type: TOOLBAR_BUTTON_TYPES.COMMAND,
-    commandName: 'resetViewport',
   },
   {
     id: 'Exit2DMPR',
