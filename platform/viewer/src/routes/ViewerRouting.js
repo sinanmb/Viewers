@@ -29,11 +29,21 @@ function ViewerRouting({ match: routeMatch, location: routeLocation }) {
   } = routeMatch.params;
   const server = useServer({ project, location, dataset, dicomStore });
 
-  let studyUIDs = UrlUtil.paramString.parseParam(studyInstanceUIDs);
+  // Studies that have a number studyInstanceUIDs (instead of string) cause issues with UrlUtil
+  let studyUIDs;
+  if (isNaN(studyInstanceUIDs)) {
+    seriesUIDs = UrlUtil.paramString.parseParam(studyInstanceUIDs);
+  } else {
+    studyUIDs = [studyInstanceUIDs];
+  }
   let seriesUIDs = getSeriesInstanceUIDs(seriesInstanceUIDs, routeLocation);
 
   useEffect(() => {
-    studyUIDs = UrlUtil.paramString.parseParam(studyInstanceUIDs);
+    if (isNaN(studyInstanceUIDs)) {
+      studyUIDs = UrlUtil.paramString.parseParam(studyInstanceUIDs);
+    } else {
+      studyUIDs = [studyInstanceUIDs];
+    }
     seriesUIDs = getSeriesInstanceUIDs(seriesInstanceUIDs, routeLocation);
   });
 
