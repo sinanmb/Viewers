@@ -32,7 +32,7 @@ function ViewerRouting({ match: routeMatch, location: routeLocation }) {
   // Studies that have a number studyInstanceUIDs (instead of string) cause issues with UrlUtil
   let studyUIDs;
   if (isNaN(studyInstanceUIDs)) {
-    seriesUIDs = UrlUtil.paramString.parseParam(studyInstanceUIDs);
+    studyUIDs = UrlUtil.paramString.parseParam(studyInstanceUIDs);
   } else {
     studyUIDs = [studyInstanceUIDs];
   }
