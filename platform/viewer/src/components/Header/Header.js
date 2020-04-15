@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { Dropdown, AboutContent, withModal } from '@ohif/ui';
 
 import { UserPreferences } from './../UserPreferences';
-import OHIFLogo from '../OHIFLogo/OHIFLogo.js';
+import CoveraLogo from '../CoveraLogo/CoveraLogo.js';
 import './Header.css';
 
 // Context
@@ -34,7 +34,7 @@ function Header(props) {
         onClick: () =>
           show({
             content: AboutContent,
-            title: t('OHIF Viewer - About'),
+            title: t('Covera Viewer - About'),
           }),
       },
       {
@@ -116,7 +116,7 @@ Header.propTypes = {
 
 Header.defaultProps = {
   home: true,
-  children: OHIFLogo(),
+  children: CoveraLogo(),
 };
 
 export default withTranslation(['Header', 'AboutModal'])(
