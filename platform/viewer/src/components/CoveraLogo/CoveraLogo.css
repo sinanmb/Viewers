@@ -1,4 +1,20 @@
-.header-covera {
-  height: 80px;
+.header-logo-text {
+  height: 35px;
   width: 210px;
+}
+
+@media only screen and (max-width: 767.98px) {
+  .header-logo-text {
+    display: none;
+  }
+  .header-logo-image {
+    height: 30px;
+    width: 30px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .header-logo-image {
+    display: none;
+  }
 }
