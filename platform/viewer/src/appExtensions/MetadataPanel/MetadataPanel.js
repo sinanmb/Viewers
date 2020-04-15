@@ -30,7 +30,7 @@ class MetadataPanel extends Component {
             </div>
           </div>
           <div className="metadata-info-content">
-            An issue occured while fecthing the metadata
+            There is no metadata for this study
           </div>
         </>
       );
