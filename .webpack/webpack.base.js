@@ -34,7 +34,7 @@ module.exports = (env, argv, { SRC_DIR, DIST_DIR }) => {
       app: `${SRC_DIR}/index.js`,
     },
     optimization: {
-      minimize: isProdBuild,
+      minimize: false,
       sideEffects: true,
     },
     context: SRC_DIR,
