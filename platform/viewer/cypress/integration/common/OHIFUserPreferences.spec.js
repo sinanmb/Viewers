@@ -41,11 +41,6 @@ describe('OHIF User Preferences', () => {
       // Set language to Spanish and save
       cy.setLanguage('Spanish');
 
-      // Header should be translated to Spanish
-      cy.get('.research-use')
-        .scrollIntoView()
-        .should('have.text', 'SOLO USO PARA INVESTIGACIÓN');
-
       // Options menu should be translated
       cy.get('[data-cy="options-menu"]')
         .should('have.text', 'Opciones')
@@ -68,11 +63,6 @@ describe('OHIF User Preferences', () => {
 
       // Set language to Spanish and cancel
       cy.setLanguage('Spanish', false);
-
-      // Header should be kept in "English (USA)"
-      cy.get('.research-use')
-        .scrollIntoView()
-        .should('have.text', 'INVESTIGATIONAL USE ONLY');
 
       // Options menu should be translated
       cy.get('[data-cy="options-menu"]')
@@ -114,11 +104,6 @@ describe('OHIF User Preferences', () => {
           .scrollIntoView()
           .click();
       });
-
-      // Header should be in "English (USA)"
-      cy.get('.research-use')
-        .scrollIntoView()
-        .should('have.text', 'INVESTIGATIONAL USE ONLY');
 
       // Options menu should be in "English (USA)"
       cy.get('[data-cy="options-menu"]')
@@ -186,12 +171,6 @@ describe('OHIF User Preferences', () => {
       );
       cy.expectMinimumThumbnails(5);
       cy.initCommonElementsAliases();
-
-      // Check if application is in Spanish
-      // Header should be translated to Spanish
-      cy.get('.research-use')
-        .scrollIntoView()
-        .should('have.text', 'SOLO USO PARA INVESTIGACIÓN');
 
       // Options menu should be translated
       cy.get('[data-cy="options-menu"]')
@@ -265,11 +244,6 @@ describe('OHIF User Preferences', () => {
       // Set language to Spanish
       cy.setLanguage('Spanish');
 
-      // Header should be translated to Spanish
-      cy.get('.research-use')
-        .scrollIntoView()
-        .should('have.text', 'SOLO USO PARA INVESTIGACIÓN');
-
       // Options menu should be translated
       cy.get('[data-cy="options-menu"]')
         .should('have.text', 'Opciones')
@@ -289,11 +263,6 @@ describe('OHIF User Preferences', () => {
 
       // Set language to Spanish and cancel
       cy.setLanguage('Spanish', false);
-
-      // Header should be kept in "English (USA)"
-      cy.get('.research-use')
-        .scrollIntoView()
-        .should('have.text', 'INVESTIGATIONAL USE ONLY');
 
       // Options menu should be translated
       cy.get('[data-cy="options-menu"]')
@@ -332,11 +301,6 @@ describe('OHIF User Preferences', () => {
       cy.get('@saveBtn')
         .scrollIntoView()
         .click();
-
-      // Header should be in "English (USA)""
-      cy.get('.research-use')
-        .scrollIntoView()
-        .should('have.text', 'INVESTIGATIONAL USE ONLY');
 
       // Options menu should be in "English (USA)"
       cy.get('[data-cy="options-menu"]')

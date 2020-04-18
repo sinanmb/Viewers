@@ -97,14 +97,6 @@
   margin-right: 0;
 }
 
-.header-menu .research-use {
-  float: left;
-  font-size: 13px;
-  font-weight: 700;
-  color: #91b9cd;
-  margin-right: 1rem;
-}
-
 .notification-bar {
   display: none;
   position: absolute;
@@ -135,9 +127,6 @@
   /* Toggle Notification Bar */
   .notification-bar {
     display: block;
-  }
-  .header-menu .research-use {
-    display: none;
   }
   .header-studyListLinkSection {
     border-left: var(--ui-border-thickness) solid var(--ui-border-color);
