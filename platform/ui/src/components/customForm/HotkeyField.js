@@ -61,6 +61,7 @@ function HotkeyField({ keys, handleChange, classNames, modifier_keys }) {
 
   return (
     <input
+      disabled
       readOnly={true}
       type="text"
       value={inputValue}

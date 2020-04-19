@@ -130,6 +130,10 @@ const commandsModule = ({ commandsManager }) => {
       storeContexts: ['viewports'],
       options: { direction: -1 },
     },
+    // Custom commands placeholders
+    nextViewport: {},
+    selectNerve: {},
+    selectStenosis: {},
   };
 
   return {
