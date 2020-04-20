@@ -60,7 +60,9 @@ function StudyListRoute(props) {
     error: null,
   });
   const selectedRowPerPage =
-    localStorage.getItem('coveraViewerTablePaginationSelectedRowPerPage') || 25;
+    parseInt(
+      localStorage.getItem('coveraViewerTablePaginationSelectedRowPerPage')
+    ) || 25;
   const [activeModalId, setActiveModalId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(selectedRowPerPage);
   const [pageNumber, setPageNumber] = useState(0);
