@@ -345,12 +345,7 @@ export default class MeasurementApi {
       toolTypesToSave.includes(measurement.toolType)
     );
 
-    const data = {
-      StudyInstanceUID,
-      measurementsToSave,
-    };
-
-    api.post('/annotations', data);
+    api.put(`/annotations/${StudyInstanceUID}`, { measurementsToSave });
   }
 
   calculateLesionNamingNumber(measurements) {
