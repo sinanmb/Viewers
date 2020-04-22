@@ -59,8 +59,12 @@ function StudyListRoute(props) {
     isSearchingForStudies: false,
     error: null,
   });
+  const selectedRowPerPage =
+    parseInt(
+      localStorage.getItem('coveraViewerTablePaginationSelectedRowPerPage')
+    ) || 25;
   const [activeModalId, setActiveModalId] = useState(null);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [rowsPerPage, setRowsPerPage] = useState(selectedRowPerPage);
   const [pageNumber, setPageNumber] = useState(0);
   const appContext = useContext(AppContext);
   // ~~ RESPONSIVE
@@ -212,6 +216,11 @@ function StudyListRoute(props) {
     });
   }
 
+  function setSelectedRowPerPageState(rows) {
+    localStorage.setItem('coveraViewerTablePaginationSelectedRowPerPage', rows);
+    setRowsPerPage(rows);
+  }
+
   return (
     <>
       {studyListFunctionsEnabled ? (
@@ -290,7 +299,7 @@ function StudyListRoute(props) {
           currentPage={pageNumber}
           nextPageFunc={() => setPageNumber(pageNumber + 1)}
           prevPageFunc={() => setPageNumber(pageNumber - 1)}
-          onRowsPerPageChange={Rows => setRowsPerPage(Rows)}
+          onRowsPerPageChange={Rows => setSelectedRowPerPageState(Rows)}
           rowsPerPage={rowsPerPage}
           recordCount={studies.length}
         />

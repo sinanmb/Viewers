@@ -20,8 +20,6 @@ export default class LandmarkTool extends BaseAnnotationTool {
   constructor(props = {}) {
     const defaultProps = {
       name: 'Landmark',
-      getTextCallback,
-      changeTextCallback,
       supportedInteractionTypes: ['Mouse', 'Touch'],
       svgCursor: cursors.probeCursor,
       configuration: {
@@ -216,12 +214,4 @@ export default class LandmarkTool extends BaseAnnotationTool {
       measurementData,
     });
   }
-}
-
-function getTextCallback(doneChangingTextCallback) {
-  doneChangingTextCallback(prompt('Enter your annotation:'));
-}
-
-function changeTextCallback(data, eventData, doneChangingTextCallback) {
-  doneChangingTextCallback(prompt('Change your annotation:'));
 }

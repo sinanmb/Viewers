@@ -7,18 +7,14 @@ import getImageIdForImagePath from '../lib/getImageIdForImagePath';
 import guid from '../../utils/guid';
 import studyMetadataManager from '../../utils/studyMetadataManager';
 import { measurementApiDefaultConfig } from './../configuration.js';
-import axios from 'axios';
-import store from '../../../../viewer/src/store';
+import api from '../../utils/api';
 
 const configuration = {
   ...measurementApiDefaultConfig,
 };
 
-// TODO Sinan: Move this somewhere else, in utils for example
-const api = axios.create({
-  baseURL: 'http://localhost:5000/api/v1',
-  responseType: 'json',
-});
+const retrieveStudyInstanceUID = _ =>
+  window.location.href.split('/').slice(-1)[0];
 
 export default class MeasurementApi {
   static Instance;
@@ -236,8 +232,8 @@ export default class MeasurementApi {
       return;
     }
 
-    const state = store.getState();
-    const { StudyInstanceUID } = state.viewports.viewportSpecificData[0];
+    const StudyInstanceUID = retrieveStudyInstanceUID();
+    console.log(`StudyInstanceUID = ${StudyInstanceUID}`);
 
     let databaseMeasurementsData = await api.get(
       `/annotations/${StudyInstanceUID}`
@@ -341,8 +337,7 @@ export default class MeasurementApi {
   }
 
   storeInDatabase(measurements) {
-    const state = store.getState();
-    const { StudyInstanceUID } = state.viewports.viewportSpecificData[0];
+    const StudyInstanceUID = retrieveStudyInstanceUID();
 
     const toolTypesToSave = ['Landmark', 'EllipticalRoi', 'Length'];
 

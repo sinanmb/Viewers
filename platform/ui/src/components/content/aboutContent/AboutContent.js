@@ -14,22 +14,8 @@ const AboutContent = () => {
   const itemsPreset = () => {
     return [
       {
-        name: t('Repository URL'),
-        value: 'https://github.com/OHIF/Viewers/',
-        link: 'https://github.com/OHIF/Viewers/',
-      },
-      {
-        name: t('Latest Master Commits'),
-        value: 'https://github.com/OHIF/Viewers/commits/master',
-        link: 'https://github.com/OHIF/Viewers/commits/master',
-      },
-      {
         name: 'Version Number',
         value: process.env.VERSION_NUMBER,
-      },
-      {
-        name: t('Build Number'),
-        value: process.env.BUILD_NUM,
       },
       {
         name: t('Browser'),
@@ -64,27 +50,9 @@ const AboutContent = () => {
           className="btn btn-default"
           target="_blank"
           rel="noopener noreferrer"
-          href="https://groups.google.com/forum/#!forum/cornerstone-platform"
-        >
-          {t('Visit the forum')}
-        </a>
-        {` `}
-        <a
-          className="btn btn-default"
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://github.com/OHIF/Viewers/issues/new/choose"
+          href="https://github.com/spreemohealth/Viewers/issues/new/choose"
         >
           {t('Report an issue')}
-        </a>
-        {` `}
-        <a
-          className="btn btn-default"
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://ohif.org"
-        >
-          {t('More details')}
         </a>
       </div>
       <div>

@@ -1,10 +1,10 @@
 {
   "name": "@ohif/viewer",
-  "version": "3.8.16",
-  "description": "OHIF Viewer",
-  "author": "OHIF Contributors",
+  "version": "1.0.0",
+  "description": "Covera Viewer",
+  "author": "Covera Health",
   "license": "MIT",
-  "repository": "OHIF/Viewers",
+  "repository": "spreemohealth/Viewers",
   "main": "dist/index.umd.js",
   "module": "src/index.js",
   "publishConfig": {

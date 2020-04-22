@@ -36,12 +36,14 @@ wadoRoot: '<host>/dicom-web',
 
 ```
 
-// If you haven't already, enable yarn workspaces yarn config set
-workspaces-experimental true
+// If you haven't already, enable yarn workspaces
+yarn config set workspaces-experimental true
 
-// Restore dependencies yarn install
+// Restore dependencies
+yarn install
 
-// Build source code for production yarn run build
+// Build source code for production
+yarn run build
 
 ```
 
@@ -68,6 +70,15 @@ Line 46, under location /, `root <absolute/location/of/dist/folder>`
 
 Line 72, under location /dicom-web, `proxy_pass <host>/<port>` -- IP Address of
 dicom-web EC2 instance
+
+After location /dicom-web { ... } add:
+
+```
+    location /api {
+        proxy_pass         http://localhost:8000;
+        proxy_redirect     off;
+    }
+```
 
 ## Start nginx
 
