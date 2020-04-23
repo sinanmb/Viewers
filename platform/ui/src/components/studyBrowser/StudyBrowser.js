@@ -9,6 +9,7 @@ function StudyBrowser(props) {
     onThumbnailClick,
     onThumbnailDoubleClick,
     supportsDrag,
+    onSeriesValidityUpdated,
   } = props;
 
   return (
@@ -28,6 +29,8 @@ function StudyBrowser(props) {
                 SeriesDescription,
                 SeriesNumber,
                 stackPercentComplete,
+                isSeriesValid,
+                SeriesInstanceUID,
               } = thumb;
 
               return (
@@ -51,12 +54,15 @@ function StudyBrowser(props) {
                     SeriesDescription={SeriesDescription}
                     SeriesNumber={SeriesNumber}
                     stackPercentComplete={stackPercentComplete}
+                    SeriesInstanceUID={SeriesInstanceUID}
+                    isSeriesValid={isSeriesValid}
                     // Events
                     onClick={onThumbnailClick.bind(
                       undefined,
                       displaySetInstanceUID
                     )}
                     onDoubleClick={onThumbnailDoubleClick}
+                    onSeriesValidityUpdated={onSeriesValidityUpdated}
                   />
                 </div>
               );
@@ -91,6 +97,7 @@ StudyBrowser.propTypes = {
   supportsDrag: PropTypes.bool,
   onThumbnailClick: PropTypes.func,
   onThumbnailDoubleClick: PropTypes.func,
+  onSeriesValidityUpdated: PropTypes.func.isRequired,
 };
 
 StudyBrowser.defaultProps = {

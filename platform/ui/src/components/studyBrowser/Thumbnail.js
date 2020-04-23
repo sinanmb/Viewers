@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
 import ImageThumbnail from './ImageThumbnail';
@@ -11,8 +11,14 @@ function ThumbnailFooter({
   SeriesNumber,
   InstanceNumber,
   numImageFrames,
+  isSeriesValid,
+  onSeriesValidityUpdated,
+  StudyInstanceUID,
+  SeriesInstanceUID,
 }) {
   const infoOnly = !SeriesDescription;
+
+  const [checkBoxValue, setCheckBoxValue] = useState(isSeriesValid);
 
   const getInfo = (value, icon, className = '') => {
     return (
@@ -31,11 +37,37 @@ function ThumbnailFooter({
       return;
     }
 
+    async function onChange(e) {
+      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation();
+
+      await onSeriesValidityUpdated(
+        StudyInstanceUID,
+        SeriesInstanceUID,
+        e.target.checked === true
+      )
+        .then(function(response) {
+          setCheckBoxValue(!checkBoxValue);
+        })
+        .catch(function(error) {
+          alert('an error occured while saving the series validity ');
+          console.log(error);
+        });
+    }
+
     return (
       <div className="series-information">
         {getInfo(SeriesNumber, 'S:')}
         {getInfo(InstanceNumber, 'I:')}
         {getInfo(numImageFrames, '', 'image-frames')}
+        <input
+          type="checkbox"
+          id="isSeriesValid"
+          name="isSeriesValid"
+          checked={checkBoxValue}
+          onChange={onChange}
+        />
+        {/* <label htmlFor="isSeriesValid"></label> */}
       </div>
     );
   };
@@ -85,28 +117,28 @@ function Thumbnail(props) {
   const hasAltText = altImageText !== undefined;
 
   return (
-    <div
-      ref={drag}
-      className={classNames('thumbnail', { active: active })}
-      onClick={onClick}
-      onDoubleClick={onDoubleClick}
-      onMouseDown={onMouseDown}
-    >
-      {/* SHOW IMAGE */}
-      {hasImage && (
-        <ImageThumbnail
-          imageSrc={imageSrc}
-          imageId={imageId}
-          error={error}
-          stackPercentComplete={stackPercentComplete}
-        />
-      )}
-      {/* SHOW TEXT ALTERNATIVE */}
-      {!hasImage && hasAltText && (
-        <div className={'alt-image-text p-x-1'}>
-          <h1>{altImageText}</h1>
-        </div>
-      )}
+    <div ref={drag} className={classNames('thumbnail', { active: active })}>
+      <div
+        onClick={onClick}
+        onDoubleClick={onDoubleClick}
+        onMouseDown={onMouseDown}
+      >
+        {/* SHOW IMAGE */}
+        {hasImage && (
+          <ImageThumbnail
+            imageSrc={imageSrc}
+            imageId={imageId}
+            error={error}
+            stackPercentComplete={stackPercentComplete}
+          />
+        )}
+        {/* SHOW TEXT ALTERNATIVE */}
+        {!hasImage && hasAltText && (
+          <div className={'alt-image-text p-x-1'}>
+            <h1>{altImageText}</h1>
+          </div>
+        )}
+      </div>
       {ThumbnailFooter(props)}
     </div>
   );
@@ -137,6 +169,9 @@ It will be displayed inside the <div>. This is useful when it is difficult
   onDoubleClick: PropTypes.func,
   onClick: PropTypes.func,
   onMouseDown: PropTypes.func,
+  isSeriesValid: PropTypes.bool.isRequired,
+  SeriesInstanceUID: PropTypes.string.isRequired,
+  onSeriesValidityUpdated: PropTypes.func.isRequired,
 };
 
 Thumbnail.defaultProps = {

@@ -12,6 +12,7 @@ import ConnectedStudyBrowser from './ConnectedStudyBrowser.js';
 import ConnectedViewerMain from './ConnectedViewerMain.js';
 import SidePanel from './../components/SidePanel.js';
 import { extensionManager } from './../App.js';
+import api from '../utils/api';
 
 // Contexts
 import WhiteLabellingContext from '../context/WhiteLabellingContext.js';
@@ -161,6 +162,17 @@ class Viewer extends Component {
     }
   };
 
+  onSeriesValidityUpdated = (
+    StudyInstanceUID,
+    SeriesInstanceUID,
+    isSeriesValid
+  ) => {
+    return api.put(
+      `/studies/${StudyInstanceUID}/series/${SeriesInstanceUID}/qc`,
+      { isSeriesValid }
+    );
+  };
+
   componentDidMount() {
     const { studies, isStudyLoaded } = this.props;
     const { TimepointApi, MeasurementApi } = OHIF.measurements;
@@ -193,11 +205,13 @@ class Viewer extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  async componentDidUpdate(prevProps) {
     const { studies, isStudyLoaded } = this.props;
     if (studies !== prevProps.studies) {
+      const isSeriesValidMap = await _createIsSeriesValidMap(studies);
+
       this.setState({
-        thumbnails: _mapStudiesToThumbnails(studies),
+        thumbnails: _mapStudiesToThumbnails(studies, isSeriesValidMap),
       });
     }
     if (isStudyLoaded && isStudyLoaded !== prevProps.isStudyLoaded) {
@@ -293,11 +307,12 @@ class Viewer extends Component {
                 activeIndex={this.props.activeViewportIndex}
               />
             ) : (
-                <ConnectedStudyBrowser
-                  studies={this.state.thumbnails}
-                  studyMetadata={this.props.studies}
-                />
-              )}
+              <ConnectedStudyBrowser
+                studies={this.state.thumbnails}
+                studyMetadata={this.props.studies}
+                onSeriesValidityUpdated={this.onSeriesValidityUpdated}
+              />
+            )}
           </SidePanel>
 
           {/* MAIN */}
@@ -337,15 +352,16 @@ export default withDialog(Viewer);
  * - Add showStackLoadingProgressBar option
  *
  * @param {Study[]} studies
- * @param {DisplaySet[]} studies[].displaySets
+ * @param {DisplaySet[]} tudies[].displaySets
  */
-const _mapStudiesToThumbnails = function (studies) {
+const _mapStudiesToThumbnails = function(studies, isSeriesValidMap = {}) {
   return studies.map(study => {
     const { StudyInstanceUID } = study;
 
     const thumbnails = study.displaySets.map(displaySet => {
       const {
         displaySetInstanceUID,
+        SeriesInstanceUID,
         SeriesDescription,
         SeriesNumber,
         InstanceNumber,
@@ -354,6 +370,9 @@ const _mapStudiesToThumbnails = function (studies) {
 
       let imageId;
       let altImageText;
+
+      // Valid if true or undefined (info missing from DB)
+      const isSeriesValid = isSeriesValidMap[SeriesInstanceUID] !== false;
 
       if (displaySet.Modality && displaySet.Modality === 'SEG') {
         // TODO: We want to replace this with a thumbnail showing
@@ -372,10 +391,12 @@ const _mapStudiesToThumbnails = function (studies) {
         imageId,
         altImageText,
         displaySetInstanceUID,
+        SeriesInstanceUID,
         SeriesDescription,
         SeriesNumber,
         InstanceNumber,
         numImageFrames,
+        isSeriesValid,
       };
     });
 
@@ -384,4 +405,21 @@ const _mapStudiesToThumbnails = function (studies) {
       thumbnails,
     };
   });
+};
+
+const _createIsSeriesValidMap = async function(studies) {
+  const { StudyInstanceUID } = studies[0];
+  const isSeriesValidMap = {};
+
+  try {
+    const response = await api.get(`/studies/${StudyInstanceUID}/qc`);
+
+    for (let series of response.data) {
+      isSeriesValidMap[series['SeriesInstanceUID']] = series['IsSeriesValid'];
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  return isSeriesValidMap;
 };
