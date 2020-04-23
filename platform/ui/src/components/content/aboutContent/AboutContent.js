@@ -54,6 +54,14 @@ const AboutContent = () => {
         >
           {t('Report an issue')}
         </a>
+        <a
+          className="btn btn-default"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="/covera_viewer/AI-Viewer_UserGuide.pdf"
+        >
+          {t('User Guide')}
+        </a>
       </div>
       <div>
         <h3>{t('Version Information')}</h3>
