@@ -14,7 +14,7 @@ class MetadataPanel extends Component {
     const { pathname } = this.props.location;
     const studyInstanceUID = pathname.substring(pathname.lastIndexOf('/') + 1);
 
-    api.get(`/metadata/${studyInstanceUID}`).then(response => {
+    api.get(`/studies/${studyInstanceUID}/metadata`).then(response => {
       const metadata = response.data;
       this.setState({ metadata });
     });

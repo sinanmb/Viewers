@@ -233,10 +233,9 @@ export default class MeasurementApi {
     }
 
     const StudyInstanceUID = retrieveStudyInstanceUID();
-    console.log(`StudyInstanceUID = ${StudyInstanceUID}`);
 
     let databaseMeasurementsData = await api.get(
-      `/annotations/${StudyInstanceUID}`
+      `/studies/${StudyInstanceUID}/annotations`
     );
 
     return new Promise((resolve, reject) => {
@@ -345,7 +344,7 @@ export default class MeasurementApi {
       toolTypesToSave.includes(measurement.toolType)
     );
 
-    api.put(`/annotations/${StudyInstanceUID}`, { measurementsToSave });
+    api.put(`/studies/${StudyInstanceUID}/annotations`, { measurementsToSave });
   }
 
   calculateLesionNamingNumber(measurements) {
