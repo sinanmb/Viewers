@@ -422,5 +422,5 @@ const _createIsSeriesQcValidMap = async function(studies) {
     console.log(error);
   }
 
-  return isSeriesQCValidMap;
+  return isSeriesQcValidMap;
 };
