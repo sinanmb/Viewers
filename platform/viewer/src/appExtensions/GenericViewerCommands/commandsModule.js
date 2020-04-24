@@ -131,9 +131,9 @@ const commandsModule = ({ commandsManager }) => {
       options: { direction: -1 },
     },
     // Custom commands placeholders
-    nextViewport: {},
-    selectNerve: {},
-    selectStenosis: {},
+    // nextViewport: {},
+    // selectNerve: {},
+    // selectStenosis: {},
   };
 
   return {

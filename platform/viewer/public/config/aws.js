@@ -17,13 +17,13 @@ window.config = {
   },
   hotkeys: [
     // Custom
-    {
-      commandName: 'nextViewport',
-      label: 'Next Viewport',
-      keys: ['`'],
-    },
-    { commandName: 'selectNerve', label: 'Select Nerve', keys: ['1'] },
-    { commandName: 'selectStenosis', label: 'Select Stenosis', keys: ['2'] },
+    // {
+    //   commandName: 'nextViewport',
+    //   label: 'Next Viewport',
+    //   keys: ['`'],
+    // },
+    // { commandName: 'selectNerve', label: 'Select Nerve', keys: ['1'] },
+    // { commandName: 'selectStenosis', label: 'Select Stenosis', keys: ['2'] },
     // Original
     { commandName: 'nextImage', label: 'Next Image', keys: ['down'] },
     { commandName: 'previousImage', label: 'Previous Image', keys: ['up'] },

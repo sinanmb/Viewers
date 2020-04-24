@@ -14,18 +14,17 @@ class MetadataInfo extends Component {
   handleClick = () => this.setState({ isOpen: !this.state.isOpen });
 
   render() {
+    const {
+      text,
+      clean_text: cleanText,
+      study_id: studyId,
+    } = this.props.metadata.info;
+
     const metadataElement = (
       <div className="metadata-info-content">
-        <h4>Name: {this.props.metadata.Name}</h4>
-        <h4>Creation Date: {this.props.metadata.CreationDate}</h4>
-        <h4>Version: {this.props.metadata.Version}</h4>
-        <h4>Body Part: {this.props.metadata.body_part}</h4>
+        <h4>Study ID: {studyId}</h4>
         <h4>
-          Practice Friendly ID: {this.props.metadata.practice_friendly_id}
-        </h4>
-        <h4>Study ID: {this.props.metadata.study_id}</h4>
-        <h4>
-          Radiologist Assessment: <pre>{this.props.metadata.info.text}</pre>
+          Radiologist Assessment: <pre>{text || cleanText}</pre>
         </h4>
       </div>
     );
