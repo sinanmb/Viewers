@@ -29,7 +29,7 @@ function StudyBrowser(props) {
                 SeriesDescription,
                 SeriesNumber,
                 stackPercentComplete,
-                IsSeriesQcValid,
+                isSeriesQcValid,
                 SeriesInstanceUID,
               } = thumb;
 
@@ -55,7 +55,7 @@ function StudyBrowser(props) {
                     SeriesNumber={SeriesNumber}
                     stackPercentComplete={stackPercentComplete}
                     SeriesInstanceUID={SeriesInstanceUID}
-                    IsSeriesQcValid={IsSeriesQcValid}
+                    isSeriesQcValid={isSeriesQcValid}
                     // Events
                     onClick={onThumbnailClick.bind(
                       undefined,
