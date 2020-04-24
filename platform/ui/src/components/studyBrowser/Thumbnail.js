@@ -11,14 +11,14 @@ function ThumbnailFooter({
   SeriesNumber,
   InstanceNumber,
   numImageFrames,
-  isSeriesValid,
+  isSeriesQcValid,
   onSeriesValidityUpdated,
   StudyInstanceUID,
   SeriesInstanceUID,
 }) {
   const infoOnly = !SeriesDescription;
 
-  const [checkBoxValue, setCheckBoxValue] = useState(isSeriesValid);
+  const [checkBoxValue, setCheckBoxValue] = useState(isSeriesQcValid);
 
   const getInfo = (value, icon, className = '') => {
     return (
@@ -62,12 +62,11 @@ function ThumbnailFooter({
         {getInfo(numImageFrames, '', 'image-frames')}
         <input
           type="checkbox"
-          id="isSeriesValid"
-          name="isSeriesValid"
+          id="isSeriesQcValid"
+          name="isSeriesQcValid"
           checked={checkBoxValue}
           onChange={onChange}
         />
-        {/* <label htmlFor="isSeriesValid"></label> */}
       </div>
     );
   };
@@ -169,7 +168,7 @@ It will be displayed inside the <div>. This is useful when it is difficult
   onDoubleClick: PropTypes.func,
   onClick: PropTypes.func,
   onMouseDown: PropTypes.func,
-  isSeriesValid: PropTypes.bool.isRequired,
+  isSeriesQcValid: PropTypes.bool.isRequired,
   SeriesInstanceUID: PropTypes.string.isRequired,
   onSeriesValidityUpdated: PropTypes.func.isRequired,
 };

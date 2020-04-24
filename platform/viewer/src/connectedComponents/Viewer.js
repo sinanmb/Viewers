@@ -165,11 +165,11 @@ class Viewer extends Component {
   onSeriesValidityUpdated = (
     StudyInstanceUID,
     SeriesInstanceUID,
-    isSeriesValid
+    isSeriesQcValid
   ) => {
     return api.put(
       `/studies/${StudyInstanceUID}/series/${SeriesInstanceUID}/qc`,
-      { isSeriesValid }
+      { isSeriesQcValid }
     );
   };
 
@@ -208,10 +208,10 @@ class Viewer extends Component {
   async componentDidUpdate(prevProps) {
     const { studies, isStudyLoaded } = this.props;
     if (studies !== prevProps.studies) {
-      const isSeriesValidMap = await _createIsSeriesValidMap(studies);
+      const isSeriesQcValidMap = await _createIsSeriesQcValidMap(studies);
 
       this.setState({
-        thumbnails: _mapStudiesToThumbnails(studies, isSeriesValidMap),
+        thumbnails: _mapStudiesToThumbnails(studies, isSeriesQcValidMap),
       });
     }
     if (isStudyLoaded && isStudyLoaded !== prevProps.isStudyLoaded) {
@@ -354,7 +354,7 @@ export default withDialog(Viewer);
  * @param {Study[]} studies
  * @param {DisplaySet[]} tudies[].displaySets
  */
-const _mapStudiesToThumbnails = function(studies, isSeriesValidMap = {}) {
+const _mapStudiesToThumbnails = function(studies, isSeriesQcValidMap = {}) {
   return studies.map(study => {
     const { StudyInstanceUID } = study;
 
@@ -372,7 +372,7 @@ const _mapStudiesToThumbnails = function(studies, isSeriesValidMap = {}) {
       let altImageText;
 
       // Valid if true or undefined (info missing from DB)
-      const isSeriesValid = isSeriesValidMap[SeriesInstanceUID] !== false;
+      const isSeriesQcValid = isSeriesQcValidMap[SeriesInstanceUID] !== false;
 
       if (displaySet.Modality && displaySet.Modality === 'SEG') {
         // TODO: We want to replace this with a thumbnail showing
@@ -396,7 +396,7 @@ const _mapStudiesToThumbnails = function(studies, isSeriesValidMap = {}) {
         SeriesNumber,
         InstanceNumber,
         numImageFrames,
-        isSeriesValid,
+        isSeriesQcValid,
       };
     });
 
@@ -407,19 +407,20 @@ const _mapStudiesToThumbnails = function(studies, isSeriesValidMap = {}) {
   });
 };
 
-const _createIsSeriesValidMap = async function(studies) {
+const _createIsSeriesQcValidMap = async function(studies) {
   const { StudyInstanceUID } = studies[0];
-  const isSeriesValidMap = {};
+  const isSeriesQcValidMap = {};
 
   try {
     const response = await api.get(`/studies/${StudyInstanceUID}/qc`);
 
     for (let series of response.data) {
-      isSeriesValidMap[series['SeriesInstanceUID']] = series['IsSeriesValid'];
+      isSeriesQcValidMap[series['SeriesInstanceUID']] =
+        series['IsSeriesQcValid'];
     }
   } catch (error) {
     console.log(error);
   }
 
-  return isSeriesValidMap;
+  return isSeriesQCValidMap;
 };
