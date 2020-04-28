@@ -57,7 +57,9 @@ export default class LandmarkTool extends BaseAnnotationTool {
           active: true,
         },
       },
+      aiViewerVersion: process.env.VERSION_NUMBER,
     };
+
     csTools.addToolState(eventData.element, this.name, measurementData);
     // Allow relabelling via a callback
     this._updateTextForNearbyAnnotation(eventData);
