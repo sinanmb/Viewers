@@ -20,11 +20,17 @@ class MetadataInfo extends Component {
       study_id: studyId,
     } = this.props.metadata.info;
 
+    const notCleanTextWarning =
+      !cleanText && text ? (
+        <small className="warning">(Not Clean Text)</small>
+      ) : null;
+
     const metadataElement = (
       <div className="metadata-info-content">
         <h4>Study ID: {studyId}</h4>
         <h4>
-          Radiologist Assessment: <pre>{text || cleanText}</pre>
+          Radiologist Assessment {notCleanTextWarning}:
+          <pre className="radiologist-assessment">{cleanText || text}</pre>
         </h4>
       </div>
     );
