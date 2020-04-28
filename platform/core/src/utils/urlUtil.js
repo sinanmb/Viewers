@@ -60,6 +60,13 @@ const isValidPath = path => {
   return path.indexOf(paramPatternPiece) < 0;
 };
 
+const canParamBeParsed = param => {
+  const containsOnlyNumbersAndAtLeastOneDotBetweenNumbersRegex = /^\d+(\.\d+)+$/;
+  return (
+    param.search(containsOnlyNumbersAndAtLeastOneDotBetweenNumbersRegex) >= 0
+  );
+};
+
 const queryString = {
   getQueryFilters,
 };
@@ -68,6 +75,7 @@ const paramString = {
   isValidPath,
   parseParam,
   replaceParam,
+  canParamBeParsed,
 };
 
 export { parse, queryString, paramString };

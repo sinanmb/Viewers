@@ -34,3 +34,6 @@ screenshots/
 
 # Locize settings
 .locize
+
+# IDE
+.vscode/
