@@ -14,7 +14,7 @@ export default class StenosisComponent extends Component {
         <label>
           <input
             type="radio"
-            name="severalCentralCanalStenosis"
+            name="severeCentralCanalStenosis"
             value={false}
             checked={this.props.data.severeCentralCanalStenosis === false}
             onChange={this.onChange}

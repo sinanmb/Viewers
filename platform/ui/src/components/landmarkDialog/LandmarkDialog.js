@@ -38,7 +38,7 @@ class LandmarkDialog extends Component {
       },
 
       stenosis: {
-        severalCentralCanalStenosis: null,
+        severeCentralCanalStenosis: null,
       },
     };
 
