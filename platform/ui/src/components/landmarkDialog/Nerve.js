@@ -12,9 +12,6 @@ export default class NerveComponent extends Component {
   };
 
   render() {
-    const intrathecalDisplayOnlyClasses =
-      this.props.data.position === 'Extrathecal' ? 'group' : 'hidden';
-
     return (
       <>
         {/* Position */}
@@ -42,7 +39,7 @@ export default class NerveComponent extends Component {
           </label>
         </div>
         {/* Location side*/}
-        <div className={intrathecalDisplayOnlyClasses}>
+        <div className="group">
           <h4>Location</h4>
           <label>
             <input
@@ -105,7 +102,7 @@ export default class NerveComponent extends Component {
           </div>
         </div>
         {/* Cause Radiobuttons */}
-        <div className={intrathecalDisplayOnlyClasses}>
+        <div className="group">
           <h4>Cause</h4>
           <label>
             <input
