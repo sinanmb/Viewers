@@ -1,5 +1,6 @@
 import React, { useState, useSelector } from 'react';
 import PropTypes from 'prop-types';
+import { SketchPicker } from 'react-color';
 
 import i18n from '@ohif/i18n';
 
@@ -19,16 +20,28 @@ function GeneralPreferences({ onClose }) {
   const { t } = useTranslation('UserPreferencesModal');
   const snackbar = useSnackbarContext();
   const currentLanguage = i18n.language;
+  const defaultColor = { r: 0, g: 255, b: 0 };
+  const currentColor =
+    JSON.parse(localStorage.getItem('coveraViewerViewportCursorColor')) ||
+    defaultColor;
   const { availableLanguages } = i18n;
 
   const [language, setLanguage] = useState(currentLanguage);
+  const [color, setColor] = useState(currentColor);
+
+  const handleColorChange = newColor => setColor(newColor.rgb);
 
   const onResetPreferences = () => {
     setLanguage(i18n.defaultLanguage);
+    setColor(defaultColor);
   };
 
   const onSave = () => {
     i18n.changeLanguage(language);
+    localStorage.setItem(
+      'coveraViewerViewportCursorColor',
+      JSON.stringify(color)
+    );
 
     onClose();
 
@@ -52,6 +65,13 @@ function GeneralPreferences({ onClose }) {
             onLanguageChange={setLanguage}
             languages={availableLanguages}
           />
+        </div>
+        <br />
+        <div className="color">
+          <label htmlFor="color-select" className="colorLabel">
+            Viewport Cursor Color
+          </label>
+          <SketchPicker color={color} onChangeComplete={handleColorChange} />
         </div>
       </div>
       <TabFooter
