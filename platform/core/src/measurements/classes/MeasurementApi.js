@@ -264,7 +264,7 @@ export default class MeasurementApi {
 
             measurements.forEach(measurement => {
               const { toolType } = measurement;
-              this.addMeasurement(toolType, measurement);
+              this.addMeasurement(toolType, measurement, true);
             });
           });
         }
@@ -702,7 +702,7 @@ export default class MeasurementApi {
       });
   }
 
-  addMeasurement(toolType, measurement) {
+  addMeasurement(toolType, measurement, skipStoreMeasurements = false) {
     const toolGroup = this.toolsGroupsMap[toolType];
     const groupCollection = this.toolGroups[toolGroup];
     const collection = this.tools[toolType];
@@ -851,6 +851,10 @@ export default class MeasurementApi {
       });
     }
 
+    if (!skipStoreMeasurements) {
+      this.storeMeasurements();
+    }
+
     // Let others know that the measurements are updated
     this.onMeasurementsUpdated();
 
@@ -872,6 +876,7 @@ export default class MeasurementApi {
 
     collection[toolIndex] = Object.assign({}, measurement);
 
+    this.storeMeasurements();
     // Let others know that the measurements are updated
     this.onMeasurementsUpdated();
 
@@ -988,6 +993,8 @@ export default class MeasurementApi {
         collection.splice(toolIndex, 1);
       }
     });
+
+    this.storeMeasurements();
 
     // Stop here if no entries were found
     if (!entries.length) {
