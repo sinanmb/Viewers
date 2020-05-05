@@ -1,5 +1,7 @@
 import OHIF from '@ohif/core';
 import { SimpleDialog, LandmarkDialog } from '@ohif/ui';
+// TODO Sinan: Use alias and relative path
+import { ContextMenuDialog } from '../../../platform/viewer/src/connectedComponents/ContextMenuDialog';
 import cornerstone from 'cornerstone-core';
 import csTools from 'cornerstone-tools';
 import merge from 'lodash.merge';
@@ -16,6 +18,8 @@ const projectPatientPointToImagePlane = csTools.importInternal(
   'util/projectPatientPointToImagePlane'
 );
 const getNewContext = csTools.importInternal('drawing/getNewContext');
+
+let isShiftKeyDown = false;
 
 /**
  *
@@ -68,6 +72,38 @@ export default function init({ servicesManager, configuration }) {
       });
     }
   };
+
+  // TODO Sinan: Move this to it's own appExtension
+  const callInputDialogContextMenu = _ => {
+    if (UIDialogService) {
+      let dialogId = UIDialogService.create({
+        centralize: true,
+        isDraggable: false,
+        content: ContextMenuDialog,
+        useLastPosition: false,
+        showOverlay: true,
+        contentProps: {
+          title: 'Menu',
+          onClose: () => UIDialogService.dismiss({ id: dialogId }),
+        },
+      });
+    }
+  };
+
+  document.addEventListener('keydown', function(e) {
+    isShiftKeyDown = e.shiftKey;
+  });
+
+  document.addEventListener('keyup', function(e) {
+    isShiftKeyDown = e.shiftKey;
+  });
+
+  document.addEventListener('contextmenu', function(e) {
+    if (isShiftKeyDown) {
+      e.stopPropagation();
+      callInputDialogContextMenu();
+    }
+  });
 
   const { csToolsConfig } = configuration;
   const metadataProvider = OHIF.cornerstone.metadataProvider;

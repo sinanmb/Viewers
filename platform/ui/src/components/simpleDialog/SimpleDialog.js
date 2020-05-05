@@ -14,6 +14,7 @@ class SimpleDialog extends Component {
     headerTitle: PropTypes.string.isRequired,
     onClose: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
+    isFooterHidden: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -64,14 +65,16 @@ class SimpleDialog extends Component {
                 <h4 className="title">{this.props.headerTitle}</h4>
               </div>
               <div className="content">{this.props.children}</div>
-              <div className="footer">
-                <button className="btn btn-default" onClick={this.onClose}>
-                  Cancel
-                </button>
-                <button className="btn btn-primary" onClick={this.onConfirm}>
-                  Confirm
-                </button>
-              </div>
+              {!this.props.isFooterHidden && (
+                <div className="footer">
+                  <button className="btn btn-default" onClick={this.onClose}>
+                    Cancel
+                  </button>
+                  <button className="btn btn-primary" onClick={this.onConfirm}>
+                    Confirm
+                  </button>
+                </div>
+              )}
             </form>
           </div>
         )}
