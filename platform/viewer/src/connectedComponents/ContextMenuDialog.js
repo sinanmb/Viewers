@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { SimpleDialog, ToolbarButton } from '@ohif/ui';
 import { MODULE_TYPES } from '@ohif/core';
 
@@ -9,10 +10,11 @@ import NextStudyButton from './NextStudyButton';
 import ReviewButtonComponent from './ReviewButtonComponent';
 import { commandsManager, extensionManager } from './../App.js';
 
-class ContextMenuDialog extends Component {
+class component extends Component {
   static propTypes = {
     title: PropTypes.string,
     onClose: PropTypes.func.isRequired,
+    selectedWorkingList: PropTypes.string,
   };
 
   constructor(props) {
@@ -38,6 +40,12 @@ class ContextMenuDialog extends Component {
       marginTop: '1rem',
     };
 
+    const workingListNavButtonsStyle = {
+      width: '8rem',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    };
+
     const buttonComponents = _getButtonComponents.call(
       this,
       this.state.toolbarButtons,
@@ -54,11 +62,13 @@ class ContextMenuDialog extends Component {
         <div style={dialogContentStyle}>
           <div style={buttonComponentsStyle}>{buttonComponents}</div>
 
-          <div>
-            <ReviewButtonComponent action="reject" />
-            <PreviousStudyButton />
-            <NextStudyButton />
-          </div>
+          {this.props.selectedWorkingList && (
+            <div style={workingListNavButtonsStyle}>
+              <ReviewButtonComponent action="reject" />
+              <PreviousStudyButton />
+              <NextStudyButton />
+            </div>
+          )}
         </div>
       </SimpleDialog>
     );
@@ -147,4 +157,9 @@ function _handleToolbarButtonClick(button, evt, props) {
   }
 }
 
+const mapStateToProps = state => ({
+  selectedWorkingList: state.workingLists.selectedWorkingList,
+});
+
+const ContextMenuDialog = connect(mapStateToProps, {})(component);
 export { ContextMenuDialog };
