@@ -54,15 +54,12 @@ export default function init({ servicesManager, configuration }) {
 
   const callInputDialogLandmark = (data, event, callback) => {
     if (UIDialogService) {
-      // Move modal dialog to not crowd over the added landmark
-      const x = event.x + 10;
-      const y = event.y + 10;
+      const { x, y } = _calculateModalCoordinates(event, 304, 508);
 
       let dialogId = UIDialogService.create({
         defaultPosition: { x, y },
-        isDraggable: true,
+        isDraggable: false,
         content: LandmarkDialog,
-        useLastPosition: false,
         showOverlay: true,
         contentProps: {
           title: 'Enter your annotations',
@@ -80,12 +77,12 @@ export default function init({ servicesManager, configuration }) {
   // TODO Sinan: Move this to it's own appExtension
   const callInputDialogContextMenu = event => {
     if (UIDialogService) {
-      const { x, y } = event;
+      const { x, y } = _calculateModalCoordinates(event, 304, 230);
+
       let dialogId = UIDialogService.create({
         defaultPosition: { x, y },
-        isDraggable: true,
+        isDraggable: false,
         content: ContextMenuDialog,
-        useLastPosition: false,
         showOverlay: true,
         contentProps: {
           title: 'Menu',
@@ -246,6 +243,21 @@ export default function init({ servicesManager, configuration }) {
   csTools.setToolActive('ZoomTouchPinch', {});
   csTools.setToolEnabled('Overlay', {});
 }
+
+const _calculateModalCoordinates = (event, modalWidth, modalHeight) => {
+  let x = event.x + 10;
+  let y = event.y + 10;
+
+  const { innerWidth, innerHeight } = event.view;
+
+  if (x > innerWidth / 2) {
+    x -= modalWidth + 20;
+  }
+  if (y > innerHeight - modalHeight) {
+    y -= modalHeight + 20;
+  }
+  return { x, y };
+};
 
 const _initMeasurementService = measurementService => {
   /* Initialization */
