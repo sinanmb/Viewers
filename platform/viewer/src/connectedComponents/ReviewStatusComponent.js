@@ -14,10 +14,10 @@ class ReviewStatusComponent extends Component {
       marginTop: '-0.75rem',
     };
 
-    let status = 'Status';
+    let status = 'Not Reviewed';
 
     if (this.props.selectedStudy.status === true) {
-      status = 'Reviewed';
+      status = 'Approved';
       pStyle.color = 'green';
     } else if (this.props.selectedStudy.status === false) {
       status = 'Rejected';
