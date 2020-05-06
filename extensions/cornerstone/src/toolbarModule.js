@@ -96,15 +96,6 @@ const definitions = [
     commandOptions: { toolName: 'Wwwc' },
   },
   {
-    id: 'Length',
-    label: 'Length',
-    icon: 'measure-temp',
-    //
-    type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
-    commandName: 'setToolActive',
-    commandOptions: { toolName: 'Length' },
-  },
-  {
     id: 'Landmark',
     label: 'Landmark',
     icon: 'dot-circle',
@@ -112,6 +103,15 @@ const definitions = [
     type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
     commandName: 'setToolActive',
     commandOptions: { toolName: 'Landmark' },
+  },
+  {
+    id: 'Length',
+    label: 'Length',
+    icon: 'measure-temp',
+    //
+    type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
+    commandName: 'setToolActive',
+    commandOptions: { toolName: 'Length' },
   },
   {
     id: 'EllipticalRoi',
