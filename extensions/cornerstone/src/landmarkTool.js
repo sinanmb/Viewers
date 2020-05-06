@@ -183,7 +183,7 @@ export default class LandmarkTool extends BaseAnnotationTool {
         // Allow relabelling via a callback
         this.configuration.changeTextCallback(
           data,
-          evt.detail,
+          evt.event,
           this._doneChangingTextCallback.bind(this, element, data)
         );
 

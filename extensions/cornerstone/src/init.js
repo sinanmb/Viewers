@@ -54,9 +54,13 @@ export default function init({ servicesManager, configuration }) {
 
   const callInputDialogLandmark = (data, event, callback) => {
     if (UIDialogService) {
+      // Move modal dialog to not crowd over the added landmark
+      const x = event.x + 10;
+      const y = event.y + 10;
+
       let dialogId = UIDialogService.create({
-        centralize: true,
-        isDraggable: false,
+        defaultPosition: { x, y },
+        isDraggable: true,
         content: LandmarkDialog,
         useLastPosition: false,
         showOverlay: true,
@@ -74,11 +78,12 @@ export default function init({ servicesManager, configuration }) {
   };
 
   // TODO Sinan: Move this to it's own appExtension
-  const callInputDialogContextMenu = _ => {
+  const callInputDialogContextMenu = event => {
     if (UIDialogService) {
+      const { x, y } = event;
       let dialogId = UIDialogService.create({
-        centralize: true,
-        isDraggable: false,
+        defaultPosition: { x, y },
+        isDraggable: true,
         content: ContextMenuDialog,
         useLastPosition: false,
         showOverlay: true,
@@ -101,7 +106,7 @@ export default function init({ servicesManager, configuration }) {
   document.addEventListener('contextmenu', function(e) {
     if (isShiftKeyDown) {
       e.stopPropagation();
-      callInputDialogContextMenu();
+      callInputDialogContextMenu(e);
     }
   });
 
