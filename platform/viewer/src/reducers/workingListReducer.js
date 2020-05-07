@@ -42,12 +42,15 @@ export default function(state = initialState, action) {
         selectedStudy: action.payload,
       };
     case SET_REVIEW_STATUS: {
+      const selectedStudy = action.payload;
       const selectedWorkingListStudies = state.selectedWorkingListStudies;
-      selectedWorkingListStudies[state.studyIndex] = action.payload;
+      selectedWorkingListStudies.find(
+        study => study.study_instance_uid == selectedStudy.study_instance_uid
+      ).status = selectedStudy.status;
 
       return {
         ...state,
-        selectedStudy: action.payload,
+        selectedStudy,
         selectedWorkingListStudies,
       };
     }
