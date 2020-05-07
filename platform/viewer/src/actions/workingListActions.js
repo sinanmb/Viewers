@@ -45,7 +45,7 @@ export const setReviewStatus = (
   studyInstanceUID,
   status
 ) => dispatch => {
-  api
+  return api
     .put(`/working-lists/${workingListId}/studies/${studyInstanceUID}`, {
       status,
     })

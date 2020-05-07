@@ -29,7 +29,7 @@ class ReviewStatusComponent extends Component {
         <p style={pStyle}>{status}</p>
         <div style={reviewButtonsStyle}>
           <ReviewButtonComponent action="reject" />
-          <ReviewButtonComponent action="review" />
+          <ReviewButtonComponent action="approve" />
         </div>
       </div>
     );

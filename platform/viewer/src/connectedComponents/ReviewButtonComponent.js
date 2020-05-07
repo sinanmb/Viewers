@@ -7,7 +7,7 @@ import { Icon } from '@ohif/ui';
 
 class ReviewButtonComponent extends Component {
   setReviewStatus(action) {
-    const status = action === 'review' ? true : false;
+    const status = action === 'approve' ? true : false;
 
     this.props.setReviewStatus(
       this.props.selectedWorkingList,
@@ -18,7 +18,7 @@ class ReviewButtonComponent extends Component {
 
   render() {
     const { action } = this.props;
-    const iconName = action == 'review' ? 'check' : 'times';
+    const iconName = action == 'approve' ? 'check' : 'times';
 
     const buttonStyle = {
       background: 'transparent',
