@@ -31,7 +31,7 @@ function ViewerRouting({ match: routeMatch, location: routeLocation }) {
 
   // Studies that have a number studyInstanceUIDs (instead of string) cause issues with UrlUtil
   let studyUIDs;
-  if (isNaN(studyInstanceUIDs)) {
+  if (UrlUtil.paramString.canParamBeParsed(studyInstanceUIDs)) {
     studyUIDs = UrlUtil.paramString.parseParam(studyInstanceUIDs);
   } else {
     studyUIDs = [studyInstanceUIDs];
@@ -39,7 +39,7 @@ function ViewerRouting({ match: routeMatch, location: routeLocation }) {
   let seriesUIDs = getSeriesInstanceUIDs(seriesInstanceUIDs, routeLocation);
 
   useEffect(() => {
-    if (isNaN(studyInstanceUIDs)) {
+    if (UrlUtil.paramString.canParamBeParsed(studyInstanceUIDs)) {
       studyUIDs = UrlUtil.paramString.parseParam(studyInstanceUIDs);
     } else {
       studyUIDs = [studyInstanceUIDs];

@@ -19,6 +19,7 @@ import ConnectedLayoutButton from './ConnectedLayoutButton';
 import ToolbarWorkingListGroup from './ToolbarWorkingListGroup';
 import LandmarkLocationShortcuts from './LandmarkLocationShortcuts';
 import NextViewportShortcut from './NextViewportShortcut';
+import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
 
 class ToolbarRow extends Component {
   // TODO: Simplify these? isOpen can be computed if we say "any" value for selected,
@@ -56,7 +57,9 @@ class ToolbarRow extends Component {
 
     this.state = {
       toolbarButtons: toolbarButtonDefinitions,
-      activeButtons: [],
+      // Show landmark as selected in the toolbar
+      // OHIF default behavior is to not show the selected tool on the study view
+      activeButtons: [{ id: 'Landmark' }],
     };
 
     this.seriesPerStudyCount = [];
@@ -64,6 +67,14 @@ class ToolbarRow extends Component {
     this._handleBuiltIn = _handleBuiltIn.bind(this);
 
     this.updateButtonGroups();
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this._handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keyDown', this._handleKeyDown);
   }
 
   updateButtonGroups() {
@@ -162,6 +173,53 @@ class ToolbarRow extends Component {
           button => button.options && button.options.behavior !== 'CINE'
         );
         this.setState({ dialogId: null, activeButtons });
+      }
+    }
+  };
+
+  _handleKeyDown = e => {
+    // TODO Sinan: Optimize verification
+    const isAtLeastOneToolActivable =
+      this.state.toolbarButtons.findIndex(
+        tool => tool.commandName === 'setToolActive'
+      ) >= 0;
+
+    if (!isAtLeastOneToolActivable) {
+      return;
+    }
+
+    const activeToolId = this.state.activeButtons[0].id;
+    const activeToolIndex = this.state.toolbarButtons.findIndex(
+      tool => tool.id === activeToolId
+    );
+
+    let newIndex = activeToolIndex;
+    switch (e.keyCode) {
+      case 37: {
+        // Left Key
+        do {
+          newIndex =
+            newIndex - 1 >= 0
+              ? newIndex - 1
+              : this.state.toolbarButtons.length - 1;
+        } while (
+          this.state.toolbarButtons[newIndex].commandName != 'setToolActive'
+        );
+        const button = this.state.toolbarButtons[newIndex];
+        _handleToolbarButtonClick.call(this, button, e);
+        break;
+      }
+      case 39: {
+        // Right Key
+        do {
+          newIndex =
+            newIndex + 1 < this.state.toolbarButtons.length ? newIndex + 1 : 0;
+        } while (
+          this.state.toolbarButtons[newIndex].commandName != 'setToolActive'
+        );
+        const button = this.state.toolbarButtons[newIndex];
+        _handleToolbarButtonClick.call(this, button, e);
+        break;
       }
     }
   };

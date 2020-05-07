@@ -177,12 +177,13 @@ export default class LandmarkTool extends BaseAnnotationTool {
 
       if (this.pointNearTool(element, data, coords)) {
         data.active = true;
+        data.sliceNumber = this._getImageSliceNumber(element);
         csTools.external.cornerstone.updateImage(element);
 
         // Allow relabelling via a callback
         this.configuration.changeTextCallback(
           data,
-          evt.detail,
+          evt.event,
           this._doneChangingTextCallback.bind(this, element, data)
         );
 
@@ -215,5 +216,17 @@ export default class LandmarkTool extends BaseAnnotationTool {
       element,
       measurementData,
     });
+  }
+
+  _getImageSliceNumber(element) {
+    const imageSliceNumberDivInnerText = element.querySelector(
+      '.bottom-left.overlay-element div:nth-child(2)'
+    ).innerText;
+
+    try {
+      return Number(imageSliceNumberDivInnerText.split(' ')[2].split('/')[0]);
+    } catch (error) {
+      return null;
+    }
   }
 }

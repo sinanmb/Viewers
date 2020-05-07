@@ -59,8 +59,5 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { setStudyIndex, selectStudy }
-  )(PreviousStudyButton)
+  connect(mapStateToProps, { setStudyIndex, selectStudy })(PreviousStudyButton)
 );

@@ -1,5 +1,7 @@
 import OHIF from '@ohif/core';
 import { SimpleDialog, LandmarkDialog } from '@ohif/ui';
+// TODO Sinan: Use alias and relative path
+import { ContextMenuDialog } from '../../../platform/viewer/src/connectedComponents/ContextMenuDialog';
 import cornerstone from 'cornerstone-core';
 import csTools from 'cornerstone-tools';
 import merge from 'lodash.merge';
@@ -16,6 +18,8 @@ const projectPatientPointToImagePlane = csTools.importInternal(
   'util/projectPatientPointToImagePlane'
 );
 const getNewContext = csTools.importInternal('drawing/getNewContext');
+
+let isShiftKeyDown = false;
 
 /**
  *
@@ -50,11 +54,12 @@ export default function init({ servicesManager, configuration }) {
 
   const callInputDialogLandmark = (data, event, callback) => {
     if (UIDialogService) {
+      const { x, y } = _calculateModalCoordinates(event, 304, 508);
+
       let dialogId = UIDialogService.create({
-        centralize: true,
+        defaultPosition: { x, y },
         isDraggable: false,
         content: LandmarkDialog,
-        useLastPosition: false,
         showOverlay: true,
         contentProps: {
           title: 'Enter your annotations',
@@ -68,6 +73,39 @@ export default function init({ servicesManager, configuration }) {
       });
     }
   };
+
+  // TODO Sinan: Move this to it's own appExtension
+  const callInputDialogContextMenu = event => {
+    if (UIDialogService) {
+      const { x, y } = _calculateModalCoordinates(event, 304, 230);
+
+      let dialogId = UIDialogService.create({
+        defaultPosition: { x, y },
+        isDraggable: false,
+        content: ContextMenuDialog,
+        showOverlay: true,
+        contentProps: {
+          title: 'Menu',
+          onClose: () => UIDialogService.dismiss({ id: dialogId }),
+        },
+      });
+    }
+  };
+
+  document.addEventListener('keydown', function(e) {
+    isShiftKeyDown = e.shiftKey;
+  });
+
+  document.addEventListener('keyup', function(e) {
+    isShiftKeyDown = e.shiftKey;
+  });
+
+  document.addEventListener('contextmenu', function(e) {
+    if (isShiftKeyDown) {
+      e.stopPropagation();
+      callInputDialogContextMenu(e);
+    }
+  });
 
   const { csToolsConfig } = configuration;
   const metadataProvider = OHIF.cornerstone.metadataProvider;
@@ -205,6 +243,21 @@ export default function init({ servicesManager, configuration }) {
   csTools.setToolActive('ZoomTouchPinch', {});
   csTools.setToolEnabled('Overlay', {});
 }
+
+const _calculateModalCoordinates = (event, modalWidth, modalHeight) => {
+  let x = event.x + 10;
+  let y = event.y + 10;
+
+  const { innerWidth, innerHeight } = event.view;
+
+  if (x > innerWidth / 2) {
+    x -= modalWidth + 20;
+  }
+  if (y > innerHeight - modalHeight) {
+    y -= modalHeight + 20;
+  }
+  return { x, y };
+};
 
 const _initMeasurementService = measurementService => {
   /* Initialization */

@@ -55,7 +55,7 @@ class MetadataPanel extends Component {
             category="qa_findings"
           />
           <MetadataCategory
-            title="Urg QA"
+            title="URG QA"
             metadata={this.state.metadata}
             category="urg_pick_list"
           />

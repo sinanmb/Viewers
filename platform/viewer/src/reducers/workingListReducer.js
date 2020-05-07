@@ -41,11 +41,17 @@ export default function(state = initialState, action) {
         ...state,
         selectedStudy: action.payload,
       };
-    case SET_REVIEW_STATUS:
+    case SET_REVIEW_STATUS: {
+      const selectedWorkingListStudies = state.selectedWorkingListStudies;
+      selectedWorkingListStudies[state.studyIndex] = action.payload;
+
       return {
         ...state,
         selectedStudy: action.payload,
+        selectedWorkingListStudies,
       };
+    }
+
     default:
       return state;
   }
