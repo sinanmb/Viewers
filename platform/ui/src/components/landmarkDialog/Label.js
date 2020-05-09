@@ -12,26 +12,40 @@ export default class LabelComponent extends Component {
       <>
         <div className="group">
           <h4>Label</h4>
-          <label>
-            <input
-              type="radio"
-              name="label"
-              value="Nerve"
-              checked={this.props.label === 'Nerve'}
-              onChange={this.onChange}
-            />
-            Nerve
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="label"
-              value="Stenosis"
-              checked={this.props.label === 'Stenosis'}
-              onChange={this.onChange}
-            />
-            Stenosis
-          </label>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="label"
+                value="Left Nerve"
+                checked={this.props.label === 'Left Nerve'}
+                onChange={this.onChange}
+              />
+              Left Nerve
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="label"
+                value="Right Nerve"
+                checked={this.props.label === 'Right Nerve'}
+                onChange={this.onChange}
+              />
+              Right Nerve
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="label"
+                value="Stenosis"
+                checked={this.props.label === 'Stenosis'}
+                onChange={this.onChange}
+              />
+              Stenosis
+            </label>
+          </div>
         </div>
       </>
     );
