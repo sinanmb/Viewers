@@ -121,21 +121,17 @@ class LandmarkDialog extends Component {
   };
 
   handlePositionChange = position => {
-    const nerve = {
-      ...this.state.nerve,
-      position,
-    };
+    const nerve = { ...this.state.nerve, position };
     this.setState({ nerve });
   };
 
   handleLocationChange = location => {
-    const nerve = { ...this.state.nerve };
-    nerve.location = location;
+    const nerve = { ...this.state.nerve, location };
     this.setState({ nerve });
   };
 
   handleTypeChange = (name, value) => {
-    const nerve = this.state.nerve;
+    const nerve = { ...this.state.nerve };
     nerve.type[name] = value;
     this.setState({ nerve });
   };

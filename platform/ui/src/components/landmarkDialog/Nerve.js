@@ -44,7 +44,7 @@ export default class NerveComponent extends Component {
           <div>
             <select
               onChange={this.onLocationChange}
-              value={this.props.data.study_instance_uid}
+              value={this.props.data.location || ''}
             >
               <option value="">Choose a location:</option>
               <option value="Central/paracentral">Central/paracentral</option>
@@ -123,7 +123,7 @@ export default class NerveComponent extends Component {
     this.props.onPositionChange(value);
   };
 
-  onLocationnChange = e => {
+  onLocationChange = e => {
     const value = e.target.value || null;
     this.props.onLocationChange(value);
   };
