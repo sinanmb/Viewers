@@ -5,8 +5,7 @@ export default class NerveComponent extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
     onPositionChange: PropTypes.func.isRequired,
-    onLocationSideChange: PropTypes.func.isRequired,
-    onLocationLocationChange: PropTypes.func.isRequired,
+    onLocationChange: PropTypes.func.isRequired,
     onTypeChange: PropTypes.func.isRequired,
     onCauseChange: PropTypes.func.isRequired,
   };
@@ -41,31 +40,11 @@ export default class NerveComponent extends Component {
         {/* Location side*/}
         <div className="group">
           <h4>Location</h4>
-          <label>
-            <input
-              type="radio"
-              name="locationSide"
-              value="Left"
-              checked={this.props.data.location.side === 'Left'}
-              onChange={this.onLocationSideChange}
-            />
-            Left
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="locationSide"
-              value="Right"
-              checked={this.props.data.location.side === 'Right'}
-              onChange={this.onLocationSideChange}
-            />
-            Right
-          </label>
           {/* Location dropdown */}
           <div>
             <select
-              onChange={this.onLocationLocationChange}
-              value={this.props.data.study_instance_uid}
+              onChange={this.onLocationChange}
+              value={this.props.data.location || ''}
             >
               <option value="">Choose a location:</option>
               <option value="Central/paracentral">Central/paracentral</option>
@@ -144,14 +123,9 @@ export default class NerveComponent extends Component {
     this.props.onPositionChange(value);
   };
 
-  onLocationSideChange = e => {
-    const value = e.target.value;
-    this.props.onLocationSideChange(value);
-  };
-
-  onLocationLocationChange = e => {
+  onLocationChange = e => {
     const value = e.target.value || null;
-    this.props.onLocationLocationChange(value);
+    this.props.onLocationChange(value);
   };
 
   onTypeChange = e => {

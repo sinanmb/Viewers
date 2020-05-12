@@ -18,18 +18,18 @@ class LandmarkDialog extends Component {
   constructor(props) {
     super(props);
 
-    const label = props.measurementData.location;
+    const label =
+      props.measurementData.location === 'Nerve'
+        ? 'Left Nerve'
+        : props.measurementData.location;
 
     let initialState = {
-      labelOptions: ['Nerve', 'Stenosis'],
+      labelOptions: ['Left Nerve', 'Right Nerve', 'Stenosis'],
       label,
 
       nerve: {
         position: null,
-        location: {
-          location: null,
-          side: null,
-        },
+        location: null,
         type: {
           displace: false,
           compress: false,
@@ -44,7 +44,8 @@ class LandmarkDialog extends Component {
 
     if (props.measurementData.annotation !== undefined) {
       for (let data in props.measurementData.annotation) {
-        initialState[label.toLowerCase()][data] =
+        const formattedLabel = label.includes('Nerve') ? 'nerve' : 'stenosis';
+        initialState[formattedLabel][data] =
           props.measurementData.annotation[data];
       }
     }
@@ -72,12 +73,11 @@ class LandmarkDialog extends Component {
           />
         )}
 
-        {this.state.label === 'Nerve' && (
+        {this.state.label.includes('Nerve') && (
           <NerveComponent
             data={this.state.nerve}
             onPositionChange={this.handlePositionChange}
-            onLocationSideChange={this.handleLocationSideChange}
-            onLocationLocationChange={this.handleLocationLocationChange}
+            onLocationChange={this.handleLocationChange}
             onTypeChange={this.handleTypeChange}
             onCauseChange={this.handleCauseChange}
           />
@@ -96,19 +96,14 @@ class LandmarkDialog extends Component {
   };
 
   onSubmit = e => {
+    const formattedLabel = this.state.label.includes('Nerve')
+      ? 'nerve'
+      : 'stenosis';
+
     const updatedData = {
-      ...this.state[this.state.label.toLowerCase()],
+      ...this.state[formattedLabel],
       label: this.state.label,
     };
-
-    // Position Intrathecal does not have a location nor a cause
-    if (
-      updatedData.label === 'Nerve' &&
-      updatedData.position === 'Intrathecal'
-    ) {
-      delete updatedData.location;
-      delete updatedData.cause;
-    }
     this.props.onSubmit(updatedData);
   };
 
@@ -126,27 +121,17 @@ class LandmarkDialog extends Component {
   };
 
   handlePositionChange = position => {
-    const nerve = {
-      ...this.state.nerve,
-      position,
-    };
+    const nerve = { ...this.state.nerve, position };
     this.setState({ nerve });
   };
 
-  handleLocationSideChange = side => {
-    const nerve = { ...this.state.nerve };
-    nerve.location.side = side;
-    this.setState({ nerve });
-  };
-
-  handleLocationLocationChange = location => {
-    const nerve = { ...this.state.nerve };
-    nerve.location.location = location;
+  handleLocationChange = location => {
+    const nerve = { ...this.state.nerve, location };
     this.setState({ nerve });
   };
 
   handleTypeChange = (name, value) => {
-    const nerve = this.state.nerve;
+    const nerve = { ...this.state.nerve };
     nerve.type[name] = value;
     this.setState({ nerve });
   };

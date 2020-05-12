@@ -244,7 +244,6 @@ export default class MeasurementApi {
           log.info('Measurement data retrieval');
           log.info(measurementData);
 
-          // API call to retrieve landmarks from Postgres
           measurementData['Landmark'] = databaseMeasurementsData.data
             .filter(measurement => measurement.details.toolType === 'Landmark')
             .map(measurement => measurement.details);

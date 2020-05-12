@@ -153,10 +153,7 @@ export default class LandmarkTool extends BaseAnnotationTool {
           coords
         );
 
-        const text =
-          data.annotation !== undefined
-            ? data.measurementNumber + '-' + data.annotation.label.charAt(0)
-            : '';
+        const text = _getViewportText(data);
 
         drawTextBox(context, text, textCoords.x, textCoords.y, color);
       });
@@ -229,4 +226,23 @@ export default class LandmarkTool extends BaseAnnotationTool {
       return null;
     }
   }
+}
+
+function _getViewportText(data) {
+  if (data.annotation === undefined) {
+    return '';
+  }
+
+  const { label } = data.annotation;
+
+  let labelKey;
+  if (label === 'Stenosis') {
+    labelKey = 'S';
+  } else if (label === 'Left Nerve') {
+    labelKey = 'LN';
+  } else if (label === 'Right Nerve') {
+    labelKey = 'RN';
+  }
+
+  return data.measurementNumber + '-' + labelKey;
 }
