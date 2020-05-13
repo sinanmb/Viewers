@@ -14,23 +14,17 @@ class MetadataInfo extends Component {
   handleClick = () => this.setState({ isOpen: !this.state.isOpen });
 
   render() {
-    const {
-      text,
-      clean_text: cleanText,
-      study_id: studyId,
-    } = this.props.metadata.info;
-
-    const notCleanTextWarning =
-      !cleanText && text ? (
-        <small className="warning">(Not Clean Text)</small>
-      ) : null;
+    const { report_html, study_id: studyId } = this.props.metadata.info;
 
     const metadataElement = (
       <div className="metadata-info-content">
         <h4>Study ID: {studyId}</h4>
         <h4>
-          Radiologist Assessment {notCleanTextWarning}:
-          <pre className="radiologist-assessment">{cleanText || text}</pre>
+          Radiologist Assessment:
+          <div
+            className="radiologist-assessment"
+            dangerouslySetInnerHTML={{ __html: report_html }}
+          />
         </h4>
       </div>
     );
