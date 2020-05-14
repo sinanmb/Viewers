@@ -47,22 +47,17 @@ class MetadataPanel extends Component {
           <MetadataCategory
             title="Automated Report Assessment"
             metadata={this.state.metadata}
-            category="structured_report"
+            category="nlp"
           />
           <MetadataCategory
             title="Automated Imaging Assessment"
             metadata={this.state.metadata}
-            category="qa_findings"
+            category="cv" // Computer Vision
           />
           <MetadataCategory
-            title="URG QA"
+            title="Quality Assessment"
             metadata={this.state.metadata}
-            category="urg_pick_list"
-          />
-          <MetadataCategory
-            title="Automated QA"
-            metadata={this.state.metadata}
-            category="automated_pick_list"
+            category="qa"
           />
         </div>
       </div>

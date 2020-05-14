@@ -22,12 +22,10 @@ class MetadataCategory extends Component {
     ].entries()) {
       // Determine color
       let color = 'white';
-      if (pathology.severity + pathology.predict > 0) {
-        if (pathology.severity == pathology.predict) {
-          color = 'green';
-        } else {
-          color = 'red';
-        }
+      if (pathology.severity == pathology.predict) {
+        color = 'green';
+      } else {
+        color = 'red';
       }
 
       const order = i + 2;
@@ -53,13 +51,13 @@ class MetadataCategory extends Component {
     const metadataElement = (
       <div className="Rtable Rtable--4cols">
         <div style={{ order: '1' }} className="Rtable-cell">
-          <h3>Disc</h3>
+          <h3>Motion Segment</h3>
         </div>
         <div style={{ order: '1' }} className="Rtable-cell">
           <h3>Pathology</h3>
         </div>
         <div style={{ order: '1' }} className="Rtable-cell">
-          <h3>Severity</h3>
+          <h3>Ground Truth</h3>
         </div>
         <div style={{ order: '1' }} className="Rtable-cell">
           <h3>Prediction</h3>
