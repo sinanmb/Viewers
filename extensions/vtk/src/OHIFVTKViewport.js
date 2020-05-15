@@ -12,6 +12,8 @@ import vtkVolume from 'vtk.js/Sources/Rendering/Core/Volume';
 import vtkVolumeMapper from 'vtk.js/Sources/Rendering/Core/VolumeMapper';
 
 const segmentationModule = cornerstoneTools.getModule('segmentation');
+console.log('segmentationModule')
+console.log(segmentationModule)
 
 const { StackManager } = OHIF.utils;
 
@@ -136,6 +138,7 @@ class OHIFVTKViewport extends Component {
     frameIndex,
     reactVtkjsViewport
   ) => {
+    console.log('getViewportData')
     const stack = OHIFVTKViewport.getCornerstoneStack(
       studies,
       StudyInstanceUID,
@@ -192,7 +195,13 @@ class OHIFVTKViewport extends Component {
         labelmapCache[vtkLabelmapID] = labelmapDataObject;
       }
 
-      labelmapColorLUT = state.colorLutTables[labelmap3D.colorLUTIndex];
+      // labelmapColorLUT = state.colorLutTables[labelmap3D.colorLUTIndex];
+
+      const colorsForDemo = [[0, 255, 226, 255], [0, 255, 0, 255], [255, 255, 0, 255], [255, 0, 0, 255]],
+      labelmapColorLUT = colorsForDemo[labelmap3D.colorLUTIndex];
+      console.log('labelmapColorLUT');
+      console.log(labelmapColorLUT);
+
     }
 
     return {
@@ -308,6 +317,9 @@ class OHIFVTKViewport extends Component {
     );
 
     this.imageDataObject = imageDataObject;
+
+    console.log('labelmapColorLUT')
+    console.log(labelmapColorLUT)
 
     /* TODO: Not currently used until we have drawing tools in vtkjs.
     if (!labelmap) {

@@ -49,7 +49,8 @@ const SegmentationPanel = ({ studies, viewports, activeIndex, isOpen }) => {
     showSegSettings: false,
     brushStackState: null,
     labelmapList: [],
-    segmentList: []
+    segmentList: [],
+    colorsForDemo: [[0, 255, 226, 255], [0, 255, 0, 255], [255, 255, 0, 255], [255, 0, 0, 255]],
   });
 
   useEffect(() => {
@@ -85,6 +86,12 @@ const SegmentationPanel = ({ studies, viewports, activeIndex, isOpen }) => {
 
   useEffect(() => {
     const module = cornerstoneTools.getModule('segmentation');
+    // console.log('module');
+    // console.log(module);
+    // module.state.colorLutTables = state.colorsForDemo;
+    // console.log('module');
+    // console.log(module);
+
     const activeViewport = viewports[activeIndex];
     const studyMetadata = studyMetadataManager.get(activeViewport.StudyInstanceUID);
     const firstImageId = studyMetadata.getFirstImageId(activeViewport.displaySetInstanceUID);
@@ -92,6 +99,8 @@ const SegmentationPanel = ({ studies, viewports, activeIndex, isOpen }) => {
 
     if (brushStackState) {
       const labelmap3D = brushStackState.labelmaps3D[brushStackState.activeLabelmapIndex];
+      console.log('labelmap3D');
+      console.log(labelmap3D);
       const labelmapList = getLabelmapList(brushStackState, firstImageId, activeViewport);
       const segmentList = getSegmentList(labelmap3D, firstImageId);
       setState(state => ({
@@ -158,6 +167,7 @@ const SegmentationPanel = ({ studies, viewports, activeIndex, isOpen }) => {
      * So we instead build a list of all segment indexes in use
      * Then find any associated metadata
      */
+
     const uniqueSegmentIndexes = labelmap3D.labelmaps2D
       .reduce((acc, labelmap2D) => {
         if (labelmap2D) {
@@ -179,11 +189,26 @@ const SegmentationPanel = ({ studies, viewports, activeIndex, isOpen }) => {
       module.state.colorLutTables[labelmap3D.colorLUTIndex];
     const hasLabelmapMeta = labelmap3D.metadata && labelmap3D.metadata.data;
 
+    console.log('labelmap3D')
+    console.log(labelmap3D)
+
+    console.log('colorLutTable')
+    console.log(colorLutTable)
+
     const segmentList = [];
     for (let i = 0; i < uniqueSegmentIndexes.length; i++) {
       const segmentIndex = uniqueSegmentIndexes[i];
 
-      const color = colorLutTable[segmentIndex];
+      console.log('segmentIndex')
+      console.log(segmentIndex)
+
+      // const color = colorLutTable[segmentIndex];
+      const color = state.colorsForDemo[i];
+
+
+      console.log('color')
+      console.log(color)
+
       let segmentLabel = '(unlabeled)';
       let segmentNumber = segmentIndex;
 
@@ -206,6 +231,8 @@ const SegmentationPanel = ({ studies, viewports, activeIndex, isOpen }) => {
         );
         updateState('selectedSegment', sameSegment ? null : segmentNumber);
       };
+
+      console.log('segment')
 
       segmentList.push(
         <SegmentItem
@@ -272,7 +299,12 @@ const SegmentationPanel = ({ studies, viewports, activeIndex, isOpen }) => {
     const module = cornerstoneTools.getModule('segmentation');
     const colorLutTable =
       module.state.colorLutTables[labelmap3D.colorLUTIndex];
-    const color = colorLutTable[labelmap3D.activeSegmentIndex];
+    // const color = colorLutTable[labelmap3D.activeSegmentIndex];
+    const color = state.colorsForDemo[i];
+
+
+    console.log('labelmap3D.activeSegmentIndex')
+    console.log(labelmap3D.activeSegmentIndex)
 
     return `rgba(${color.join(',')})`;
   };

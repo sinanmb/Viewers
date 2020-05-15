@@ -16,6 +16,9 @@ export default async function fetchPaletteColorLookupTableData(
     BluePaletteColorLookupTableData,
   } = instance;
 
+  console.log('fetchPaletteColorLookupTableData')
+  console.log(fetchPaletteColorLookupTableData)
+
   return new Promise((resolve, reject) => {
     let entry;
     if (_paletteColorCache.isValidUID(PaletteColorLookupTableUID)) {
@@ -152,6 +155,9 @@ function _getPaletteColor(server, paletteColorLookupTableData, lutDescriptor) {
       BulkDataURI: uri,
     };
 
+    console.log('if');
+    console.log(arrayBufferToPaletteColorLUT);
+
     return dicomWeb
       .retrieveBulkData(options)
       .then(result => result[0])
@@ -159,11 +165,16 @@ function _getPaletteColor(server, paletteColorLookupTableData, lutDescriptor) {
   } else if (paletteColorLookupTableData.InlineBinary) {
     const inlineBinaryData = atob(paletteColorLookupTableData.InlineBinary);
     const arraybuffer = str2ab(inlineBinaryData);
+    console.log('else if ');
+    console.log(arraybuffer);
 
     return new Promise(resolve => {
       resolve(arrayBufferToPaletteColorLUT(arraybuffer));
     });
   } else {
+    console.log('else');
+    console.log(paletteColorLookupTableData);
+
     return Promise.resolve(arrayBufferToPaletteColorLUT(paletteColorLookupTableData));
   }
 }
