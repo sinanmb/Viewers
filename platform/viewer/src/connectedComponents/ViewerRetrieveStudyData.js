@@ -138,9 +138,10 @@ const _updateStudyDisplaySets = (study, studyMetadata) => {
   const sopClassHandlerModules =
     extensionManager.modules['sopClassHandlerModule'];
 
-  if (!study.displaySets) {
+  // if (!study.displaySets) {
+    console.log('createDisplaySets')
     study.displaySets = studyMetadata.createDisplaySets(sopClassHandlerModules);
-  }
+  // }
 
   studyMetadata.setDisplaySets(study.displaySets);
 };
