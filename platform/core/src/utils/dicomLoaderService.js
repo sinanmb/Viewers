@@ -1,7 +1,9 @@
 import cornerstone from 'cornerstone-core';
+import cornerstoneWADOImageLoader from 'cornerstone-wado-image-loader';
 import { api } from 'dicomweb-client';
 import DICOMWeb from '../DICOMWeb';
-import { getCornerstoneWADOImageLoader } from './cornerstoneWADOImageLoader';
+
+import errorHandler from '../errorHandler';
 
 const getImageId = imageObj => {
   if (!imageObj) {
@@ -57,11 +59,13 @@ const wadorsRetriever = (
   studyInstanceUID,
   seriesInstanceUID,
   sopInstanceUID,
-  headers = DICOMWeb.getAuthorizationHeader()
+  headers = DICOMWeb.getAuthorizationHeader(),
+  errorInterceptor = errorHandler.getHTTPErrorHandler()
 ) => {
   const config = {
     url,
     headers,
+    errorInterceptor,
   };
   const dicomWeb = new api.DICOMwebClient(config);
 
@@ -86,7 +90,7 @@ const getImageLoaderType = imageId => {
 };
 
 class DicomLoaderService {
-  async getLocalData(dataset, studies) {
+  getLocalData(dataset, studies) {
     if (dataset && dataset.localFile) {
       // Use referenced imageInstance
       const imageInstance = getImageInstance(dataset);
@@ -98,7 +102,6 @@ class DicomLoaderService {
       }
 
       if (!someInvalidStrings(imageId)) {
-        const cornerstoneWADOImageLoader = await getCornerstoneWADOImageLoader();
         return cornerstoneWADOImageLoader.wadouri.loadFileRequest(imageId);
       }
     }
@@ -177,16 +180,16 @@ class DicomLoaderService {
     }
   }
 
-  async *getLoaderIterator(dataset, studies) {
-    yield await this.getLocalData(dataset, studies);
+  *getLoaderIterator(dataset, studies) {
+    yield this.getLocalData(dataset, studies);
     yield this.getDataByImageType(dataset);
     yield this.getDataByDatasetType(dataset);
   }
 
-  async findDicomDataPromise(dataset, studies) {
+  findDicomDataPromise(dataset, studies) {
     const loaderIterator = this.getLoaderIterator(dataset, studies);
     // it returns first valid retriever method.
-    for await (const loader of loaderIterator) {
+    for (const loader of loaderIterator) {
       if (loader) {
         return loader;
       }

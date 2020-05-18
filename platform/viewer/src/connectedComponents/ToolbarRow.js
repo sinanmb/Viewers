@@ -20,6 +20,7 @@ import ToolbarWorkingListGroup from './ToolbarWorkingListGroup';
 import LandmarkLocationShortcuts from './LandmarkLocationShortcuts';
 import NextViewportShortcut from './NextViewportShortcut';
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
+import { withAppContext } from '../context/AppContext';
 
 class ToolbarRow extends Component {
   // TODO: Simplify these? isOpen can be computed if we say "any" value for selected,
@@ -455,5 +456,5 @@ function _handleBuiltIn(button) {
 }
 
 export default withTranslation(['Common', 'ViewportDownloadForm'])(
-  withModal(withDialog(ToolbarRow))
+  withModal(withDialog(withAppContext(ToolbarRow)))
 );

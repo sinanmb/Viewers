@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { utils, user } from '@ohif/core';
+//
 import ConnectedViewerRetrieveStudyData from '../connectedComponents/ConnectedViewerRetrieveStudyData';
 import useServer from '../customHooks/useServer';
-import OHIF from '@ohif/core';
-const { urlUtil: UrlUtil } = OHIF.utils;
+import useQuery from '../customHooks/useQuery';
+const { urlUtil: UrlUtil } = utils;
 
 /**
  * Get array of seriesUIDs from param or from queryString
@@ -27,6 +29,18 @@ function ViewerRouting({ match: routeMatch, location: routeLocation }) {
     studyInstanceUIDs,
     seriesInstanceUIDs,
   } = routeMatch.params;
+
+  // Set the user's default authToken for outbound DICOMWeb requests.
+  // Is only applied if target server does not set `requestOptions` property.
+  //
+  // See: `getAuthorizationHeaders.js`
+  let query = useQuery();
+  const authToken = query.get('token');
+
+  if (authToken) {
+    user.getAccessToken = () => authToken;
+  }
+
   const server = useServer({ project, location, dataset, dicomStore });
 
   // Studies that have a number studyInstanceUIDs (instead of string) cause issues with UrlUtil
@@ -38,6 +52,7 @@ function ViewerRouting({ match: routeMatch, location: routeLocation }) {
   }
   let seriesUIDs = getSeriesInstanceUIDs(seriesInstanceUIDs, routeLocation);
 
+  // This is needed to refresh the study when a selection is made through the working list dropdown or previous/next buttons
   useEffect(() => {
     if (UrlUtil.paramString.canParamBeParsed(studyInstanceUIDs)) {
       studyUIDs = UrlUtil.paramString.parseParam(studyInstanceUIDs);
@@ -71,6 +86,7 @@ ViewerRouting.propTypes = {
       project: PropTypes.string,
     }),
   }),
+  location: PropTypes.any,
 };
 
 export default ViewerRouting;

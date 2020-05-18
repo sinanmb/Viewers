@@ -24,28 +24,25 @@
   position: relative;
 }
 
-.header-viewerLink {
-  float: left;
-}
-
 .header-brand {
-  height: 30px;
   text-decoration: none;
+  height: 30px;
   float: left;
   clear: both;
 }
 
-.entry-header.header-big .header-brand {
+/* Home Page */
+.entry-header.header-big {
+  background: rgba(21, 25, 30, 0.7);
+  padding: 35px var(--study-list-padding);
   height: auto;
-  padding: 0;
+  display: inline-block;
+  width: 100%;
 }
 
-.header-logo-image {
-  fill: transparent;
-  height: 100%;
-  margin: 0 8px 0 0;
-  width: 30px;
-  float: left;
+.entry-header.header-big .header-brand {
+  height: 50px;
+  padding: 0;
 }
 
 .entry-header.header-big .header-logo-image {
@@ -57,6 +54,24 @@
 .entry-header.header-big .header-logo-text {
   width: 205px;
   height: 80px;
+}
+
+/** OTHER STYLES **/
+
+.dd-item {
+  width: 100%;
+}
+
+.header-viewerLink {
+  float: left;
+}
+
+.header-logo-image {
+  fill: transparent;
+  height: 100%;
+  margin: 0 8px 0 0;
+  width: 30px;
+  float: left;
 }
 
 .header-btn {
@@ -110,7 +125,8 @@
 }
 
 @media only screen and (max-width: 768px) {
-  .entry-header, .entry-header.header-big {
+  .entry-header,
+  .entry-header.header-big {
     padding: 30px 15px 10px 15px;
   }
   .entry-header.header-big .header-logo-image {
@@ -122,8 +138,10 @@
     width: 40%;
   }
   /* Account for notification bar height */
-  .entry-header.header-big .header-brand {}
-  .dd-menu {}
+  .entry-header.header-big .header-brand {
+  }
+  .dd-menu {
+  }
   /* Toggle Notification Bar */
   .notification-bar {
     display: block;

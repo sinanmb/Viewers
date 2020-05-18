@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getReactVtkjsViewport } from './utils/getReactVtkjsViewport';
+import { getImageData, loadImageData } from 'react-vtkjs-viewport';
 import ConnectedVTKViewport from './ConnectedVTKViewport';
 import LoadingIndicator from './LoadingIndicator.js';
 import OHIF from '@ohif/core';
@@ -49,7 +49,7 @@ class OHIFVTKViewport extends Component {
   state = {
     volumes: null,
     paintFilterLabelMapImageData: null,
-    paintFilterBackgroundImageData: null,
+    paintFilterBackgroundImageData: null
   };
 
   static propTypes = {
@@ -133,8 +133,7 @@ class OHIFVTKViewport extends Component {
     displaySetInstanceUID,
     SOPClassUID,
     SOPInstanceUID,
-    frameIndex,
-    reactVtkjsViewport
+    frameIndex
   ) => {
     const stack = OHIFVTKViewport.getCornerstoneStack(
       studies,
@@ -145,10 +144,7 @@ class OHIFVTKViewport extends Component {
       frameIndex
     );
 
-    const imageDataObject = reactVtkjsViewport.getImageData(
-      stack.imageIds,
-      displaySetInstanceUID
-    );
+    const imageDataObject = getImageData(stack.imageIds, displaySetInstanceUID);
     let labelmapDataObject;
     let labelmapColorLUT;
 
@@ -159,6 +155,10 @@ class OHIFVTKViewport extends Component {
     if (brushStackState) {
       const { activeLabelmapIndex } = brushStackState;
       const labelmap3D = brushStackState.labelmaps3D[activeLabelmapIndex];
+
+      this.segmentsDefaultProperties = labelmap3D.segmentsHidden.map(isHidden => {
+        return { visible: !isHidden };
+      });
 
       const vtkLabelmapID = `${firstImageId}_${activeLabelmapIndex}`;
 
@@ -261,9 +261,7 @@ class OHIFVTKViewport extends Component {
     return volumeActor;
   }
 
-  async setStateFromProps() {
-    const reactVtkjsViewport = await getReactVtkjsViewport();
-
+  setStateFromProps() {
     const { studies, displaySet } = this.props.viewportData;
     const {
       StudyInstanceUID,
@@ -301,10 +299,8 @@ class OHIFVTKViewport extends Component {
       studies,
       StudyInstanceUID,
       displaySetInstanceUID,
-      sopClassUIDs[0],
       SOPInstanceUID,
-      frameIndex,
-      reactVtkjsViewport
+      frameIndex
     );
 
     this.imageDataObject = imageDataObject;
@@ -325,7 +321,7 @@ class OHIFVTKViewport extends Component {
         dataDetails,
       },
       () => {
-        this.loadProgressively(imageDataObject, reactVtkjsViewport);
+        this.loadProgressively(imageDataObject);
 
         // TODO: There must be a better way to do this.
         // We do this so that if all the data is available the react-vtkjs-viewport
@@ -343,11 +339,11 @@ class OHIFVTKViewport extends Component {
     );
   }
 
-  async componentDidMount() {
-    await this.setStateFromProps();
+  componentDidMount() {
+    this.setStateFromProps();
   }
 
-  async componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const { displaySet } = this.props.viewportData;
     const prevDisplaySet = prevProps.viewportData.displaySet;
 
@@ -357,12 +353,12 @@ class OHIFVTKViewport extends Component {
       displaySet.SOPInstanceUID !== prevDisplaySet.SOPInstanceUID ||
       displaySet.frameIndex !== prevDisplaySet.frameIndex
     ) {
-      await this.setStateFromProps();
+      this.setStateFromProps();
     }
   }
 
-  loadProgressively(imageDataObject, reactVtkjsViewport) {
-    reactVtkjsViewport.loadImageData(imageDataObject);
+  loadProgressively(imageDataObject) {
+    loadImageData(imageDataObject);
 
     const { isLoading, insertPixelDataPromises } = imageDataObject;
 
@@ -413,10 +409,6 @@ class OHIFVTKViewport extends Component {
 
     const style = { width: '100%', height: '100%', position: 'relative' };
 
-    const visible = configuration.renderFill || configuration.renderOutline;
-    const opacity = configuration.fillAlpha;
-    const outlineThickness = configuration.outlineThickness;
-
     return (
       <>
         <div style={style}>
@@ -436,10 +428,14 @@ class OHIFVTKViewport extends Component {
               dataDetails={this.state.dataDetails}
               labelmapRenderingOptions={{
                 colorLUT: this.state.labelmapColorLUT,
-                globalOpacity: opacity,
-                visible,
-                outlineThickness,
-                renderOutline: true,
+                globalOpacity: configuration.fillAlpha,
+                visible: configuration.renderFill,
+                outlineThickness: configuration.outlineWidth,
+                renderOutline: configuration.renderOutline,
+                segmentsDefaultProperties: this.segmentsDefaultProperties,
+                onNewSegmentationRequested: () => {
+                  this.setStateFromProps();
+                }
               }}
               onScroll={this.props.onScroll}
             />

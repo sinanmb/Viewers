@@ -7,7 +7,7 @@ import OHIF, { DICOMSR } from '@ohif/core';
 import { withDialog } from '@ohif/ui';
 import moment from 'moment';
 import ConnectedHeader from './ConnectedHeader.js';
-import ConnectedToolbarRow from './ConnectedToolbarRow.js';
+import ToolbarRow from './ToolbarRow.js';
 import ConnectedStudyBrowser from './ConnectedStudyBrowser.js';
 import ConnectedViewerMain from './ConnectedViewerMain.js';
 import SidePanel from './../components/SidePanel.js';
@@ -15,8 +15,9 @@ import { extensionManager } from './../App.js';
 import api from '../utils/api';
 
 // Contexts
-import WhiteLabellingContext from '../context/WhiteLabellingContext.js';
+import WhiteLabelingContext from '../context/WhiteLabelingContext.js';
 import UserManagerContext from '../context/UserManagerContext';
+import AppContext from '../context/AppContext';
 
 import './Viewer.css';
 
@@ -243,20 +244,36 @@ class Viewer extends Component {
     return (
       <>
         {/* HEADER */}
-        <WhiteLabellingContext.Consumer>
-          {whiteLabelling => (
+        <WhiteLabelingContext.Consumer>
+          {whiteLabeling => (
             <UserManagerContext.Consumer>
               {userManager => (
-                <ConnectedHeader home={false} userManager={userManager}>
-                  {whiteLabelling.logoComponent}
-                </ConnectedHeader>
+                <AppContext.Consumer>
+                  {appContext => (
+                    <ConnectedHeader
+                      linkText={
+                        appContext.appConfig.showStudyList
+                          ? 'Study List'
+                          : undefined
+                      }
+                      linkPath={
+                        appContext.appConfig.showStudyList ? '/' : undefined
+                      }
+                      userManager={userManager}
+                    >
+                      {whiteLabeling &&
+                        whiteLabeling.createLogoComponentFn &&
+                        whiteLabeling.createLogoComponentFn(React)}
+                    </ConnectedHeader>
+                  )}
+                </AppContext.Consumer>
               )}
             </UserManagerContext.Consumer>
           )}
-        </WhiteLabellingContext.Consumer>
+        </WhiteLabelingContext.Consumer>
 
         {/* TOOLBAR */}
-        <ConnectedToolbarRow
+        <ToolbarRow
           isLeftSidePanelOpen={this.state.isLeftSidePanelOpen}
           isRightSidePanelOpen={this.state.isRightSidePanelOpen}
           selectedLeftSidePanel={
@@ -317,7 +334,7 @@ class Viewer extends Component {
 
           {/* MAIN */}
           <div className={classNames('main-content')}>
-            <ConnectedViewerMain studies={this.props.studies} />
+            <ConnectedViewerMain studies={this.props.studies} isStudyLoaded={this.props.isStudyLoaded} />
           </div>
 
           {/* RIGHT */}
