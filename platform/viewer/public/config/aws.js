@@ -14,6 +14,8 @@ window.config = {
         thumbnailRendering: 'wadors',
       },
     ],
+    // TODO Sinan: Add production config here for auth
+    oidc: [],
   },
   hotkeys: [
     // Custom
