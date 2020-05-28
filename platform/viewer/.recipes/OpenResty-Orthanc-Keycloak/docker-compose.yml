@@ -12,7 +12,7 @@ services:
       # Project root
       context: ./../../
       # Relative to context
-      dockerfile: ./docker/OpenResty-Orthanc-Keycloak/dockerfile
+      dockerfile: ./.recipes/OpenResty-Orthanc-Keycloak/dockerfile
     image: webapp:latest
     container_name: webapp
     volumes:
