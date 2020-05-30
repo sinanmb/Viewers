@@ -198,9 +198,15 @@ export default class LandmarkTool extends BaseAnnotationTool {
       csTools.removeToolState(element, this.name, measurementData);
     } else {
       measurementData.location = updatedData.label;
-      measurementData.description =
-        updatedData.position ||
-        (updatedData.severeCentralCanalStenosis ? 'Severe' : null);
+
+      if (updatedData.label.includes('Nerve')) {
+        measurementData.description = updatedData.position;
+      } else if (updatedData.label === 'Stenosis') {
+        measurementData.description =
+          updatedData.severeCentralCanalStenosis !== 'No'
+            ? updatedData.severeCentralCanalStenosis
+            : null;
+      }
 
       measurementData.annotation = updatedData;
     }

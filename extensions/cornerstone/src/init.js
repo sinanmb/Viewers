@@ -62,7 +62,7 @@ export default function init({ servicesManager, configuration }) {
         content: LandmarkDialog,
         showOverlay: true,
         contentProps: {
-          title: 'Enter your annotations',
+          title: 'Enter your annotation',
           measurementData: data ? data : {},
           onClose: () => UIDialogService.dismiss({ id: dialogId }),
           onSubmit: (modifiedMeasurements, deleteTool = false) => {

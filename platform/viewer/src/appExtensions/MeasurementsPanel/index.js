@@ -65,14 +65,20 @@ export default {
         showOverlay: true,
         content: LandmarkDialog,
         contentProps: {
-          title: 'Update your annotations',
+          title: 'Edit annotation',
           measurementData,
           onClose: () => UIDialogService.dismiss({ id: 'landmark' }),
           onSubmit: updatedData => {
             measurementData.location = updatedData.label;
-            measurementData.description =
-              updatedData.position ||
-              (updatedData.severeCentralCanalStenosis ? 'Severe' : null);
+
+            if (updatedData.label.includes('Nerve')) {
+              measurementData.description = updatedData.position;
+            } else if (updatedData.label === 'Stenosis') {
+              measurementData.description =
+                updatedData.severeCentralCanalStenosis !== 'No'
+                  ? updatedData.severeCentralCanalStenosis
+                  : null;
+            }
 
             measurementData.annotation = updatedData;
 

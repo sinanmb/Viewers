@@ -11,33 +11,51 @@ export default class StenosisComponent extends Component {
     return (
       <>
         <h4>Severe central canal stenosis </h4>
-        <label>
-          <input
-            type="radio"
-            name="severeCentralCanalStenosis"
-            value={false}
-            checked={this.props.data.severeCentralCanalStenosis === false}
-            onChange={this.onChange}
-          />
-          No
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="severeCentralCanalStenosis"
-            value={true}
-            checked={this.props.data.severeCentralCanalStenosis === true}
-            onChange={this.onChange}
-          />
-          Yes
-        </label>
+        <div>
+          <label>
+            <input
+              type="radio"
+              name="severeCentralCanalStenosis"
+              value="Cross-sectional area"
+              checked={
+                this.props.data.severeCentralCanalStenosis ===
+                'Cross-sectional area'
+              }
+              onChange={this.onChange}
+            />
+            Cross-sectional area
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="radio"
+              name="severeCentralCanalStenosis"
+              value="Shirzad criteria"
+              checked={
+                this.props.data.severeCentralCanalStenosis ===
+                'Shirzad criteria'
+              }
+              onChange={this.onChange}
+            />
+            Shirzad criteria
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="radio"
+              name="severeCentralCanalStenosis"
+              value="No"
+              checked={this.props.data.severeCentralCanalStenosis === 'No'}
+              onChange={this.onChange}
+            />
+            No
+          </label>
+        </div>
       </>
     );
   }
 
-  onChange = e => {
-    // Need to convert to boolean first
-    const value = e.target.value == 'true' ? true : false;
-    this.props.onChange(value);
-  };
+  onChange = e => this.props.onChange(e.target.value);
 }
