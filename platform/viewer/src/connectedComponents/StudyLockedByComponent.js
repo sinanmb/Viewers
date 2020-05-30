@@ -51,19 +51,21 @@ class StudyLockedByComponent extends Component {
   disableViewer() {
     this.props.setDisableViewer(true);
 
-    document
-      .querySelector('#review-status')
-      .setAttribute('pointer-events', 'none');
-    document
-      .querySelector('.FlexboxLayout')
-      .setAttribute('pointer-events', 'none');
+    const viewerBelowToolBar = document.querySelector('.FlexboxLayout');
+    const reviewStatus = document.querySelector('#review-status');
+
+    viewerBelowToolBar.style.pointerEvents = 'none';
+    reviewStatus.style.pointerEvents = 'none';
   }
 
   enableViewer() {
     this.props.setDisableViewer(false);
 
-    document.querySelector('#review-status').removeAttribute('pointer-events');
-    document.querySelector('.FlexboxLayout').removeAttribute('pointer-events');
+    const viewerBelowToolBar = document.querySelector('.FlexboxLayout');
+    const reviewStatus = document.querySelector('#review-status');
+
+    viewerBelowToolBar.style.pointerEvents = null;
+    reviewStatus.style.pointerEvents = null;
   }
 
   componentWillUnmount() {
