@@ -4,7 +4,8 @@ import {
   GET_WORKING_LIST_STUDIES,
   SET_STUDY_INDEX,
   SELECT_STUDY,
-  SET_REVIEW_STATUS,
+  UPDATE_WORKING_LIST_STUDY,
+  SET_DISABLE_VIEWER,
 } from '../actions/types';
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
   selectedWorkingList: null,
   selectedWorkingListStudies: [],
   selectedStudy: null,
+  isViewerDisabled: false,
 };
 
 export default function(state = initialState, action) {
@@ -41,7 +43,7 @@ export default function(state = initialState, action) {
         ...state,
         selectedStudy: action.payload,
       };
-    case SET_REVIEW_STATUS: {
+    case UPDATE_WORKING_LIST_STUDY: {
       const selectedStudy = action.payload;
       const selectedWorkingListStudies = state.selectedWorkingListStudies;
       selectedWorkingListStudies.find(
@@ -54,6 +56,11 @@ export default function(state = initialState, action) {
         selectedWorkingListStudies,
       };
     }
+    case SET_DISABLE_VIEWER:
+      return {
+        ...state,
+        isViewerDisabled: action.payload,
+      };
 
     default:
       return state;

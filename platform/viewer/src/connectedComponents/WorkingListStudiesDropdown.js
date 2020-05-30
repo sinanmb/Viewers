@@ -1,22 +1,44 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setStudyIndex, selectStudy } from '../actions/workingListActions';
+import {
+  setStudyIndex,
+  selectStudy,
+  updateWorkingListStudy,
+  setDisableViewer,
+} from '../actions/workingListActions';
 import { withRouter } from 'react-router-dom';
 
 class WorkingListStudiesDropdown extends Component {
-  change = event => {
+  change = async event => {
     const selectedStudyInstanceUID = event.target.value;
 
     const studyIndex = this.props.selectedWorkingListStudies.findIndex(
       study => study.study_instance_uid === selectedStudyInstanceUID
     );
 
+    const newStudy = this.props.selectedWorkingListStudies[studyIndex];
+
+    // Lock study we just loaded
+    try {
+      await this.props.updateWorkingListStudy(
+        this.props.selectedWorkingList,
+        newStudy.study_instance_uid,
+        newStudy.status,
+        this.props.userGoogleID,
+        this.props.userGoogleID
+      );
+      newStudy.locked_by = this.props.userGoogleID;
+    } catch (e) {
+      console.log(`Can't unlock study ${newStudy.study_instance_uid}`);
+      console.log(e);
+    }
+
     this.props.setStudyIndex(studyIndex);
-    this.props.selectStudy(this.props.selectedWorkingListStudies[studyIndex]);
+    await this.props.selectStudy(newStudy);
 
     // Update route params to refresh Viewer component
-    const path = `/viewer/${this.props.selectedWorkingListStudies[studyIndex].study_instance_uid}`;
+    const path = `/viewer/${newStudy.study_instance_uid}`;
     this.props.history.push(path);
   };
 
@@ -59,16 +81,23 @@ WorkingListStudiesDropdown.propTypes = {
   history: PropTypes.object.isRequired,
   selectStudy: PropTypes.func.isRequired,
   selectedStudy: PropTypes.object.isRequired,
+  updateWorkingListStudy: PropTypes.func.isRequired,
+  selectedWorkingList: PropTypes.string.isRequired,
+  userGoogleID: PropTypes.string.isRequired,
+  setDisableViewer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   selectedWorkingListStudies: state.workingLists.selectedWorkingListStudies,
   studyIndex: state.workingLists.studyIndex,
   selectedStudy: state.workingLists.selectedStudy,
+  selectedWorkingList: state.workingLists.selectedWorkingList,
+  userGoogleID: state.oidc.user.profile.sub,
 });
 
 export default withRouter(
-  connect(mapStateToProps, { setStudyIndex, selectStudy })(
-    WorkingListStudiesDropdown
-  )
+  connect(
+    mapStateToProps,
+    { setStudyIndex, selectStudy, updateWorkingListStudy, setDisableViewer }
+  )(WorkingListStudiesDropdown)
 );

@@ -1,0 +1,113 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import {
+  updateWorkingListStudy,
+  setDisableViewer,
+} from '../actions/workingListActions';
+import { Icon } from '@ohif/ui';
+import api from '../utils/api';
+
+class StudyLockedByComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { studyWhenMounted: this.props.selectedStudy };
+  }
+
+  unlockStudy = async e => {
+    // Unlock study as the component is unmounting
+    const params = {
+      locked_by: null,
+      user_google_id: this.props.userGoogleID,
+    };
+
+    if (this.state.studyWhenMounted.locked_by === this.props.userGoogleID) {
+      try {
+        api.put(
+          `/working-lists/${this.props.selectedWorkingList}/studies/${this.state.studyWhenMounted.study_instance_uid}`,
+          params
+        );
+      } catch (e) {
+        console.log(
+          `Can't unlock study while unmounting: ${this.state.studyWhenMounted.study_instance_uid}`
+        );
+      }
+    }
+  };
+
+  componentDidMount() {
+    window.addEventListener('beforeunload', this.unlockStudy);
+    this.setViewerDisability();
+  }
+
+  setViewerDisability() {
+    if (this.state.studyWhenMounted.locked_by !== this.props.userGoogleID) {
+      this.disableViewer();
+    } else {
+      this.enableViewer();
+    }
+  }
+
+  disableViewer() {
+    this.props.setDisableViewer(true);
+
+    document
+      .querySelector('#review-status')
+      .setAttribute('pointer-events', 'none');
+    document
+      .querySelector('.FlexboxLayout')
+      .setAttribute('pointer-events', 'none');
+  }
+
+  enableViewer() {
+    this.props.setDisableViewer(false);
+
+    document.querySelector('#review-status').removeAttribute('pointer-events');
+    document.querySelector('.FlexboxLayout').removeAttribute('pointer-events');
+  }
+
+  componentWillUnmount() {
+    this.unlockStudy();
+    // window.removeEventListener('beforeunload', this.unlockStudy); // remove the event handler for normal unmounting
+  }
+
+  render() {
+    const iconStyle = {
+      width: '1.5rem',
+      height: '1.5rem',
+      color: 'red',
+      marginTop: '0.4rem',
+    };
+
+    if (this.props.isViewerDisabled) {
+      return (
+        <>
+          <Icon name="lock" style={iconStyle} />
+        </>
+      );
+    }
+    return null;
+  }
+}
+
+StudyLockedByComponent.propTypes = {
+  selectedStudy: PropTypes.object.isRequired,
+  selectedWorkingList: PropTypes.string.isRequired,
+  updateWorkingListStudy: PropTypes.func.isRequired,
+  isViewerDisabled: PropTypes.bool.isRequired,
+  setDisableViewer: PropTypes.func.isRequired,
+  userGoogleID: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  selectedStudy: state.workingLists.selectedStudy,
+  selectedWorkingList: state.workingLists.selectedWorkingList,
+  updateWorkingListStudy: state.workingLists.updateWorkingListStudy,
+  isViewerDisabled: state.workingLists.isViewerDisabled,
+  userGoogleID: state.oidc.user.profile.sub,
+});
+
+export default connect(
+  mapStateToProps,
+  { updateWorkingListStudy, setDisableViewer }
+)(StudyLockedByComponent);

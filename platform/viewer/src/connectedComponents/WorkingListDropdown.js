@@ -7,6 +7,8 @@ import {
   getWorkingListStudies,
   setStudyIndex,
   selectStudy,
+  updateWorkingListStudy,
+  setDisableViewer,
 } from '../actions/workingListActions';
 
 class WorkingListDropdown extends Component {
@@ -20,20 +22,34 @@ class WorkingListDropdown extends Component {
     this.props.selectWorkingList(selectedWorkingList);
     await this.props.getWorkingListStudies(selectedWorkingList);
 
+    const studyIndex = 0;
+    const selectedStudy = this.props.selectedWorkingListStudies[studyIndex];
     try {
-      const studyIndex = 0;
-      this.props.setStudyIndex(studyIndex);
-      this.props.selectStudy(this.props.selectedWorkingListStudies[studyIndex]);
-      this.props.onSelectItem(
-        this.props.selectedWorkingListStudies[studyIndex].study_instance_uid
+      await this.props.updateWorkingListStudy(
+        selectedWorkingList,
+        selectedStudy.study_instance_uid,
+        selectedStudy.status, //
+        this.props.userGoogleID, // Locking current study if possible
+        this.props.userGoogleID
       );
-    } catch (err) {
-      console.log(err);
-      alert('There is a problem with the working list studies');
+      selectedStudy.locked_by = this.props.userGoogleID;
+      this.props.setStudyIndex(studyIndex);
+      this.props.selectStudy(selectedStudy);
+      this.props.onSelectItem(selectedStudy.study_instance_uid);
+    } catch (e) {
+      // Can't lock study. Disable UI.
+      if (e.response && e.response.status === 403) {
+        // this.props.setDisableViewer(true);
+        this.props.setStudyIndex(studyIndex);
+        this.props.selectStudy(selectedStudy);
+        this.props.onSelectItem(selectedStudy.study_instance_uid);
+      } else {
+        alert('There is a problem with the working list studies');
 
-      this.props.selectWorkingList(null);
-      this.props.setStudyIndex(null);
-      this.props.selectStudy(null);
+        this.props.selectWorkingList(null);
+        this.props.setStudyIndex(null);
+        this.props.selectStudy(null);
+      }
     }
   };
 
@@ -72,18 +88,27 @@ WorkingListDropdown.propTypes = {
   selectedWorkingListStudies: PropTypes.array.isRequired,
   setStudyIndex: PropTypes.func.isRequired,
   selectStudy: PropTypes.func.isRequired,
+  userGoogleID: PropTypes.string.isRequired,
+  updateWorkingListStudy: PropTypes.func.isRequired,
+  setDisableViewer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   workingLists: state.workingLists.workingLists,
   selectedWorkingList: state.workingLists.selectedWorkingList,
   selectedWorkingListStudies: state.workingLists.selectedWorkingListStudies,
+  userGoogleID: state.oidc.user.profile.sub,
 });
 
-export default connect(mapStateToProps, {
-  getWorkingLists,
-  selectWorkingList,
-  getWorkingListStudies,
-  setStudyIndex,
-  selectStudy,
-})(WorkingListDropdown);
+export default connect(
+  mapStateToProps,
+  {
+    getWorkingLists,
+    selectWorkingList,
+    getWorkingListStudies,
+    setStudyIndex,
+    selectStudy,
+    updateWorkingListStudy,
+    setDisableViewer,
+  }
+)(WorkingListDropdown);

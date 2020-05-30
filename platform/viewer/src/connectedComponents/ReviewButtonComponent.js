@@ -2,17 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { setReviewStatus } from '../actions/workingListActions';
+import { updateWorkingListStudy } from '../actions/workingListActions';
 import { Icon } from '@ohif/ui';
 
 class ReviewButtonComponent extends Component {
-  setReviewStatus(action) {
+  updateWorkingListStudy(action) {
     const status = action === 'approve' ? true : false;
 
-    this.props.setReviewStatus(
+    this.props.updateWorkingListStudy(
       this.props.selectedWorkingList,
       this.props.selectedStudy.study_instance_uid,
-      status
+      status,
+      this.props.userGoogleID,
+      this.props.userGoogleID
     );
   }
 
@@ -38,7 +40,7 @@ class ReviewButtonComponent extends Component {
         type="button"
         className="btn btn-default"
         style={buttonStyle}
-        onClick={() => this.setReviewStatus(action)}
+        onClick={() => this.updateWorkingListStudy(action)}
       >
         <Icon name={iconName} style={iconStyle} />
       </button>
@@ -51,15 +53,20 @@ class ReviewButtonComponent extends Component {
 ReviewButtonComponent.propTypes = {
   selectedStudy: PropTypes.object.isRequired,
   selectedWorkingList: PropTypes.string.isRequired,
-  setReviewStatus: PropTypes.func.isRequired,
+  updateWorkingListStudy: PropTypes.func.isRequired,
   action: PropTypes.string.isRequired,
+  userGoogleID: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   selectedStudy: state.workingLists.selectedStudy,
   selectedWorkingList: state.workingLists.selectedWorkingList,
+  userGoogleID: state.oidc.user.profile.sub,
 });
 
 export default withRouter(
-  connect(mapStateToProps, { setReviewStatus })(ReviewButtonComponent)
+  connect(
+    mapStateToProps,
+    { updateWorkingListStudy }
+  )(ReviewButtonComponent)
 );

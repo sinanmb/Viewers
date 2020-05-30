@@ -25,7 +25,7 @@ class ReviewStatusComponent extends Component {
     }
 
     return (
-      <div>
+      <div id="review-status">
         <p style={pStyle}>{status}</p>
         <div style={reviewButtonsStyle}>
           <ReviewButtonComponent action="reject" />
@@ -44,4 +44,7 @@ const mapStateToProps = state => ({
   selectedStudy: state.workingLists.selectedStudy,
 });
 
-export default connect(mapStateToProps, {})(ReviewStatusComponent);
+export default connect(
+  mapStateToProps,
+  {}
+)(ReviewStatusComponent);

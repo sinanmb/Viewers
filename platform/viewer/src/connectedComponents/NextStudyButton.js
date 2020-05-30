@@ -4,34 +4,61 @@ import { connect } from 'react-redux';
 import {
   setStudyIndex,
   selectStudy,
-  setReviewStatus,
+  updateWorkingListStudy,
+  setDisableViewer,
 } from '../actions/workingListActions';
 import { withRouter } from 'react-router-dom';
 import { Icon } from '@ohif/ui';
 
+import api from '../utils/api';
 /*
  * Next Study button marks the current study as approved before going to next study
  */
 class NextStudyButton extends Component {
   handleClick = async () => {
-    if (
-      this.props.studyIndex + 1 <
-      this.props.selectedWorkingListStudies.length
-    ) {
-      // Mark study as approved
-      await this.props.setReviewStatus(
+    if (this.props.selectedStudy.locked_by === this.props.userGoogleID) {
+      // Save status and unlock study
+      const { status } = this.props.selectedStudy;
+      const approveStudyIfNoStatus = status === null ? true : status;
+      await this.props.updateWorkingListStudy(
         this.props.selectedWorkingList,
         this.props.selectedStudy.study_instance_uid,
-        true
+        approveStudyIfNoStatus,
+        null, // Unlocking current study
+        this.props.userGoogleID
       );
-
-      // Go to next study
-      const newIndex = this.props.studyIndex + 1;
-      this.props.setStudyIndex(newIndex);
-      this.props.selectStudy(this.props.selectedWorkingListStudies[newIndex]);
-      const path = `/viewer/${this.props.selectedWorkingListStudies[newIndex].study_instance_uid}`;
-      this.props.history.push(path);
     }
+
+    // Get first study sorted by status and by locked_by
+    const nextStudy = await api
+      .get(`/working-lists/${this.props.selectedWorkingList}/studies`)
+      .then(response => response.data[0]);
+
+    // Lock study we just loaded
+    try {
+      await this.props.updateWorkingListStudy(
+        this.props.selectedWorkingList,
+        nextStudy.study_instance_uid,
+        nextStudy.status,
+        this.props.userGoogleID,
+        this.props.userGoogleID
+      );
+      nextStudy.locked_by = this.props.userGoogleID;
+      // this.props.setDisableViewer(false);
+    } catch (e) {
+      console.log(`Can't unlock study ${nextStudy.study_instance_uid}`);
+      console.log(e);
+    }
+
+    const newIndex = this.props.selectedWorkingListStudies.findIndex(
+      study => study.study_id === nextStudy.study_id
+    );
+
+    // Go to next study
+    this.props.setStudyIndex(newIndex);
+    this.props.selectStudy(nextStudy);
+    const path = `/viewer/${nextStudy.study_instance_uid}`;
+    this.props.history.push(path);
   };
 
   render() {
@@ -71,9 +98,11 @@ NextStudyButton.propTypes = {
   selectedWorkingListStudies: PropTypes.array.isRequired,
   history: PropTypes.object.isRequired,
   selectStudy: PropTypes.func.isRequired,
-  setReviewStatus: PropTypes.func.isRequired,
+  updateWorkingListStudy: PropTypes.func.isRequired,
   selectedStudy: PropTypes.object.isRequired,
   selectedWorkingList: PropTypes.string.isRequired,
+  setDisableViewer: PropTypes.func.isRequired,
+  userGoogleID: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -81,10 +110,17 @@ const mapStateToProps = state => ({
   selectedWorkingListStudies: state.workingLists.selectedWorkingListStudies,
   selectedStudy: state.workingLists.selectedStudy,
   selectedWorkingList: state.workingLists.selectedWorkingList,
+  userGoogleID: state.oidc.user.profile.sub,
 });
 
 export default withRouter(
-  connect(mapStateToProps, { setStudyIndex, selectStudy, setReviewStatus })(
-    NextStudyButton
-  )
+  connect(
+    mapStateToProps,
+    {
+      setStudyIndex,
+      selectStudy,
+      updateWorkingListStudy,
+      setDisableViewer,
+    }
+  )(NextStudyButton)
 );

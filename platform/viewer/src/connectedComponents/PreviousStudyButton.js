@@ -1,19 +1,43 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setStudyIndex, selectStudy } from '../actions/workingListActions';
+import {
+  setStudyIndex,
+  selectStudy,
+  updateWorkingListStudy,
+  setDisableViewer,
+} from '../actions/workingListActions';
 import { withRouter } from 'react-router-dom';
 import { Icon } from '@ohif/ui';
 
 class PreviousStudyButton extends Component {
   handleClick = async () => {
     if (this.props.studyIndex > 0) {
-      const newIndex = this.props.studyIndex - 1;
-      this.props.setStudyIndex(newIndex);
-      await this.props.selectStudy(
-        this.props.selectedWorkingListStudies[newIndex]
-      );
-      const path = `/viewer/${this.props.selectedWorkingListStudies[newIndex].study_instance_uid}`;
+      const previousIndex = this.props.studyIndex - 1;
+      const previousStudy = this.props.selectedWorkingListStudies[
+        previousIndex
+      ];
+
+      // TODO Sinan: Try to lock study we just loaded. If we can't, that means we should lock the viewer.
+      try {
+        await this.props.updateWorkingListStudy(
+          this.props.selectedWorkingList,
+          previousStudy.study_instance_uid,
+          previousStudy.status,
+          this.props.userGoogleID,
+          this.props.userGoogleID
+        );
+
+        previousStudy.locked_by = this.props.userGoogleID;
+        // this.props.setDisableViewer(false);
+      } catch (e) {
+        console.log(`Can't unlock study ${previousStudy.study_instance_uid}`);
+        console.log(e);
+      }
+
+      this.props.setStudyIndex(previousIndex);
+      await this.props.selectStudy(previousStudy);
+      const path = `/viewer/${previousStudy.study_instance_uid}`;
       this.props.history.push(path);
     }
   };
@@ -51,13 +75,24 @@ PreviousStudyButton.propTypes = {
   selectedWorkingListStudies: PropTypes.array.isRequired,
   history: PropTypes.object.isRequired,
   selectStudy: PropTypes.func.isRequired,
+  updateWorkingListStudy: PropTypes.func.isRequired,
+  selectedStudy: PropTypes.object.isRequired,
+  selectedWorkingList: PropTypes.string.isRequired,
+  setDisableViewer: PropTypes.func.isRequired,
+  userGoogleID: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   studyIndex: state.workingLists.studyIndex,
   selectedWorkingListStudies: state.workingLists.selectedWorkingListStudies,
+  selectedStudy: state.workingLists.selectedStudy,
+  selectedWorkingList: state.workingLists.selectedWorkingList,
+  userGoogleID: state.oidc.user.profile.sub,
 });
 
 export default withRouter(
-  connect(mapStateToProps, { setStudyIndex, selectStudy })(PreviousStudyButton)
+  connect(
+    mapStateToProps,
+    { setStudyIndex, selectStudy, updateWorkingListStudy, setDisableViewer }
+  )(PreviousStudyButton)
 );

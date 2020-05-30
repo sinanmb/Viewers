@@ -5,11 +5,13 @@ import PreviousStudyButton from './PreviousStudyButton';
 import NextStudyButton from './NextStudyButton';
 import WorkingListStudiesDropdown from './WorkingListStudiesDropdown';
 import ReviewStatusComponent from './ReviewStatusComponent';
+import StudyLockedByComponent from './StudyLockedByComponent';
 
 class ToolbarWorkingListGroup extends Component {
   render() {
     const component = this.props.selectedWorkingList ? (
       <React.Fragment>
+        <StudyLockedByComponent />
         <PreviousStudyButton />
         <WorkingListStudiesDropdown />
         <NextStudyButton />

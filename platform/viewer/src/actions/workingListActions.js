@@ -4,7 +4,8 @@ import {
   GET_WORKING_LIST_STUDIES,
   SET_STUDY_INDEX,
   SELECT_STUDY,
-  SET_REVIEW_STATUS,
+  UPDATE_WORKING_LIST_STUDY,
+  SET_DISABLE_VIEWER,
 } from './types';
 
 import api from '../utils/api';
@@ -40,16 +41,23 @@ export const setStudyIndex = newIndex => dispatch =>
 export const selectStudy = study => dispatch =>
   dispatch({ type: SELECT_STUDY, payload: study });
 
-export const setReviewStatus = (
+export const updateWorkingListStudy = (
   workingListId,
   studyInstanceUID,
-  status
+  status,
+  locked_by,
+  user_google_id
 ) => dispatch => {
   return api
     .put(`/working-lists/${workingListId}/studies/${studyInstanceUID}`, {
       status,
+      locked_by,
+      user_google_id,
     })
     .then(response =>
-      dispatch({ type: SET_REVIEW_STATUS, payload: response.data })
+      dispatch({ type: UPDATE_WORKING_LIST_STUDY, payload: response.data })
     );
 };
+
+export const setDisableViewer = isDisabled => dispatch =>
+  dispatch({ type: SET_DISABLE_VIEWER, payload: isDisabled });
