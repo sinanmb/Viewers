@@ -19,6 +19,7 @@ git pull origin master
 ```
 APP_CONFIG=config/aws.js
 VIEWERS_SERVICE_BASE_URL=<host>/api/v1 // host will be Viewers EC2 Instance IP address
+GOOGLE_CLIENT_ID=<google_client_id>
 ```
 
 ## Setup Orthanc config
