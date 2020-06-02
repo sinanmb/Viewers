@@ -97,7 +97,7 @@ const mapStateToProps = state => ({
   workingLists: state.workingLists.workingLists,
   selectedWorkingList: state.workingLists.selectedWorkingList,
   selectedWorkingListStudies: state.workingLists.selectedWorkingListStudies,
-  userGoogleID: state.oidc.user && state.oidc.user.profile.sub,
+  userGoogleID: state.oidc.user.profile.sub,
 });
 
 export default connect(
