@@ -21,7 +21,7 @@ window.config = {
         '588078611049-3hln69o6aca6htppe0u14l3f1gjrid4p.apps.googleusercontent.com',
       redirect_uri: 'http://localhost:3000/callback',
       response_type: 'id_token',
-      scope: 'openid',
+      scope: 'openid email',
       post_logout_redirect_uri: '/logout-redirect.html',
     },
   ],

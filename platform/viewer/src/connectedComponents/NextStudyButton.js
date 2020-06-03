@@ -110,7 +110,7 @@ const mapStateToProps = state => ({
   selectedWorkingListStudies: state.workingLists.selectedWorkingListStudies,
   selectedStudy: state.workingLists.selectedStudy,
   selectedWorkingList: state.workingLists.selectedWorkingList,
-  userGoogleID: state.oidc.user.profile.sub,
+  userGoogleID: state.oidc.user.profile.email,
 });
 
 export default withRouter(

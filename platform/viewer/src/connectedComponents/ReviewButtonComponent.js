@@ -61,7 +61,7 @@ ReviewButtonComponent.propTypes = {
 const mapStateToProps = state => ({
   selectedStudy: state.workingLists.selectedStudy,
   selectedWorkingList: state.workingLists.selectedWorkingList,
-  userGoogleID: state.oidc.user.profile.sub,
+  userGoogleID: state.oidc.user.profile.email,
 });
 
 export default withRouter(

@@ -106,7 +106,7 @@ const mapStateToProps = state => ({
   selectedWorkingList: state.workingLists.selectedWorkingList,
   updateWorkingListStudy: state.workingLists.updateWorkingListStudy,
   isViewerDisabled: state.workingLists.isViewerDisabled,
-  userGoogleID: state.oidc.user.profile.sub,
+  userGoogleID: state.oidc.user.profile.email,
 });
 
 export default connect(
