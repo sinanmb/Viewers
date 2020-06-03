@@ -70,6 +70,9 @@ export default {
           onClose: () => UIDialogService.dismiss({ id: 'landmark' }),
           onSubmit: updatedData => {
             measurementData.location = updatedData.label;
+            // If change happens here, also update init.js in extensions/cornerstone/src
+            measurementData.version = 1;
+            measurementData.reviewedBy = window.store.getState().oidc.user.profile.email;
 
             if (updatedData.label.includes('Nerve')) {
               measurementData.description = updatedData.position;

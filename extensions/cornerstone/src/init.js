@@ -65,8 +65,11 @@ export default function init({ servicesManager, configuration }) {
           title: 'Enter your annotation',
           measurementData: data ? data : {},
           onClose: () => UIDialogService.dismiss({ id: dialogId }),
-          onSubmit: (modifiedMeasurements, deleteTool = false) => {
-            callback(modifiedMeasurements, deleteTool);
+          onSubmit: (data, deleteTool = false) => {
+            // If change happens here, also update index.js in measurementPanel appExtension
+            data.version = 1.0;
+            data.reviewedBy = window.store.getState().oidc.user.profile.email;
+            callback(data, deleteTool);
             UIDialogService.dismiss({ id: dialogId });
           },
         },
