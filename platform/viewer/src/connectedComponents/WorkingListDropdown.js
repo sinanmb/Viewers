@@ -27,7 +27,7 @@ class WorkingListDropdown extends Component {
     try {
       await this.props.updateWorkingListStudy(
         selectedWorkingList,
-        selectedStudy.study_instance_uid,
+        selectedStudy.study_id,
         selectedStudy.status, //
         this.props.userGoogleID, // Locking current study if possible
         this.props.userGoogleID

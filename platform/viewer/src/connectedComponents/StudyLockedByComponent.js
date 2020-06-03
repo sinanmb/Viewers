@@ -24,12 +24,12 @@ class StudyLockedByComponent extends Component {
     if (this.state.studyWhenMounted.locked_by === this.props.userGoogleID) {
       try {
         api.put(
-          `/working-lists/${this.props.selectedWorkingList}/studies/${this.state.studyWhenMounted.study_instance_uid}`,
+          `/working-lists/${this.props.selectedWorkingList}/studies/${this.state.studyWhenMounted.study_id}`,
           params
         );
       } catch (e) {
         console.log(
-          `Can't unlock study while unmounting: ${this.state.studyWhenMounted.study_instance_uid}`
+          `Can't unlock study while unmounting: ${this.state.studyWhenMounted.study_id}`
         );
       }
     }

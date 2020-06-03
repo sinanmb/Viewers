@@ -18,19 +18,21 @@ class WorkingListStudiesDropdown extends Component {
     );
 
     const newStudy = this.props.selectedWorkingListStudies[studyIndex];
+    console.log('newStudy');
+    console.log(newStudy);
 
     // Lock study we just loaded
     try {
       await this.props.updateWorkingListStudy(
         this.props.selectedWorkingList,
-        newStudy.study_instance_uid,
+        newStudy.study_id,
         newStudy.status,
         this.props.userGoogleID,
         this.props.userGoogleID
       );
       newStudy.locked_by = this.props.userGoogleID;
     } catch (e) {
-      console.log(`Can't unlock study ${newStudy.study_instance_uid}`);
+      console.log(`Can't unlock study ${newStudy.study_id}`);
       console.log(e);
     }
 

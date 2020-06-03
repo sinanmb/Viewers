@@ -43,13 +43,13 @@ export const selectStudy = study => dispatch =>
 
 export const updateWorkingListStudy = (
   workingListId,
-  studyInstanceUID,
+  studyId,
   status,
   locked_by,
   user_google_id
 ) => dispatch => {
   return api
-    .put(`/working-lists/${workingListId}/studies/${studyInstanceUID}`, {
+    .put(`/working-lists/${workingListId}/studies/${studyId}`, {
       status,
       locked_by,
       user_google_id,

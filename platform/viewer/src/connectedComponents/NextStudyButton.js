@@ -22,7 +22,7 @@ class NextStudyButton extends Component {
       const approveStudyIfNoStatus = status === null ? true : status;
       await this.props.updateWorkingListStudy(
         this.props.selectedWorkingList,
-        this.props.selectedStudy.study_instance_uid,
+        this.props.selectedStudy.study_id,
         approveStudyIfNoStatus,
         null, // Unlocking current study
         this.props.userGoogleID
@@ -38,7 +38,7 @@ class NextStudyButton extends Component {
     try {
       await this.props.updateWorkingListStudy(
         this.props.selectedWorkingList,
-        nextStudy.study_instance_uid,
+        nextStudy.study_id,
         nextStudy.status,
         this.props.userGoogleID,
         this.props.userGoogleID
@@ -46,7 +46,7 @@ class NextStudyButton extends Component {
       nextStudy.locked_by = this.props.userGoogleID;
       // this.props.setDisableViewer(false);
     } catch (e) {
-      console.log(`Can't unlock study ${nextStudy.study_instance_uid}`);
+      console.log(`Can't unlock study ${nextStudy.study_id}`);
       console.log(e);
     }
 

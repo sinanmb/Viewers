@@ -22,7 +22,7 @@ class PreviousStudyButton extends Component {
       try {
         await this.props.updateWorkingListStudy(
           this.props.selectedWorkingList,
-          previousStudy.study_instance_uid,
+          previousStudy.study_id,
           previousStudy.status,
           this.props.userGoogleID,
           this.props.userGoogleID
@@ -31,7 +31,7 @@ class PreviousStudyButton extends Component {
         previousStudy.locked_by = this.props.userGoogleID;
         // this.props.setDisableViewer(false);
       } catch (e) {
-        console.log(`Can't unlock study ${previousStudy.study_instance_uid}`);
+        console.log(`Can't unlock study ${previousStudy.study_id}`);
         console.log(e);
       }
 

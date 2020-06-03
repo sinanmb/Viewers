@@ -11,7 +11,7 @@ class ReviewButtonComponent extends Component {
 
     this.props.updateWorkingListStudy(
       this.props.selectedWorkingList,
-      this.props.selectedStudy.study_instance_uid,
+      this.props.selectedStudy.study_id,
       status,
       this.props.userGoogleID,
       this.props.userGoogleID
