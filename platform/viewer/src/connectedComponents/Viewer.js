@@ -334,7 +334,10 @@ class Viewer extends Component {
 
           {/* MAIN */}
           <div className={classNames('main-content')}>
-            <ConnectedViewerMain studies={this.props.studies} isStudyLoaded={this.props.isStudyLoaded} />
+            <ConnectedViewerMain
+              studies={this.props.studies}
+              isStudyLoaded={this.props.isStudyLoaded}
+            />
           </div>
 
           {/* RIGHT */}
@@ -433,7 +436,7 @@ const _createIsSeriesQcValidMap = async function(studies) {
 
     for (let series of response.data) {
       isSeriesQcValidMap[series['SeriesInstanceUID']] =
-        series['IsSeriesQcValid'];
+        series['is_series_qc_valid'];
     }
   } catch (error) {
     console.log(error);
