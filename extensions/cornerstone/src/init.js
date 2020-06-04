@@ -6,18 +6,9 @@ import cornerstone from 'cornerstone-core';
 import csTools from 'cornerstone-tools';
 import merge from 'lodash.merge';
 import initCornerstoneTools from './initCornerstoneTools.js';
-import { getEnabledElement } from './state';
 import measurementServiceMappingsFactory from './utils/measurementServiceMappings/measurementServiceMappingsFactory';
 import LandmarkTool from './landmarkTool';
-
-const draw = csTools.importInternal('drawing/draw');
-const drawLine = csTools.importInternal('drawing/drawLine');
-const convertToVector3 = csTools.importInternal('util/convertToVector3');
-const planeIntersection = csTools.importInternal('util/planePlaneIntersection');
-const projectPatientPointToImagePlane = csTools.importInternal(
-  'util/projectPatientPointToImagePlane'
-);
-const getNewContext = csTools.importInternal('drawing/getNewContext');
+import enableReferenceLines from './enableReferenceLines';
 
 let isShiftKeyDown = false;
 
@@ -67,8 +58,6 @@ export default function init({ servicesManager, configuration }) {
           onClose: () => UIDialogService.dismiss({ id: dialogId }),
           onSubmit: (data, deleteTool = false) => {
             // If change happens here, also update index.js in measurementPanel appExtension
-            data.version = 1.0;
-            data.reviewedBy = window.store.getState().oidc.user.profile.email;
             callback(data, deleteTool);
             UIDialogService.dismiss({ id: dialogId });
           },
@@ -161,7 +150,7 @@ export default function init({ servicesManager, configuration }) {
   /* Measurement Service */
   _connectToolsToMeasurementService(MeasurementService);
 
-  _enableReferenceLines();
+  enableReferenceLines();
 
   /* Add extension tools configuration here. */
   const internalToolsConfig = {
@@ -373,229 +362,4 @@ const _connectToolsToMeasurementService = measurementService => {
       });
     }
   );
-};
-
-const _enableReferenceLines = () => {
-  const waitForImageRendered = enabledElement =>
-    new Promise(resolve => {
-      const onImageRenderedCallback = () => {
-        enabledElement.removeEventListener(
-          cornerstone.EVENTS.IMAGE_RENDERED,
-          onImageRenderedCallback
-        );
-        resolve();
-      };
-      enabledElement.addEventListener(
-        cornerstone.EVENTS.IMAGE_RENDERED,
-        onImageRenderedCallback
-      );
-    });
-
-  const renderReferenceLines = ({ detail: { enabledElement } }) => {
-    const { activeViewportIndex } = window.store.getState().viewports;
-
-    const currentEnabledElement = getEnabledElement(activeViewportIndex);
-    if (currentEnabledElement !== enabledElement.element) return;
-
-    const targetImage = enabledElement.image;
-    cornerstone
-      .getEnabledElements()
-      .filter(e => e.uuid !== enabledElement.uuid)
-      .forEach(async referenceElement => {
-        if (!referenceElement.image)
-          await waitForImageRendered(referenceElement.element);
-
-        const referenceImage = referenceElement.image;
-
-        if (!referenceImage || !targetImage) {
-          console.error('Could not render reference lines, images not defined');
-          return;
-        }
-
-        const targetImagePlane = cornerstone.metaData.get(
-          'imagePlaneModule',
-          targetImage.imageId
-        );
-        const referenceImagePlane = cornerstone.metaData.get(
-          'imagePlaneModule',
-          referenceImage.imageId
-        );
-        // Make sure the target and reference actually have image plane metadata
-        if (
-          !targetImagePlane ||
-          !referenceImagePlane ||
-          !targetImagePlane.rowCosines ||
-          !targetImagePlane.columnCosines ||
-          !targetImagePlane.imagePositionPatient ||
-          !referenceImagePlane.rowCosines ||
-          !referenceImagePlane.columnCosines ||
-          !referenceImagePlane.imagePositionPatient
-        ) {
-          console.error(
-            'Could not render reference lines, image plane modules not defined'
-          );
-          return;
-        }
-
-        if (
-          targetImagePlane.frameOfReferenceUID !==
-          referenceImagePlane.frameOfReferenceUID
-        ) {
-          return;
-        }
-
-        targetImagePlane.rowCosines = convertToVector3(
-          targetImagePlane.rowCosines
-        );
-        targetImagePlane.columnCosines = convertToVector3(
-          targetImagePlane.columnCosines
-        );
-        targetImagePlane.imagePositionPatient = convertToVector3(
-          targetImagePlane.imagePositionPatient
-        );
-        referenceImagePlane.rowCosines = convertToVector3(
-          referenceImagePlane.rowCosines
-        );
-        referenceImagePlane.columnCosines = convertToVector3(
-          referenceImagePlane.columnCosines
-        );
-        referenceImagePlane.imagePositionPatient = convertToVector3(
-          referenceImagePlane.imagePositionPatient
-        );
-        // The image plane normals must be > 30 degrees apart
-        const targetNormal = targetImagePlane.rowCosines
-          .clone()
-          .cross(targetImagePlane.columnCosines);
-        const referenceNormal = referenceImagePlane.rowCosines
-          .clone()
-          .cross(referenceImagePlane.columnCosines);
-        let angleInRadians = targetNormal.angleTo(referenceNormal);
-        angleInRadians = Math.abs(angleInRadians);
-        if (angleInRadians < 0.5) {
-          console.error(
-            'Could not render reference lines, angle in radians does not match the expected value'
-          );
-          return;
-        }
-
-        const points = planeIntersection(targetImagePlane, referenceImagePlane);
-
-        if (!points) {
-          console.error('Could not render reference lines, points not defined');
-          return;
-        }
-
-        const referenceLine = {
-          start: projectPatientPointToImagePlane(
-            points.start,
-            referenceImagePlane
-          ),
-          end: projectPatientPointToImagePlane(points.end, referenceImagePlane),
-        };
-
-        if (!referenceLine) {
-          console.error(
-            'Could not render reference lines, no reference line to render'
-          );
-          return;
-        }
-
-        const onReferenceElementImageRendered = () => {
-          const context = getNewContext(referenceElement.canvas);
-          context.setTransform(1, 0, 0, 1, 0, 0);
-          draw(context, newContext => {
-            drawLine(
-              newContext,
-              referenceElement.element,
-              referenceLine.start,
-              referenceLine.end,
-              { color: 'greenyellow' }
-            );
-          });
-
-          referenceElement.element.removeEventListener(
-            cornerstone.EVENTS.IMAGE_RENDERED,
-            onReferenceElementImageRendered
-          );
-        };
-
-        referenceElement.element.addEventListener(
-          cornerstone.EVENTS.IMAGE_RENDERED,
-          onReferenceElementImageRendered
-        );
-        cornerstone.updateImage(referenceElement.element);
-      });
-  };
-
-  cornerstone.events.addEventListener(
-    cornerstone.EVENTS.ELEMENT_DISABLED,
-    event => {
-      if (event.detail && event.detail.element) {
-        event.detail.element.removeEventListener(
-          cornerstone.EVENTS.IMAGE_RENDERED,
-          renderReferenceLines
-        );
-      }
-    }
-  );
-
-  const bindEnabledElementsEventListeners = enabledElements => {
-    enabledElements.forEach(enabledElement => {
-      enabledElement.addEventListener(
-        cornerstone.EVENTS.IMAGE_RENDERED,
-        renderReferenceLines
-      );
-    });
-  };
-
-  const unbindEnabledElementsEventListeners = enabledElements => {
-    enabledElements.forEach(enabledElement => {
-      enabledElement.removeEventListener(
-        cornerstone.EVENTS.IMAGE_RENDERED,
-        renderReferenceLines
-      );
-    });
-  };
-
-  let previousLayout;
-  window.store.subscribe(() => {
-    const { numColumns, numRows } = window.store.getState().viewports;
-    const viewportCount = numRows * numColumns;
-
-    if (viewportCount > 1) {
-      if (
-        !previousLayout ||
-        (previousLayout &&
-          (previousLayout.numColumns !== numColumns ||
-            previousLayout.numRows !== numRows))
-      ) {
-        previousLayout = { numColumns, numRows };
-
-        const enabledElements = [...csTools.store.state.enabledElements];
-
-        // We have all the elements
-        if (enabledElements.length === viewportCount) {
-          bindEnabledElementsEventListeners(enabledElements);
-        } else {
-          cornerstone.events.addEventListener(
-            cornerstone.EVENTS.ELEMENT_ENABLED,
-            ({ detail: { element } }) => {
-              enabledElements.push(element);
-
-              if (enabledElements.length === viewportCount) {
-                bindEnabledElementsEventListeners(enabledElements);
-              }
-            }
-          );
-        }
-      }
-    } else {
-      if (previousLayout !== undefined) {
-        previousLayout = undefined;
-        unbindEnabledElementsEventListeners(
-          csTools.store.state.enabledElements
-        );
-      }
-    }
-  });
 };
