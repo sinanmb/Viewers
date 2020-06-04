@@ -19,6 +19,7 @@ import ConnectedLayoutButton from './ConnectedLayoutButton';
 import ToolbarWorkingListGroup from './ToolbarWorkingListGroup';
 import LandmarkLocationShortcuts from './LandmarkLocationShortcuts';
 import NextViewportShortcut from './NextViewportShortcut';
+import ReferenceLinesToggle from './ReferenceLinesToggle';
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
 import { withAppContext } from '../context/AppContext';
 
@@ -37,6 +38,7 @@ class ToolbarRow extends Component {
     // NOTE: withDialog, withModal HOCs
     dialog: PropTypes.any,
     modal: PropTypes.any,
+    setLandmarkToolSelectionStatus: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -195,9 +197,8 @@ class ToolbarRow extends Component {
     );
 
     let newIndex = activeToolIndex;
-    switch (e.keyCode) {
-      case 81: {
-        // 'q' key. Should go left
+    switch (e.key) {
+      case 'q': {
         do {
           newIndex =
             newIndex - 1 >= 0
@@ -210,8 +211,7 @@ class ToolbarRow extends Component {
         _handleToolbarButtonClick.call(this, button, e);
         break;
       }
-      case 87: {
-        // 'w' key. Should go right
+      case 'w': {
         do {
           newIndex =
             newIndex + 1 < this.state.toolbarButtons.length ? newIndex + 1 : 0;
@@ -254,6 +254,7 @@ class ToolbarRow extends Component {
           <ToolbarWorkingListGroup />
           <LandmarkLocationShortcuts />
           <NextViewportShortcut />
+          <ReferenceLinesToggle />
 
           <div
             className="pull-right m-t-1 rm-x-1"

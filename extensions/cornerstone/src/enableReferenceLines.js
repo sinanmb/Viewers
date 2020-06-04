@@ -2,7 +2,7 @@ import cornerstone from 'cornerstone-core';
 import csTools from 'cornerstone-tools';
 import { getEnabledElement } from './state';
 import waitForTheImageToBeRendered from './utils/waitForTheImageToBeRendered';
-​
+
 const draw = csTools.importInternal('drawing/draw');
 const drawLine = csTools.importInternal('drawing/drawLine');
 const convertToVector3 = csTools.importInternal('util/convertToVector3');
@@ -11,14 +11,23 @@ const projectPatientPointToImagePlane = csTools.importInternal(
   'util/projectPatientPointToImagePlane'
 );
 const getNewContext = csTools.importInternal('drawing/getNewContext');
-​
+
 const enableReferenceLines = () => {
   const renderReferenceLines = ({ detail: { enabledElement } }) => {
+    const isReferenceLinesDisplayEnabled = window.store.getState()
+      .referenceLines.isEnabled;
+    if (!isReferenceLinesDisplayEnabled) {
+      console.warn(
+        'References Lines are not currently diplayed. Click on R if you want to display them'
+      );
+      return;
+    }
+
     const { activeViewportIndex } = window.store.getState().viewports;
-​
+
     if (getEnabledElement(activeViewportIndex) !== enabledElement.element)
       return;
-​
+
     const targetImage = enabledElement.image;
     cornerstone
       .getEnabledElements()
@@ -26,16 +35,16 @@ const enableReferenceLines = () => {
       .forEach(async referenceElement => {
         if (!referenceElement.image)
           await waitForTheImageToBeRendered(referenceElement.element);
-​
+
         const referenceImage = referenceElement.image;
-​
+
         if (!referenceImage || !targetImage) {
           console.warn(
             'Could not render reference lines, one or more images not defined.'
           );
           return;
         }
-​
+
         const targetImagePlane = cornerstone.metaData.get(
           'imagePlaneModule',
           targetImage.imageId
@@ -60,14 +69,15 @@ const enableReferenceLines = () => {
           );
           return;
         }
-​
-        if (
-          targetImagePlane.frameOfReferenceUID !==
-          referenceImagePlane.frameOfReferenceUID
-        ) {
-          return;
-        }
-​
+
+        // This caused troubles with certain studies from the liverpool set
+        // if (
+        //   targetImagePlane.frameOfReferenceUID !==
+        //   referenceImagePlane.frameOfReferenceUID
+        // ) {
+        //   return;
+        // }
+
         targetImagePlane.rowCosines = convertToVector3(
           targetImagePlane.rowCosines
         );
@@ -101,16 +111,16 @@ const enableReferenceLines = () => {
           );
           return;
         }
-​
+
         const points = planeIntersection(targetImagePlane, referenceImagePlane);
-​
+
         if (!points) {
           console.warn(
             'Could not render reference lines, the plane intersection is undefined.'
           );
           return;
         }
-​
+
         const referenceLine = {
           start: projectPatientPointToImagePlane(
             points.start,
@@ -118,14 +128,14 @@ const enableReferenceLines = () => {
           ),
           end: projectPatientPointToImagePlane(points.end, referenceImagePlane),
         };
-​
+
         if (!referenceLine.start || !referenceLine.end) {
           console.warn(
             'Could not render reference lines, the initial or final coordinates are undefined.'
           );
           return;
         }
-​
+
         const onReferenceElementImageRendered = () => {
           const context = getNewContext(referenceElement.canvas);
           context.setTransform(1, 0, 0, 1, 0, 0);
@@ -138,13 +148,13 @@ const enableReferenceLines = () => {
               { color: 'greenyellow' }
             );
           });
-​
+
           referenceElement.element.removeEventListener(
             cornerstone.EVENTS.IMAGE_RENDERED,
             onReferenceElementImageRendered
           );
         };
-​
+
         referenceElement.element.addEventListener(
           cornerstone.EVENTS.IMAGE_RENDERED,
           onReferenceElementImageRendered
@@ -152,7 +162,7 @@ const enableReferenceLines = () => {
         cornerstone.updateImage(referenceElement.element);
       });
   };
-​
+
   cornerstone.events.addEventListener(
     cornerstone.EVENTS.ELEMENT_ENABLED,
     event => {
@@ -162,7 +172,7 @@ const enableReferenceLines = () => {
       );
     }
   );
-​
+
   cornerstone.events.addEventListener(
     cornerstone.EVENTS.ELEMENT_DISABLED,
     event => {
@@ -173,5 +183,5 @@ const enableReferenceLines = () => {
     }
   );
 };
-​
+
 export default enableReferenceLines;

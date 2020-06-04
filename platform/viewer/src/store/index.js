@@ -11,6 +11,7 @@ import { redux } from '@ohif/core';
 import thunkMiddleware from 'redux-thunk';
 import workingListReducer from '../reducers/workingListReducer';
 import landmarkReducer from '../reducers/landmarkReducer';
+import referenceLinesReducer from '../reducers/referenceLinesReducer';
 
 // Combine our @ohif/core and oidc reducers
 // Set init data, using values found in localStorage
@@ -21,6 +22,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 reducers.oidc = oidcReducer;
 reducers.workingLists = workingListReducer;
 reducers.landmark = landmarkReducer;
+reducers.referenceLines = referenceLinesReducer;
 
 const rootReducer = combineReducers(reducers);
 const preloadedState = {
