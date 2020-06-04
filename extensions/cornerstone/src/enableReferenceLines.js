@@ -62,12 +62,15 @@ const enableReferenceLines = () => {
         }
 
         // This caused troubles with certain studies from the liverpool set
-        // if (
-        //   targetImagePlane.frameOfReferenceUID !==
-        //   referenceImagePlane.frameOfReferenceUID
-        // ) {
-        //   return;
-        // }
+        if (
+          targetImagePlane.frameOfReferenceUID !==
+          referenceImagePlane.frameOfReferenceUID
+        ) {
+          console.warn(
+            'targetImagePlane.frameOfReferenceUID !== referenceImagePlane.frameOfReferenceUID'
+          );
+          // return;
+        }
 
         targetImagePlane.rowCosines = convertToVector3(
           targetImagePlane.rowCosines
