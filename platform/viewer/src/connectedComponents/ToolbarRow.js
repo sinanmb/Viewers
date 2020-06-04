@@ -196,8 +196,8 @@ class ToolbarRow extends Component {
 
     let newIndex = activeToolIndex;
     switch (e.keyCode) {
-      case 37: {
-        // Left Key
+      case 81: {
+        // 'q' key. Should go left
         do {
           newIndex =
             newIndex - 1 >= 0
@@ -210,8 +210,8 @@ class ToolbarRow extends Component {
         _handleToolbarButtonClick.call(this, button, e);
         break;
       }
-      case 39: {
-        // Right Key
+      case 87: {
+        // 'w' key. Should go right
         do {
           newIndex =
             newIndex + 1 < this.state.toolbarButtons.length ? newIndex + 1 : 0;
