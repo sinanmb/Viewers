@@ -24,6 +24,13 @@ class WorkingListDropdown extends Component {
 
     const studyIndex = 0;
     const selectedStudy = this.props.selectedWorkingListStudies[studyIndex];
+
+    if (selectedStudy.status || selectedStudy.locked_by) {
+      alert(
+        'All studies are either being reviewed or have been reviewed in this working list.'
+      );
+    }
+
     try {
       await this.props.updateWorkingListStudy(
         selectedWorkingList,

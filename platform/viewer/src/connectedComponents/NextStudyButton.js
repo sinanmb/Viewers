@@ -34,6 +34,12 @@ class NextStudyButton extends Component {
       .get(`/working-lists/${this.props.selectedWorkingList}/studies`)
       .then(response => response.data[0]);
 
+    if (nextStudy.status || nextStudy.locked_by) {
+      alert(
+        'All studies are either being reviewed or have been reviewed in this working list.'
+      );
+    }
+
     // Lock study we just loaded
     try {
       await this.props.updateWorkingListStudy(
