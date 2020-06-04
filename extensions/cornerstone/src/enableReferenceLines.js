@@ -14,15 +14,6 @@ const getNewContext = csTools.importInternal('drawing/getNewContext');
 
 const enableReferenceLines = () => {
   const renderReferenceLines = ({ detail: { enabledElement } }) => {
-    const isReferenceLinesDisplayEnabled = window.store.getState()
-      .referenceLines.isEnabled;
-    if (!isReferenceLinesDisplayEnabled) {
-      console.warn(
-        'References Lines are not currently diplayed. Click on R if you want to display them'
-      );
-      return;
-    }
-
     const { activeViewportIndex } = window.store.getState().viewports;
 
     if (getEnabledElement(activeViewportIndex) !== enabledElement.element)

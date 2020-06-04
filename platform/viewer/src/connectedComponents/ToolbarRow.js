@@ -19,7 +19,6 @@ import ConnectedLayoutButton from './ConnectedLayoutButton';
 import ToolbarWorkingListGroup from './ToolbarWorkingListGroup';
 import LandmarkLocationShortcuts from './LandmarkLocationShortcuts';
 import NextViewportShortcut from './NextViewportShortcut';
-import ReferenceLinesToggle from './ReferenceLinesToggle';
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
 import { withAppContext } from '../context/AppContext';
 
@@ -254,7 +253,6 @@ class ToolbarRow extends Component {
           <ToolbarWorkingListGroup />
           <LandmarkLocationShortcuts />
           <NextViewportShortcut />
-          <ReferenceLinesToggle />
 
           <div
             className="pull-right m-t-1 rm-x-1"
