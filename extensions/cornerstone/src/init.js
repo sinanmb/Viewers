@@ -58,6 +58,10 @@ export default function init({ servicesManager, configuration }) {
           onClose: () => UIDialogService.dismiss({ id: dialogId }),
           onSubmit: (data, deleteTool = false) => {
             // If change happens here, also update index.js in measurementPanel appExtension
+            if (data) {
+              data.version = 1.0;
+              data.reviewedBy = window.store.getState().oidc.user.profile.email;
+            }
             callback(data, deleteTool);
             UIDialogService.dismiss({ id: dialogId });
           },
@@ -228,7 +232,7 @@ export default function init({ servicesManager, configuration }) {
   });
 
   csTools.setToolActive('Pan', { mouseButtonMask: 4 });
-  csTools.setToolActive('Zoom', { mouseButtonMask: 2 });
+  csTools.setToolActive('Wwwc', { mouseButtonMask: 2 });
   csTools.setToolActive('Landmark', { mouseButtonMask: 1 });
   csTools.setToolActive('StackScrollMouseWheel', {}); // TODO: Empty options should not be required
   csTools.setToolActive('PanMultiTouch', { pointers: 2 }); // TODO: Better error if no options
