@@ -10,7 +10,7 @@ export default class StenosisComponent extends Component {
   render() {
     return (
       <>
-        <h4>Severe central canal stenosis </h4>
+        <h4>Severe central canal stenosis</h4>
         <div>
           <label>
             <input
@@ -31,10 +31,9 @@ export default class StenosisComponent extends Component {
             <input
               type="radio"
               name="severeCentralCanalStenosis"
-              value="Shirzad criteria"
+              value="Shiraz criteria"
               checked={
-                this.props.data.severeCentralCanalStenosis ===
-                'Shirzad criteria'
+                this.props.data.severeCentralCanalStenosis === 'Shiraz criteria'
               }
               onChange={this.onChange}
             />
