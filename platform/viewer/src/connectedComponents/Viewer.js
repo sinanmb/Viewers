@@ -57,6 +57,7 @@ class Viewer extends Component {
     activeViewportIndex: PropTypes.number.isRequired,
     isStudyLoaded: PropTypes.bool,
     dialog: PropTypes.object,
+    setLandmarkToolSelectionStatus: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -308,6 +309,9 @@ class Viewer extends Component {
             this.setState(updatedState);
           }}
           studies={this.props.studies}
+          setLandmarkToolSelectionStatus={
+            this.props.setLandmarkToolSelectionStatus
+          }
         />
 
         {/*<ConnectedStudyLoadingMonitor studies={this.props.studies} />*/}

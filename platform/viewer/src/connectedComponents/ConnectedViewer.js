@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import Viewer from './Viewer.js';
 import OHIF from '@ohif/core';
+import { setLandmarkToolSelectionStatus } from '../actions/landmarkActions';
 
 const { setTimepoints, setMeasurements } = OHIF.redux.actions;
 
@@ -26,6 +27,7 @@ const mapDispatchToProps = dispatch => {
     onMeasurementsUpdated: measurements => {
       dispatch(setMeasurements(measurements));
     },
+    setLandmarkToolSelectionStatus,
   };
 };
 
