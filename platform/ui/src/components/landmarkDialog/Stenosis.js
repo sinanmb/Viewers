@@ -37,7 +37,7 @@ export default class StenosisComponent extends Component {
               }
               onChange={this.onChange}
             />
-            Shirzad criteria
+            Shiraz criteria
           </label>
         </div>
         <div>
