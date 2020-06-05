@@ -80,17 +80,22 @@ class ViewerMain extends Component {
     }
 
     // Update series description
-    if (Object.entries(this.props.viewportSpecificData).length > 0) {
-      const {
-        StudyInstanceUID,
-        displaySetInstanceUID,
-      } = this.props.viewportSpecificData[this.props.activeViewportIndex];
+    try {
+      if (Object.entries(this.props.viewportSpecificData).length > 0) {
+        const {
+          StudyInstanceUID,
+          displaySetInstanceUID,
+        } = this.props.viewportSpecificData[this.props.activeViewportIndex];
 
-      this.addDescriptionOverlay(
-        this.props.activeViewportIndex,
-        StudyInstanceUID,
-        displaySetInstanceUID
-      );
+        this.addDescriptionOverlay(
+          this.props.activeViewportIndex,
+          StudyInstanceUID,
+          displaySetInstanceUID
+        );
+      }
+    } catch (e) {
+      console.log('Could not load series description');
+      console.log(e);
     }
   }
 
