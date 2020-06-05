@@ -8,19 +8,17 @@ export default class StenosisComponent extends Component {
   };
 
   render() {
+    const { severeCentralCanalStenosis } = this.props.data;
+
     return (
       <>
         <h4>Severe central canal stenosis</h4>
         <div>
           <label>
             <input
-              type="radio"
-              name="severeCentralCanalStenosis"
-              value="Cross-sectional area"
-              checked={
-                this.props.data.severeCentralCanalStenosis ===
-                'Cross-sectional area'
-              }
+              type="checkbox"
+              name="crossSectionalArea"
+              checked={severeCentralCanalStenosis.crossSectionalArea === true}
               onChange={this.onChange}
             />
             Cross-sectional area
@@ -29,32 +27,21 @@ export default class StenosisComponent extends Component {
         <div>
           <label>
             <input
-              type="radio"
-              name="severeCentralCanalStenosis"
-              value="Shiraz criteria"
-              checked={
-                this.props.data.severeCentralCanalStenosis === 'Shiraz criteria'
-              }
+              type="checkbox"
+              name="shizasCriteria"
+              checked={severeCentralCanalStenosis.shizasCriteria === true}
               onChange={this.onChange}
             />
-            Shiraz criteria
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              name="severeCentralCanalStenosis"
-              value="No"
-              checked={this.props.data.severeCentralCanalStenosis === 'No'}
-              onChange={this.onChange}
-            />
-            No
+            Schizas criteria
           </label>
         </div>
       </>
     );
   }
 
-  onChange = e => this.props.onChange(e.target.value);
+  onChange = e => {
+    const name = e.target.name;
+    const value = e.target.checked;
+    this.props.onChange(name, value);
+  };
 }

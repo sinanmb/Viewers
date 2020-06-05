@@ -38,7 +38,10 @@ class LandmarkDialog extends Component {
       },
 
       stenosis: {
-        severeCentralCanalStenosis: null,
+        severeCentralCanalStenosis: {
+          crossSectionalArea: false,
+          shizasCriteria: false,
+        },
       },
     };
 
@@ -86,7 +89,7 @@ class LandmarkDialog extends Component {
     );
   }
 
-  onClose = e => {
+  onClose = _ => {
     // Delete the landmark if just created, or just close the popup if clicked on edit description
     if (this.props.measurementData.annotation) {
       this.props.onClose();
@@ -95,7 +98,7 @@ class LandmarkDialog extends Component {
     }
   };
 
-  onSubmit = e => {
+  onSubmit = _ => {
     const formattedLabel = this.state.label.includes('Nerve')
       ? 'nerve'
       : 'stenosis';
@@ -111,12 +114,9 @@ class LandmarkDialog extends Component {
     this.setState({ label });
   };
 
-  handleStenosisChange = severeCentralCanalStenosis => {
-    const stenosis = {
-      ...this.state.stenosis,
-      severeCentralCanalStenosis,
-    };
-
+  handleStenosisChange = (name, value) => {
+    const stenosis = { ...this.state.stenosis };
+    stenosis.severeCentralCanalStenosis[name] = value;
     this.setState({ stenosis });
   };
 

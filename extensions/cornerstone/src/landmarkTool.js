@@ -201,11 +201,6 @@ export default class LandmarkTool extends BaseAnnotationTool {
 
       if (updatedData.label.includes('Nerve')) {
         measurementData.description = updatedData.position;
-      } else if (updatedData.label === 'Stenosis') {
-        measurementData.description =
-          updatedData.severeCentralCanalStenosis !== 'No'
-            ? updatedData.severeCentralCanalStenosis
-            : null;
       }
 
       measurementData.annotation = updatedData;
