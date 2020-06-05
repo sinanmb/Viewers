@@ -36,7 +36,7 @@ class StudyLockedByComponent extends Component {
   };
 
   componentDidMount() {
-    window.addEventListener('beforeunload', this.unlockStudy);
+    window.addEventListener('unload', this.unlockStudy);
     this.setViewerDisability();
   }
 
@@ -70,7 +70,6 @@ class StudyLockedByComponent extends Component {
 
   componentWillUnmount() {
     this.unlockStudy();
-    // window.removeEventListener('beforeunload', this.unlockStudy); // remove the event handler for normal unmounting
   }
 
   render() {
