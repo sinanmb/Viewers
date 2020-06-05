@@ -18,8 +18,6 @@ class WorkingListStudiesDropdown extends Component {
     );
 
     const newStudy = this.props.selectedWorkingListStudies[studyIndex];
-    console.log('newStudy');
-    console.log(newStudy);
 
     // Lock study we just loaded
     try {
